@@ -27,7 +27,7 @@ class Sheet(commands.Cog):
         print(members)
         try:
             print('try')
-            print('members')
+            print(members)
             temp_name = members[0]
             for member in members:
                 with DBA.DBAccess() as db:
