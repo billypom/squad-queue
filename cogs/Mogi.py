@@ -5,7 +5,7 @@ from dateutil.parser import parse
 from datetime import datetime, timedelta
 import collections
 import time
-from .. import DBA
+import DBA
 
 with open('./config.json', 'r') as cjson:
             config = json.load(cjson)

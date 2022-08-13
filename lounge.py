@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 import json
 import logging
-import DBA
+
 print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
 logging.basicConfig(level=logging.INFO)
 
