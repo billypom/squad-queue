@@ -248,9 +248,11 @@ class Mogi(commands.Cog):
     
     @commands.command()
     async def qwe(self, ctx):
-        await ctx.defer()
+        await self.defer()
+        await self.queue_or_send('queue or send qwe')
+        await self.respond('respond qwe')
         print('qwe')
-        await ctx.respond('qwe')
+        return
 
     @commands.command(aliases=['c'])
     @commands.max_concurrency(number=1,wait=True)
