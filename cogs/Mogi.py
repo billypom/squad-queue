@@ -246,6 +246,11 @@ class Mogi(commands.Cog):
                     return i
         return False
     
+    @commands.command(aliases['qwe'])
+    async def qwe(self, ctx):
+        await ctx.defer()
+        print('qwe')
+        await ctx.respond('qwe')
 
     @commands.command(aliases=['c'])
     @commands.max_concurrency(number=1,wait=True)
