@@ -6,7 +6,8 @@ import DBA
 print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
 logging.basicConfig(level=logging.INFO)
 
-bot = commands.Bot(command_prefix='!', case_insensitive=True)
+intents = discord.Intents(message_content=True, messages=True, members=True, guilds=True)
+bot = commands.Bot(intents=intents, activity=discord.Game(str('hg')), command_prefix='!', case_insensitive=True)
 
 initial_extensions = ['cogs.Mogi', 'cogs.Sheet']
 
