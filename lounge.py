@@ -3,12 +3,16 @@ from discord.ext import commands
 import json
 import logging
 import DBA
-
+print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
 logging.basicConfig(level=logging.INFO)
 
 bot = commands.Bot(command_prefix='!', case_insensitive=True)
 
 initial_extensions = ['cogs.Mogi', 'cogs.Sheet']
+
+for extension in initial_extensions:
+    print('loading extension')
+    bot.load_extension(extension)
 
 with open('./config.json', 'r') as cjson:
     config = json.load(cjson)
@@ -17,9 +21,6 @@ with open('./config.json', 'r') as cjson:
 async def on_ready():
     print("Logged in as {0.user}".format(bot))
 
-for extension in initial_extensions:
-    print('loading extension')
-    bot.load_extension(extension)
 
 @bot.event
 async def on_command_error(ctx, error):
