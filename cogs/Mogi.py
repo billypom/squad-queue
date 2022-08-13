@@ -248,7 +248,6 @@ class Mogi(commands.Cog):
     
     @commands.command()
     async def qwe(self, ctx):
-        await self.defer()
         await self.queue_or_send('queue or send qwe')
         await self.respond('respond qwe')
         print('qwe')
