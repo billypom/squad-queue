@@ -46,7 +46,7 @@ class Sheet(commands.Cog):
             #     return_mmrs.append(False)
             #     continue
             else:
-                return_mmrs.append(int(mmr[0]))
+                return_mmrs.append(int(mmr))
         print(return_mmrs)
         return return_mmrs
 
