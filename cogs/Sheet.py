@@ -24,6 +24,9 @@ class Sheet(commands.Cog):
         
     #async def mmr(self, member: discord.Member):
     async def mmr(self, members):
+        print('WHAT IS THIS??')
+        print(members)
+        print(type(members))
         with DBA.DBAccess() as db:
             check_values = db.query('SELECT mmr FROM player WHERE player_name = %s;', (member,))
         # mmrs.update('B3:B%d' % int(2+len(members)), [[member] for member in members])
