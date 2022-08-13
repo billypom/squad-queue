@@ -9,7 +9,7 @@
 
 import discord
 from discord.ext import commands
-import DBA
+from .. import DBA
 
 # import gspread
 # gc = gspread.service_account(filename='credentials.json')
