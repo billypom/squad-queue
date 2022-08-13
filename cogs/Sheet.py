@@ -25,9 +25,7 @@ class Sheet(commands.Cog):
     #async def mmr(self, member: discord.Member):
     async def mmr(self, members):
         check_values = []
-        print(members)
         for member in members:
-            print(f'for member in member: {member}')
             with DBA.DBAccess() as db:
                 temp = db.query('SELECT mmr FROM player WHERE player_name = %s;', (member,))
                 check_values.append(temp[0][0])
@@ -35,7 +33,6 @@ class Sheet(commands.Cog):
         # check_values = mmrs.get('C3:C%d' % int(2+len(members)))
         return_mmrs = []
         for mmr in check_values:
-            print(mmr)
             if mmr is None:
                 return_mmrs.append(False)
                 continue

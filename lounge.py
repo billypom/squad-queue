@@ -3,7 +3,6 @@ from discord.ext import commands
 import json
 import logging
 
-print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
 logging.basicConfig(level=logging.INFO)
 
 intents = discord.Intents(message_content=True, messages=True, members=True, guilds=True)
@@ -24,8 +23,6 @@ async def on_ready():
 
 @bot.event
 async def on_command_error(ctx, error):
-    print('im error')
-    print(error)
     if isinstance(error, commands.CommandNotFound):
         return
     if isinstance(error, commands.MissingRequiredArgument):
