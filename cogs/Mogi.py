@@ -390,6 +390,7 @@ class Mogi(commands.Cog):
     @commands.guild_only()
     @commands.cooldown(1, 15, commands.BucketType.member)
     async def drop(self, ctx):
+        print('DROP!!!')
         """Remove your squad from a mogi"""
         try:
             await Mogi.is_mogi_channel(self, ctx)
@@ -762,6 +763,7 @@ class Mogi(commands.Cog):
     @commands.bot_has_guild_permissions(manage_channels=True)
     @commands.guild_only()
     async def lockerdown(self, ctx):
+        print('LOCKERDOWN!!!')
         # git er dun
         mogi_channel = self.get_mogi_channel()
         await self.lockdown(mogi_channel)
@@ -813,6 +815,7 @@ class Mogi(commands.Cog):
     @commands.command()
     @commands.guild_only()
     async def schedule(self, ctx, size: int, *, schedule_time:str):
+        print('SCHEDULE!!!')
         """Schedules a room in the future so that the staff doesn't have to be online to open the mogi and make the rooms"""
         
         await Mogi.hasroles(self, ctx)
@@ -851,6 +854,7 @@ class Mogi(commands.Cog):
     @commands.command()
     @commands.guild_only()
     async def view_schedule(self, ctx):
+        print('VIEW SCHEDULE!!!')
         """Displays the schedule"""
         await Mogi.hasroles(self, ctx)
         
