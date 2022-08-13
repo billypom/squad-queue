@@ -28,7 +28,7 @@ class Sheet(commands.Cog):
         # print(members)
         # print(type(members))
         with DBA.DBAccess() as db:
-            check_values = db.query('SELECT mmr FROM player WHERE player_name = %s;', (members,))
+            check_values = db.query('SELECT mmr FROM player WHERE player_name = %s;', (members.display_name,))
         # mmrs.update('B3:B%d' % int(2+len(members)), [[member] for member in members])
         # check_values = mmrs.get('C3:C%d' % int(2+len(members)))
         return_mmrs = []
