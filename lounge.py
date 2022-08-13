@@ -18,6 +18,7 @@ async def on_ready():
     print("Logged in as {0.user}".format(bot))
 
 for extension in initial_extensions:
+    print('loading extension')
     bot.load_extension(extension)
 
 @bot.event
