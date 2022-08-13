@@ -27,7 +27,7 @@ class Sheet(commands.Cog):
         try:
             temp_name = members.display_name
             with DBA.DBAccess() as db:
-                check_values = db.query('SELECT mmr FROM player WHERE player_name = %s;', (members.display_name,))
+                check_values = db.query('SELECT mmr FROM player WHERE player_name = %s;', (members,))
         except Exception:
             for member in members:
                 with DBA.DBAccess() as db:
