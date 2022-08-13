@@ -368,10 +368,10 @@ class Mogi(commands.Cog):
         lookupMembers += [member.display_name for member in members]
         # playerMMR = await sheet.mmr(ctx.author)
         playerMMRs = []
-        for i in range(len(lookupMembers)):
-            with DBA.DBAccess() as db:
-                temp = db.query('SELECT mmr FROM player WHERE player_name = %s;', (lookupMembers[i],))
-            playerMMRs.append(temp[0][0])
+        # for i in range(len(lookupMembers)):
+        #     with DBA.DBAccess() as db:
+        #         temp = db.query('SELECT mmr FROM player WHERE player_name = %s;', (lookupMembers[i],))
+        #     playerMMRs.append(temp[0][0])
         playerMMRs = await sheet.mmr(lookupMembers)
         if playerMMRs[0] is False:
             await self.queue_or_send(ctx, "Error1: MMR for player %s cannot be found! Please contact a staff member for help"
