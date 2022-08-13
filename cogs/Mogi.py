@@ -246,7 +246,7 @@ class Mogi(commands.Cog):
                     return i
         return False
     
-    @commands.command(aliases['qwe'])
+    @commands.command()
     async def qwe(self, ctx):
         await ctx.defer()
         print('qwe')

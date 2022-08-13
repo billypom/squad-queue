@@ -12,7 +12,6 @@ bot = commands.Bot(intents=intents, activity=discord.Game(str('hg')), command_pr
 initial_extensions = ['cogs.Mogi', 'cogs.Sheet']
 
 for extension in initial_extensions:
-    print('loading extension')
     bot.load_extension(extension)
 
 with open('./config.json', 'r') as cjson:
