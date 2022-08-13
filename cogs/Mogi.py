@@ -368,7 +368,7 @@ class Mogi(commands.Cog):
         lookupMembers += [member.display_name for member in members]
         #playerMMR = await sheet.mmr(ctx.author)
         playerMMRs = []
-        for i in range(lookupMembers):
+        for i in range(len(lookupMembers)):
             with DBA.DBAccess() as db:
                 temp = db.query('SELECT mmr FROM player WHERE player_name = %s;', (lookupMembers[i]))
             playerMMRs.append(temp[0][0])
