@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 import json
 import logging
+import DBA
 
 logging.basicConfig(level=logging.INFO)
 
@@ -16,9 +17,8 @@ with open('./config.json', 'r') as cjson:
 async def on_ready():
     print("Logged in as {0.user}".format(bot))
 
-if __name__ == '__main__':
-    for extension in initial_extensions:
-        bot.load_extension(extension)
+for extension in initial_extensions:
+    bot.load_extension(extension)
 
 @bot.event
 async def on_command_error(ctx, error):
