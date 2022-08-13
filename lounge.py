@@ -22,6 +22,7 @@ if __name__ == '__main__':
 
 @bot.event
 async def on_command_error(ctx, error):
+    print('im error')
     if isinstance(error, commands.CommandNotFound):
         return
     if isinstance(error, commands.MissingRequiredArgument):
