@@ -251,6 +251,7 @@ class Mogi(commands.Cog):
     @commands.max_concurrency(number=1,wait=True)
     @commands.guild_only()
     async def can(self, ctx, members: commands.Greedy[discord.Member]):
+        print('CAN!!!')
         """Tag your partners to invite them to a mogi or accept a invitation to join a mogi"""
         try:
             await Mogi.is_mogi_channel(self, ctx)
