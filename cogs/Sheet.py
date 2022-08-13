@@ -36,12 +36,6 @@ class Sheet(commands.Cog):
             if mmr is None:
                 return_mmrs.append(False)
                 continue
-            # if mmr[0] == "Placement":
-            #     return_mmrs.append(2000)
-            #     continue
-            # if mmr[0] == "N":
-            #     return_mmrs.append(False)
-            #     continue
             else:
                 return_mmrs.append(int(mmr))
         print(return_mmrs)
