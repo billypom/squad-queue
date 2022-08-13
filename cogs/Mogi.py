@@ -374,7 +374,7 @@ class Mogi(commands.Cog):
             playerMMRs.append(temp[0][0])
         playerMMRs = await sheet.mmr(lookupMembers)
         if playerMMRs[0] is False:
-            await self.queue_or_send(ctx, "Error: MMR for player %s cannot be found! Please contact a staff member for help"
+            await self.queue_or_send(ctx, "Error1: MMR for player %s cannot be found! Please contact a staff member for help"
                                      % ctx.author.display_name, delay=10)
             return
         players[ctx.author].append(playerMMRs[0])
@@ -382,7 +382,7 @@ class Mogi(commands.Cog):
             players[members[i]] = [False]
             #playerMMR = await sheet.mmr(members[i])
             if playerMMRs[i+1] is False:
-                await self.queue_or_send(ctx, "Error: MMR for player %s cannot be found! Please contact a staff member for help"
+                await self.queue_or_send(ctx, "Error2: MMR for player %s cannot be found! Please contact a staff member for help"
                                          % members[i].display_name, delay=10)
                 return
             players[members[i]].append(playerMMRs[i+1])
