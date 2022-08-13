@@ -24,6 +24,7 @@ class Sheet(commands.Cog):
         
     #async def mmr(self, member: discord.Member):
     async def mmr(self, members):
+        check_values = []
         print(members)
         for member in members:
             print(f'for member in member: {member}')
