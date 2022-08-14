@@ -904,9 +904,12 @@ class Mogi(commands.Cog):
     @commands.command()
     @commands.guild_only()
     @commands.max_concurrency(number=1, wait=True)
-    async def table(self, ctx, mogi_format: int, scores: str):
+    async def table(self, ctx, mogi_format: int, *scores):
         print('Im table')
         SQ_TIER_ID = 897862324831023104
+
+
+        print(type(scores))
 
         bad = await self.check_if_banned_characters(str(scores))
         if bad:
