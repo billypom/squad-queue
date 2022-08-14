@@ -1073,16 +1073,15 @@ class Mogi(commands.Cog):
 
         await channel.send('Is this table correct? :thinking:', view=table_view, delete_after=300)
 
-        def check(m):
-            return m.author.id = ctx.author.id and m.channel.id = ctx.channel.id
+        # def check(m):
+        #     return m.author.id = ctx.author.id and m.channel.id = ctx.channel.id
         
-
         try:
             lorenzi_response = await self.bot.wait_for('message', check=check, timeout=60)
         except asyncio.TimeoutError:
             await ctx.send('No response from reporter. Timed out')
         
-        if lorenzi_response.content.low() not in ['yes', 'y']:
+        if lorenzi_response.content.lower() not in ['yes', 'y']:
             await ctx.send('Table denied. Try again.')
             return
         
