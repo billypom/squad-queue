@@ -984,8 +984,8 @@ class Mogi(commands.Cog):
         
         # Get MMR data for each team, calculate team score, and determine team placement
         mogi_score = 0
-        # print(f'length of chunked list: {len(chunked_list)}')
-        # print(f'chunked list: {chunked_list}')
+        print(f'length of chunked list: {len(chunked_list)}')
+        print(f'chunked list: {chunked_list}')
         for team in chunked_list:
             temp_mmr = 0
             team_score = 0
