@@ -994,7 +994,8 @@ class Mogi(commands.Cog):
                 try:
                     with DBA.DBAccess() as db:
                         # This part makes sure that only players in the current channel's lineup can have a table made for them
-                        temp = db.query('SELECT p.mmr FROM player p JOIN lineups l ON p.player_id = l.player_id WHERE l.player_id = %s AND l.tier_id = %s;', (player[0], ctx.channel.id))
+                        # removed an AND from this statement because sq weird...
+                        temp = db.query('SELECT p.mmr FROM player p JOIN lineups l ON p.player_id = l.player_id WHERE l.player_id = %s;', (player[0],))
                         if temp[0][0] is None:
                             mmr = 0
                         else:
