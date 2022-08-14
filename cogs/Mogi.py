@@ -1339,9 +1339,9 @@ class Mogi(commands.Cog):
             # https://rebane2001.com/discord-colored-text-generator/ 
             await self.queue_or_send(ctx, '`Table Accepted.`', delete_after=300)
     
-    def check(m):
+    async def check(self, m):
             return m.author.id = ctx.author.id and m.channel.id = ctx.channel.id
-            
+
     async def check_if_banned_characters(self, message):
         for value in secretly.BANNED_CHARACTERS:
             if value in message:
