@@ -909,16 +909,17 @@ class Mogi(commands.Cog):
         SQ_TIER_ID = 897862324831023104
 
 
-        print(type(scores))
-        print(scores)
-
         bad = await self.check_if_banned_characters(str(scores))
         if bad:
             await ctx.send(f'Invalid input. There must be 12 players and 12 scores.')
 
         # Create list
-        score_string = str(scores) #.translate(remove_chars)
-        score_list = score_string.split()
+        score_list = list(scores)
+        score_list.remove(score_list[0])
+        score_list.remove(score_list[0])
+
+        # score_string = str(scores) #.translate(remove_chars)
+        # score_list = score_string.split()
 
         # Check for 12 players
         if len(score_list) == 24:
