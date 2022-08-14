@@ -911,7 +911,7 @@ class Mogi(commands.Cog):
 
         bad = await self.check_if_banned_characters(str(scores))
         if bad:
-            await self.queue_or_send(ctx, f'Invalid input. There must be 12 players and 12 scores.')
+            await self.queue_or_send(ctx, f'aInvalid input. There must be 12 players and 12 scores.')
             return
 
         # Create list
@@ -926,7 +926,7 @@ class Mogi(commands.Cog):
         if len(score_list) == 24:
             pass
         else:
-            await self.queue_or_send(ctx, f'Invalid input. There must be 12 players and 12 scores.')
+            await self.queue_or_send(ctx, f'bInvalid input. There must be 12 players and 12 scores.')
             return
         
         # Replace playernames with playerids
