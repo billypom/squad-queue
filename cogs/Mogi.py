@@ -1084,7 +1084,8 @@ class Mogi(commands.Cog):
         
         try:
             lorenzi_response = await self.bot.wait_for('message', check=check, timeout=60)
-        except asyncio.TimeoutError:
+        except Exception as e:
+            await self.send_to_debug_channel(ctx, e)
             await self.queue_or_send(ctx, 'No response from reporter. Timed out')
             return
         
