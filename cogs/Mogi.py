@@ -922,6 +922,8 @@ class Mogi(commands.Cog):
         # score_list = score_string.split()
 
         # Check for 12 players
+        print(score_list)
+        print(len(score_list))
         if len(score_list) == 24:
             pass
         else:
