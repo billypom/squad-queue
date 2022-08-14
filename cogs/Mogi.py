@@ -906,7 +906,7 @@ class Mogi(commands.Cog):
     @commands.guild_only()
     @commands.max_concurrency(number=1, wait=True)
     async def table(self, ctx, mogi_format: int, *scores):
-        print('Im table')
+        # print('Im table')
         SQ_TIER_ID = 897862324831023104
 
         # Create list
@@ -914,19 +914,19 @@ class Mogi(commands.Cog):
 
         bad = await self.check_if_banned_characters(score_list)
         if bad:
-            await self.queue_or_send(ctx, f'aInvalid input. There must be 12 players and 12 scores.')
+            await self.queue_or_send(ctx, f'Invalid input. There must be 12 players and 12 scores.')
             return
 
         # score_string = str(scores) #.translate(remove_chars)
         # score_list = score_string.split()
 
         # Check for 12 players
-        print(score_list)
-        print(len(score_list))
+        # print(score_list)
+        # print(len(score_list))
         if len(score_list) == 24:
             pass
         else:
-            await self.queue_or_send(ctx, f'bInvalid input. There must be 12 players and 12 scores.')
+            await self.queue_or_send(ctx, f'Invalid input. There must be 12 players and 12 scores.')
             return
         
         # Replace playernames with playerids
@@ -985,8 +985,8 @@ class Mogi(commands.Cog):
         
         # Get MMR data for each team, calculate team score, and determine team placement
         mogi_score = 0
-        print(f'length of chunked list: {len(chunked_list)}')
-        print(f'chunked list: {chunked_list}')
+        # print(f'length of chunked list: {len(chunked_list)}')
+        # print(f'chunked list: {chunked_list}')
         for team in chunked_list:
             temp_mmr = 0
             team_score = 0
