@@ -901,437 +901,437 @@ class Mogi(commands.Cog):
         event_time_str = timezone_adjusted_time.strftime(time_print_formatting)
         return f"{event_size}v{event_size} on {event_time_str}"
 
-    @commands.command()
-    @commands.guild_only()
-    @commands.max_concurrency(number=1, wait=True)
-    async def table(self, ctx, mogi_format: int, scores: str):
-        print('Im table')
-        SQ_TIER_ID = 897862324831023104
+    # @commands.command()
+    # @commands.guild_only()
+    # @commands.max_concurrency(number=1, wait=True)
+    # async def table(self, ctx, mogi_format: int, scores: str):
+    #     print('Im table')
+    #     SQ_TIER_ID = 897862324831023104
 
-        bad = await self.check_if_banned_characters(str(scores))
-        if bad:
-            await ctx.send(f'Invalid input. There must be 12 players and 12 scores.')
+    #     bad = await self.check_if_banned_characters(str(scores))
+    #     if bad:
+    #         await ctx.send(f'Invalid input. There must be 12 players and 12 scores.')
 
-        # Create list
-        score_string = str(scores) #.translate(remove_chars)
-        score_list = score_string.split()
+    #     # Create list
+    #     score_string = str(scores) #.translate(remove_chars)
+    #     score_list = score_string.split()
 
-        # Check for 12 players
-        if len(score_list) == 24:
-            pass
-        else:
-            await ctx.send(f'Invalid input. There must be 12 players and 12 scores.')
-            return
+    #     # Check for 12 players
+    #     if len(score_list) == 24:
+    #         pass
+    #     else:
+    #         await ctx.send(f'Invalid input. There must be 12 players and 12 scores.')
+    #         return
         
-        # Replace playernames with playerids
-        # Create list
-        #print(f'score list: {score_list}')
-        player_list_check = []
-        for i in range(0, len(score_list), 2):
-            with DBA.DBAccess() as db:
-                temp = db.query('SELECT player_id FROM player WHERE player_name = %s;', (score_list[i],))
-                player_list_check.append(score_list[i])
-                score_list[i] = temp[0][0]
+    #     # Replace playernames with playerids
+    #     # Create list
+    #     #print(f'score list: {score_list}')
+    #     player_list_check = []
+    #     for i in range(0, len(score_list), 2):
+    #         with DBA.DBAccess() as db:
+    #             temp = db.query('SELECT player_id FROM player WHERE player_name = %s;', (score_list[i],))
+    #             player_list_check.append(score_list[i])
+    #             score_list[i] = temp[0][0]
 
         
         
-        # Check for duplicate players
-        has_dupes = await check_for_dupes_in_list(player_list_check)
-        if has_dupes:
-            await ctx.send('``Error 37:`` You cannot have duplicate players on a table')
-            return
+    #     # Check for duplicate players
+    #     has_dupes = await check_for_dupes_in_list(player_list_check)
+    #     if has_dupes:
+    #         await ctx.send('``Error 37:`` You cannot have duplicate players on a table')
+    #         return
 
-        # Check the mogi_format
-        if mogi_format == 1:
-            SPECIAL_TEAMS_INTEGER = 63
-            OTHER_SPECIAL_INT = 19
-            MULTIPLIER_SPECIAL = 2.1
-        elif mogi_format == 2:
-            SPECIAL_TEAMS_INTEGER = 142
-            OTHER_SPECIAL_INT = 39
-            MULTIPLIER_SPECIAL = 3.0000001
-        elif mogi_format == 3:
-            SPECIAL_TEAMS_INTEGER = 288
-            OTHER_SPECIAL_INT = 59
-            MULTIPLIER_SPECIAL = 3.1
-        elif mogi_format == 4:
-            SPECIAL_TEAMS_INTEGER = 402
-            OTHER_SPECIAL_INT = 79
-            MULTIPLIER_SPECIAL = 3.35
-        elif mogi_format == 6:
-            SPECIAL_TEAMS_INTEGER = 525
-            OTHER_SPECIAL_INT = 99
-            MULTIPLIER_SPECIAL = 3.5
-        else:
-            await ctx.send(f'``Error 27:`` Invalid format: {mogi_format}. Please use 1, 2, 3, 4, or 6.')
-            return
+    #     # Check the mogi_format
+    #     if mogi_format == 1:
+    #         SPECIAL_TEAMS_INTEGER = 63
+    #         OTHER_SPECIAL_INT = 19
+    #         MULTIPLIER_SPECIAL = 2.1
+    #     elif mogi_format == 2:
+    #         SPECIAL_TEAMS_INTEGER = 142
+    #         OTHER_SPECIAL_INT = 39
+    #         MULTIPLIER_SPECIAL = 3.0000001
+    #     elif mogi_format == 3:
+    #         SPECIAL_TEAMS_INTEGER = 288
+    #         OTHER_SPECIAL_INT = 59
+    #         MULTIPLIER_SPECIAL = 3.1
+    #     elif mogi_format == 4:
+    #         SPECIAL_TEAMS_INTEGER = 402
+    #         OTHER_SPECIAL_INT = 79
+    #         MULTIPLIER_SPECIAL = 3.35
+    #     elif mogi_format == 6:
+    #         SPECIAL_TEAMS_INTEGER = 525
+    #         OTHER_SPECIAL_INT = 99
+    #         MULTIPLIER_SPECIAL = 3.5
+    #     else:
+    #         await ctx.send(f'``Error 27:`` Invalid format: {mogi_format}. Please use 1, 2, 3, 4, or 6.')
+    #         return
 
-        # Initialize a list so we can group players and scores together
-        player_score_chunked_list = list()
-        for i in range(0, len(score_list), 2):
-            player_score_chunked_list.append(score_list[i:i+2])
-        # print(f'player score chunked list: {player_score_chunked_list}')
+    #     # Initialize a list so we can group players and scores together
+    #     player_score_chunked_list = list()
+    #     for i in range(0, len(score_list), 2):
+    #         player_score_chunked_list.append(score_list[i:i+2])
+    #     # print(f'player score chunked list: {player_score_chunked_list}')
 
-        # Chunk the list into groups of teams, based on mogi_format and order of scores entry
-        chunked_list = list()
-        for i in range(0, len(player_score_chunked_list), mogi_format):
-            chunked_list.append(player_score_chunked_list[i:i+mogi_format])
+    #     # Chunk the list into groups of teams, based on mogi_format and order of scores entry
+    #     chunked_list = list()
+    #     for i in range(0, len(player_score_chunked_list), mogi_format):
+    #         chunked_list.append(player_score_chunked_list[i:i+mogi_format])
         
-        # Get MMR data for each team, calculate team score, and determine team placement
-        mogi_score = 0
-        # print(f'length of chunked list: {len(chunked_list)}')
-        # print(f'chunked list: {chunked_list}')
-        for team in chunked_list:
-            temp_mmr = 0
-            team_score = 0
-            count = 0
-            for player in team:
-                try:
-                    with DBA.DBAccess() as db:
-                        # This part makes sure that only players in the current channel's lineup can have a table made for them
-                        temp = db.query('SELECT p.mmr FROM player p JOIN lineups l ON p.player_id = l.player_id WHERE l.player_id = %s AND l.tier_id = %s;', (player[0], ctx.channel.id))
-                        if temp[0][0] is None:
-                            mmr = 0
-                        else:
-                            mmr = temp[0][0]
-                            count+=1
-                        temp_mmr += mmr
-                        try:
-                            team_score += int(player[1])
-                        except Exception:
-                            score_and_pen = str(player[1]).split('-')
-                            team_score = team_score + int(score_and_pen[0]) - int(score_and_pen[1])
-                except Exception as e:
-                    # check for all 12 players exist
-                    await send_to_debug_channel(ctx, e)
-                    await ctx.send(f'``Error 24:`` There was an error with the following player: <@{player[0]}>')
-                    return
-            # print(team_score)
-            if count == 0:
-                count = 1
-            team_mmr = temp_mmr/count
-            team.append(team_score)
-            team.append(team_mmr)
-            mogi_score += team_score
-        # Check for 984 score
-        if mogi_score == 984:
-            pass
-        else:
-            await ctx.send(f'``Error 28:`` `Scores = {mogi_score} `Scores must add up to 984.')
-            return
+    #     # Get MMR data for each team, calculate team score, and determine team placement
+    #     mogi_score = 0
+    #     # print(f'length of chunked list: {len(chunked_list)}')
+    #     # print(f'chunked list: {chunked_list}')
+    #     for team in chunked_list:
+    #         temp_mmr = 0
+    #         team_score = 0
+    #         count = 0
+    #         for player in team:
+    #             try:
+    #                 with DBA.DBAccess() as db:
+    #                     # This part makes sure that only players in the current channel's lineup can have a table made for them
+    #                     temp = db.query('SELECT p.mmr FROM player p JOIN lineups l ON p.player_id = l.player_id WHERE l.player_id = %s AND l.tier_id = %s;', (player[0], ctx.channel.id))
+    #                     if temp[0][0] is None:
+    #                         mmr = 0
+    #                     else:
+    #                         mmr = temp[0][0]
+    #                         count+=1
+    #                     temp_mmr += mmr
+    #                     try:
+    #                         team_score += int(player[1])
+    #                     except Exception:
+    #                         score_and_pen = str(player[1]).split('-')
+    #                         team_score = team_score + int(score_and_pen[0]) - int(score_and_pen[1])
+    #             except Exception as e:
+    #                 # check for all 12 players exist
+    #                 await send_to_debug_channel(ctx, e)
+    #                 await ctx.send(f'``Error 24:`` There was an error with the following player: <@{player[0]}>')
+    #                 return
+    #         # print(team_score)
+    #         if count == 0:
+    #             count = 1
+    #         team_mmr = temp_mmr/count
+    #         team.append(team_score)
+    #         team.append(team_mmr)
+    #         mogi_score += team_score
+    #     # Check for 984 score
+    #     if mogi_score == 984:
+    #         pass
+    #     else:
+    #         await ctx.send(f'``Error 28:`` `Scores = {mogi_score} `Scores must add up to 984.')
+    #         return
 
-        # Sort the teams in order of score
-        # [[players players players], team_score, team_mmr]
-        sorted_list = sorted(chunked_list, key = lambda x: int(x[len(chunked_list[0])-2]))
-        sorted_list.reverse() 
-        # print(f'sorted list: {sorted_list}')
+    #     # Sort the teams in order of score
+    #     # [[players players players], team_score, team_mmr]
+    #     sorted_list = sorted(chunked_list, key = lambda x: int(x[len(chunked_list[0])-2]))
+    #     sorted_list.reverse() 
+    #     # print(f'sorted list: {sorted_list}')
 
-        # Create hlorenzi string
-        lorenzi_query=''
+    #     # Create hlorenzi string
+    #     lorenzi_query=''
 
-        # Initialize score and placement values
-        prev_team_score = 0
-        prev_team_placement = 1
-        team_placement = 0
-        for team in sorted_list:
-            # If team score = prev team score, use prev team placement, else increase placement and use placement
-            # print('if team score == prev team score')
-            # print(f'if {team[len(team)-2]} == {prev_team_score}')
-            if team[len(team)-2] == prev_team_score:
-                team_placement = prev_team_placement
-            else:
-                team_placement+=1
-            team.append(team_placement)
-            if mogi_format != 1:
-                lorenzi_query += f'{team_placement} #AAC8F4 \n'
-            for idx, player in enumerate(team):
-                if idx > (mogi_format-1):
-                    continue
-                with DBA.DBAccess() as db:
-                    temp = db.query('SELECT player_name, country_code FROM player WHERE player_id = %s;', (player[0],))
-                    player_name = temp[0][0]
-                    country_code = temp[0][1]
-                    score = player[1]
-                lorenzi_query += f'{player_name} [{country_code}] {score}\n'
+    #     # Initialize score and placement values
+    #     prev_team_score = 0
+    #     prev_team_placement = 1
+    #     team_placement = 0
+    #     for team in sorted_list:
+    #         # If team score = prev team score, use prev team placement, else increase placement and use placement
+    #         # print('if team score == prev team score')
+    #         # print(f'if {team[len(team)-2]} == {prev_team_score}')
+    #         if team[len(team)-2] == prev_team_score:
+    #             team_placement = prev_team_placement
+    #         else:
+    #             team_placement+=1
+    #         team.append(team_placement)
+    #         if mogi_format != 1:
+    #             lorenzi_query += f'{team_placement} #AAC8F4 \n'
+    #         for idx, player in enumerate(team):
+    #             if idx > (mogi_format-1):
+    #                 continue
+    #             with DBA.DBAccess() as db:
+    #                 temp = db.query('SELECT player_name, country_code FROM player WHERE player_id = %s;', (player[0],))
+    #                 player_name = temp[0][0]
+    #                 country_code = temp[0][1]
+    #                 score = player[1]
+    #             lorenzi_query += f'{player_name} [{country_code}] {score}\n'
 
-            # Assign previous values before leaving
-            prev_team_placement = team_placement
-            prev_team_score = team[len(team)-3]
+    #         # Assign previous values before leaving
+    #         prev_team_placement = team_placement
+    #         prev_team_score = team[len(team)-3]
 
-        # Request a lorenzi table
-        query_string = urllib.parse.quote(lorenzi_query)
-        url = f'https://gb.hlorenzi.com/table.png?data={query_string}'
-        response = requests.get(url, stream=True)
-        with open(f'/home/sq/squad_queue_v2/images/{hex(ctx.author.id)}table.png', 'wb') as out_file:
-            shutil.copyfileobj(response.raw, out_file)
-        del response
+    #     # Request a lorenzi table
+    #     query_string = urllib.parse.quote(lorenzi_query)
+    #     url = f'https://gb.hlorenzi.com/table.png?data={query_string}'
+    #     response = requests.get(url, stream=True)
+    #     with open(f'/home/sq/squad_queue_v2/images/{hex(ctx.author.id)}table.png', 'wb') as out_file:
+    #         shutil.copyfileobj(response.raw, out_file)
+    #     del response
 
-        # Ask for table confirmation
-        # table_view = Confirm(ctx.author.id)
-        channel = self.bot.get_channel(ctx.channel.id)
-        await channel.send(file=discord.File(f'/home/sq/squad_queue_v2/images/{hex(ctx.author.id)}table.png'), delete_after=300)
+    #     # Ask for table confirmation
+    #     # table_view = Confirm(ctx.author.id)
+    #     channel = self.bot.get_channel(ctx.channel.id)
+    #     await channel.send(file=discord.File(f'/home/sq/squad_queue_v2/images/{hex(ctx.author.id)}table.png'), delete_after=300)
 
-        await channel.send('Is this table correct? :thinking:', view=table_view, delete_after=300)
+    #     await channel.send('Is this table correct? :thinking:', view=table_view, delete_after=300)
 
-        # def check(m):
-            # return m.author.id = ctx.author.id and m.channel.id = ctx.channel.id
+    #     # def check(m):
+    #         # return m.author.id = ctx.author.id and m.channel.id = ctx.channel.id
         
-        try:
-            lorenzi_response = await self.bot.wait_for('message', check=check, timeout=60)
-        except asyncio.TimeoutError:
-            await ctx.send('No response from reporter. Timed out')
+    #     try:
+    #         lorenzi_response = await self.bot.wait_for('message', check=check, timeout=60)
+    #     except asyncio.TimeoutError:
+    #         await ctx.send('No response from reporter. Timed out')
         
-        if lorenzi_response.content.lower() not in ['yes', 'y']:
-            await ctx.send('Table denied. Try again.')
-            return
+    #     if lorenzi_response.content.lower() not in ['yes', 'y']:
+    #         await ctx.send('Table denied. Try again.')
+    #         return
         
-        # if table_view.value is None:
-            # await ctx.send('No response from reporter. Timed out')
-        else: # yes
-            db_mogi_id = 0
-            # Create mogi
-            with DBA.DBAccess() as db:
-                db.execute('INSERT INTO mogi (mogi_format, tier_id) values (%s, %s);', (mogi_format, SQ_TIER_ID))
+    #     # if table_view.value is None:
+    #         # await ctx.send('No response from reporter. Timed out')
+    #     else: # yes
+    #         db_mogi_id = 0
+    #         # Create mogi
+    #         with DBA.DBAccess() as db:
+    #             db.execute('INSERT INTO mogi (mogi_format, tier_id) values (%s, %s);', (mogi_format, SQ_TIER_ID))
 
-            # Get the results channel and tier name for later use
-            with DBA.DBAccess() as db:
-                temp = db.query('SELECT results_id, tier_name FROM tier WHERE tier_id = %s;', (SQ_TIER_ID,))
-                db_results_channel = temp[0][0]
-                tier_name = temp[0][1]
+    #         # Get the results channel and tier name for later use
+    #         with DBA.DBAccess() as db:
+    #             temp = db.query('SELECT results_id, tier_name FROM tier WHERE tier_id = %s;', (SQ_TIER_ID,))
+    #             db_results_channel = temp[0][0]
+    #             tier_name = temp[0][1]
 
-            # Pre MMR table calculate
-            value_table = list()
-            for idx, team_x in enumerate(sorted_list):
-                working_list = list()
-                for idy, team_y in enumerate(sorted_list):
-                    pre_mmr = 0.0
-                    if idx == idy: # skip value vs. self
-                        pass
-                    else:
-                        team_x_mmr = team_x[len(team_x)-2]
-                        team_x_placement = team_x[len(team_x)-1]
-                        team_y_mmr = team_y[len(team_y)-2]
-                        team_y_placement = team_y[len(team_y)-1]
-                        if team_x_placement == team_y_placement:
-                            pre_mmr = (SPECIAL_TEAMS_INTEGER*((((team_x_mmr - team_y_mmr)/9998)**2)**(1/3))**2)
-                            if team_x_mmr >= team_y_mmr:
-                                pass
-                            else: #team_x_mmr < team_y_mmr:
-                                pre_mmr = pre_mmr * -1
-                        else:
-                            if team_x_placement > team_y_placement:
-                                pre_mmr = (1 + OTHER_SPECIAL_INT*(1 + (team_x_mmr-team_y_mmr)/9998)**MULTIPLIER_SPECIAL)
-                            else: #team_x_placement < team_y_placement
-                                pre_mmr = -(1 + OTHER_SPECIAL_INT*(1 + (team_y_mmr-team_x_mmr)/9998)**MULTIPLIER_SPECIAL)
-                    working_list.append(pre_mmr)
-                value_table.append(working_list)
+    #         # Pre MMR table calculate
+    #         value_table = list()
+    #         for idx, team_x in enumerate(sorted_list):
+    #             working_list = list()
+    #             for idy, team_y in enumerate(sorted_list):
+    #                 pre_mmr = 0.0
+    #                 if idx == idy: # skip value vs. self
+    #                     pass
+    #                 else:
+    #                     team_x_mmr = team_x[len(team_x)-2]
+    #                     team_x_placement = team_x[len(team_x)-1]
+    #                     team_y_mmr = team_y[len(team_y)-2]
+    #                     team_y_placement = team_y[len(team_y)-1]
+    #                     if team_x_placement == team_y_placement:
+    #                         pre_mmr = (SPECIAL_TEAMS_INTEGER*((((team_x_mmr - team_y_mmr)/9998)**2)**(1/3))**2)
+    #                         if team_x_mmr >= team_y_mmr:
+    #                             pass
+    #                         else: #team_x_mmr < team_y_mmr:
+    #                             pre_mmr = pre_mmr * -1
+    #                     else:
+    #                         if team_x_placement > team_y_placement:
+    #                             pre_mmr = (1 + OTHER_SPECIAL_INT*(1 + (team_x_mmr-team_y_mmr)/9998)**MULTIPLIER_SPECIAL)
+    #                         else: #team_x_placement < team_y_placement
+    #                             pre_mmr = -(1 + OTHER_SPECIAL_INT*(1 + (team_y_mmr-team_x_mmr)/9998)**MULTIPLIER_SPECIAL)
+    #                 working_list.append(pre_mmr)
+    #             value_table.append(working_list)
 
-            # # DEBUG
-            # print(f'\nprinting value table:\n')
-            # for _list in value_table:
-            #     print(_list)
+    #         # # DEBUG
+    #         # print(f'\nprinting value table:\n')
+    #         # for _list in value_table:
+    #         #     print(_list)
 
-            # Actually calculate the MMR
-            for idx, team in enumerate(sorted_list):
-                temp_value = 0.0
-                for pre_mmr_list in value_table:
-                    for idx2, value in enumerate(pre_mmr_list):
-                        if idx == idx2:
-                            temp_value += value
-                        else:
-                            pass
-                team.append(math.ceil(temp_value))
+    #         # Actually calculate the MMR
+    #         for idx, team in enumerate(sorted_list):
+    #             temp_value = 0.0
+    #             for pre_mmr_list in value_table:
+    #                 for idx2, value in enumerate(pre_mmr_list):
+    #                     if idx == idx2:
+    #                         temp_value += value
+    #                     else:
+    #                         pass
+    #             team.append(math.ceil(temp_value))
 
-            # Create mmr table string
-            if mogi_format == 1:
-                string_mogi_format = 'FFA'
-            else:
-                string_mogi_format = f'{str(mogi_format)}v{str(mogi_format)}'
+    #         # Create mmr table string
+    #         if mogi_format == 1:
+    #             string_mogi_format = 'FFA'
+    #         else:
+    #             string_mogi_format = f'{str(mogi_format)}v{str(mogi_format)}'
 
-            mmr_table_string = f'<big><big>SQ     {string_mogi_format}</big></big>\n'
-            mmr_table_string += f'PLACE |       NAME       |  MMR  |  +/-  | NEW MMR |  RANKUPS\n'
+    #         mmr_table_string = f'<big><big>SQ     {string_mogi_format}</big></big>\n'
+    #         mmr_table_string += f'PLACE |       NAME       |  MMR  |  +/-  | NEW MMR |  RANKUPS\n'
 
-            for team in sorted_list:
-                my_player_place = team[len(team)-2]
-                string_my_player_place = str(my_player_place)
-                for idx, player in enumerate(team):
-                    mmr_table_string += '\n'
-                    if idx > (mogi_format-1):
-                        break
-                    with DBA.DBAccess() as db:
-                        temp = db.query('SELECT p.player_name, p.mmr, p.peak_mmr, p.rank_id, l.is_sub FROM player p JOIN lineups l ON p.player_id = l.player_id WHERE p.player_id = %s;', (player[0],))
-                        my_player_name = temp[0][0]
-                        my_player_mmr = temp[0][1]
-                        my_player_peak = temp[0][2]
-                        my_player_rank_id = temp[0][3]
-                        is_sub = temp[0][4]
-                        if my_player_peak is None:
-                            # print('its none...')
-                            my_player_peak = 0
-                    my_player_score = int(player[1])
-                    my_player_new_rank = ''
+    #         for team in sorted_list:
+    #             my_player_place = team[len(team)-2]
+    #             string_my_player_place = str(my_player_place)
+    #             for idx, player in enumerate(team):
+    #                 mmr_table_string += '\n'
+    #                 if idx > (mogi_format-1):
+    #                     break
+    #                 with DBA.DBAccess() as db:
+    #                     temp = db.query('SELECT p.player_name, p.mmr, p.peak_mmr, p.rank_id, l.is_sub FROM player p JOIN lineups l ON p.player_id = l.player_id WHERE p.player_id = %s;', (player[0],))
+    #                     my_player_name = temp[0][0]
+    #                     my_player_mmr = temp[0][1]
+    #                     my_player_peak = temp[0][2]
+    #                     my_player_rank_id = temp[0][3]
+    #                     is_sub = temp[0][4]
+    #                     if my_player_peak is None:
+    #                         # print('its none...')
+    #                         my_player_peak = 0
+    #                 my_player_score = int(player[1])
+    #                 my_player_new_rank = ''
 
-                    # PLACEMENTS WILL NEVER BE IN SQ
-                    # # Place the placement players
-                    # placement_name = ''
-                    # if my_player_mmr is None:
-                    #     if my_player_score >=111:
-                    #         my_player_mmr = 5250
-                    #         placement_name = 'Gold'
-                    #     elif my_player_score >= 81:
-                    #         my_player_mmr = 3750
-                    #         placement_name = 'Silver'
-                    #     elif my_player_score >= 41:
-                    #         my_player_mmr = 2250
-                    #         placement_name = 'Bronze'
-                    #     else:
-                    #         my_player_mmr = 1000
-                    #         placement_name = 'Iron'
-                    #     with DBA.DBAccess() as db:
-                    #         temp = db.query('SELECT rank_id FROM ranks WHERE placement_mmr = %s;', (my_player_mmr,))
-                    #         init_rank = temp[0][0]
-                    #         db.execute('UPDATE player SET base_mmr = %s, rank_id = %s WHERE player_id = %s;', (my_player_mmr, init_rank, player[0]))
-                    #     await channel.send(f'<@{player[0]}> has been placed at {placement_name} ({my_player_mmr} MMR)')
+    #                 # PLACEMENTS WILL NEVER BE IN SQ
+    #                 # # Place the placement players
+    #                 # placement_name = ''
+    #                 # if my_player_mmr is None:
+    #                 #     if my_player_score >=111:
+    #                 #         my_player_mmr = 5250
+    #                 #         placement_name = 'Gold'
+    #                 #     elif my_player_score >= 81:
+    #                 #         my_player_mmr = 3750
+    #                 #         placement_name = 'Silver'
+    #                 #     elif my_player_score >= 41:
+    #                 #         my_player_mmr = 2250
+    #                 #         placement_name = 'Bronze'
+    #                 #     else:
+    #                 #         my_player_mmr = 1000
+    #                 #         placement_name = 'Iron'
+    #                 #     with DBA.DBAccess() as db:
+    #                 #         temp = db.query('SELECT rank_id FROM ranks WHERE placement_mmr = %s;', (my_player_mmr,))
+    #                 #         init_rank = temp[0][0]
+    #                 #         db.execute('UPDATE player SET base_mmr = %s, rank_id = %s WHERE player_id = %s;', (my_player_mmr, init_rank, player[0]))
+    #                 #     await channel.send(f'<@{player[0]}> has been placed at {placement_name} ({my_player_mmr} MMR)')
 
-                    if is_sub: # Subs only gain on winning team
-                        if team[len(team)-1] < 0:
-                            my_player_mmr_change = 0
-                        else:
-                            my_player_mmr_change = team[len(team)-1]
-                    else:
-                        my_player_mmr_change = team[len(team)-1]
-                    my_player_new_mmr = (my_player_mmr + my_player_mmr_change)
+    #                 if is_sub: # Subs only gain on winning team
+    #                     if team[len(team)-1] < 0:
+    #                         my_player_mmr_change = 0
+    #                     else:
+    #                         my_player_mmr_change = team[len(team)-1]
+    #                 else:
+    #                     my_player_mmr_change = team[len(team)-1]
+    #                 my_player_new_mmr = (my_player_mmr + my_player_mmr_change)
 
-                    # Start creating string for MMR table
-                    mmr_table_string += f'{string_my_player_place.center(6)}|'
-                    mmr_table_string +=f'{my_player_name.center(18)}|'
-                    mmr_table_string += f'{str(my_player_mmr).center(7)}|'
+    #                 # Start creating string for MMR table
+    #                 mmr_table_string += f'{string_my_player_place.center(6)}|'
+    #                 mmr_table_string +=f'{my_player_name.center(18)}|'
+    #                 mmr_table_string += f'{str(my_player_mmr).center(7)}|'
 
-                    # Check sign of mmr delta
-                    if my_player_mmr_change >= 0:
-                        temp_string = f'+{str(my_player_mmr_change)}'
-                        string_my_player_mmr_change = f'{temp_string.center(7)}'
-                        formatted_my_player_mmr_change = await self.pos_mmr_wrapper(string_my_player_mmr_change)
-                    else:
-                        string_my_player_mmr_change = f'{str(my_player_mmr_change).center(7)}'
-                        formatted_my_player_mmr_change = await self.neg_mmr_wrapper(string_my_player_mmr_change)
-                    mmr_table_string += f'{formatted_my_player_mmr_change}|'
+    #                 # Check sign of mmr delta
+    #                 if my_player_mmr_change >= 0:
+    #                     temp_string = f'+{str(my_player_mmr_change)}'
+    #                     string_my_player_mmr_change = f'{temp_string.center(7)}'
+    #                     formatted_my_player_mmr_change = await self.pos_mmr_wrapper(string_my_player_mmr_change)
+    #                 else:
+    #                     string_my_player_mmr_change = f'{str(my_player_mmr_change).center(7)}'
+    #                     formatted_my_player_mmr_change = await self.neg_mmr_wrapper(string_my_player_mmr_change)
+    #                 mmr_table_string += f'{formatted_my_player_mmr_change}|'
 
-                    # Check for new peak
-                    string_my_player_new_mmr = str(my_player_new_mmr).center(9)
-                    # print(f'current peak: {my_player_peak} | new mmr value: {my_player_new_mmr}')
-                    if my_player_peak < (my_player_new_mmr):
-                        formatted_my_player_new_mmr = await self.peak_mmr_wrapper(string_my_player_new_mmr)
-                        with DBA.DBAccess() as db:
-                            db.execute('UPDATE player SET peak_mmr = %s WHERE player_id = %s;', (my_player_new_mmr, player[0]))
-                    else:
-                        formatted_my_player_new_mmr = string_my_player_new_mmr
-                    mmr_table_string += f'{formatted_my_player_new_mmr}|'
+    #                 # Check for new peak
+    #                 string_my_player_new_mmr = str(my_player_new_mmr).center(9)
+    #                 # print(f'current peak: {my_player_peak} | new mmr value: {my_player_new_mmr}')
+    #                 if my_player_peak < (my_player_new_mmr):
+    #                     formatted_my_player_new_mmr = await self.peak_mmr_wrapper(string_my_player_new_mmr)
+    #                     with DBA.DBAccess() as db:
+    #                         db.execute('UPDATE player SET peak_mmr = %s WHERE player_id = %s;', (my_player_new_mmr, player[0]))
+    #                 else:
+    #                     formatted_my_player_new_mmr = string_my_player_new_mmr
+    #                 mmr_table_string += f'{formatted_my_player_new_mmr}|'
 
-                    # Send updates to DB
-                    try:
-                        with DBA.DBAccess() as db:
-                            # Get ID of the last inserted table
-                            temp = db.query('SELECT mogi_id FROM mogi WHERE tier_id = %s ORDER BY create_date DESC LIMIT 1;', (SQ_TIER_ID,))
-                            db_mogi_id = temp[0][0]
-                            # Insert reference record
-                            db.execute('INSERT INTO player_mogi (player_id, mogi_id, place, score, prev_mmr, mmr_change, new_mmr, is_sub) VALUES (%s, %s, %s, %s, %s, %s, %s, %s);', (player[0], db_mogi_id, int(my_player_place), int(my_player_score), int(my_player_mmr), int(my_player_mmr_change), int(my_player_new_mmr), is_sub))\
-                            # Update player record
-                            db.execute('UPDATE player SET mmr = %s WHERE player_id = %s;', (my_player_new_mmr, player[0]))
-                            # Remove player from lineups
-                            db.execute('DELETE FROM lineups WHERE player_id = %s AND tier_id = %s;', (player[0], SQ_TIER_ID)) # YOU MUST SUBMIT TABLE IN THE TIER THE MATCH WAS PLAYED
-                            # Clear sub leaver table
-                            db.execute('DELETE FROM sub_leaver WHERE tier_id = %s;', (SQ_TIER_ID,))
-                    except Exception as e:
-                        # print(e)
-                        await self.send_to_debug_channel(ctx, f'FATAL TABLE ERROR: {e}')
-                        pass
+    #                 # Send updates to DB
+    #                 try:
+    #                     with DBA.DBAccess() as db:
+    #                         # Get ID of the last inserted table
+    #                         temp = db.query('SELECT mogi_id FROM mogi WHERE tier_id = %s ORDER BY create_date DESC LIMIT 1;', (SQ_TIER_ID,))
+    #                         db_mogi_id = temp[0][0]
+    #                         # Insert reference record
+    #                         db.execute('INSERT INTO player_mogi (player_id, mogi_id, place, score, prev_mmr, mmr_change, new_mmr, is_sub) VALUES (%s, %s, %s, %s, %s, %s, %s, %s);', (player[0], db_mogi_id, int(my_player_place), int(my_player_score), int(my_player_mmr), int(my_player_mmr_change), int(my_player_new_mmr), is_sub))\
+    #                         # Update player record
+    #                         db.execute('UPDATE player SET mmr = %s WHERE player_id = %s;', (my_player_new_mmr, player[0]))
+    #                         # Remove player from lineups
+    #                         db.execute('DELETE FROM lineups WHERE player_id = %s AND tier_id = %s;', (player[0], SQ_TIER_ID)) # YOU MUST SUBMIT TABLE IN THE TIER THE MATCH WAS PLAYED
+    #                         # Clear sub leaver table
+    #                         db.execute('DELETE FROM sub_leaver WHERE tier_id = %s;', (SQ_TIER_ID,))
+    #                 except Exception as e:
+    #                     # print(e)
+    #                     await self.send_to_debug_channel(ctx, f'FATAL TABLE ERROR: {e}')
+    #                     pass
 
-                    # Check for rank changes
-                    with DBA.DBAccess() as db:
-                        db_ranks_table = db.query('SELECT rank_id, mmr_min, mmr_max FROM ranks WHERE rank_id > %s;', (1,))
-                    for i in range(len(db_ranks_table)):
-                        rank_id = db_ranks_table[i][0]
-                        min_mmr = db_ranks_table[i][1]
-                        max_mmr = db_ranks_table[i][2]
-                        # Rank up - assign roles - update DB
-                        try:
-                            if my_player_mmr < min_mmr and my_player_new_mmr >= min_mmr:
-                                guild = self.bot.get_guild(Lounge[0])
-                                current_role = guild.get_role(my_player_rank_id)
-                                new_role = guild.get_role(rank_id)
-                                member = await guild.fetch_member(player[0])
-                                await member.remove_roles(current_role)
-                                await member.add_roles(new_role)
-                                with DBA.DBAccess() as db:
-                                    db.execute('UPDATE player SET rank_id = %s WHERE player_id = %s;', (rank_id, player[0]))
-                                my_player_new_rank += f'+ {new_role}'
-                            # Rank down - assign roles - update DB
-                            elif my_player_mmr > max_mmr and my_player_new_mmr <= max_mmr:
-                                guild = self.bot.get_guild(Lounge[0])
-                                current_role = guild.get_role(my_player_rank_id)
-                                new_role = guild.get_role(rank_id)
-                                member = await guild.fetch_member(player[0])
-                                await member.remove_roles(current_role)
-                                await member.add_roles(new_role)
-                                with DBA.DBAccess() as db:
-                                    db.execute('UPDATE player SET rank_id = %s WHERE player_id = %s;', (rank_id, player[0]))
-                                my_player_new_rank += f'- {new_role}'
-                        except Exception as e:
-                            # print(e)
-                            pass
-                            # my_player_rank_id = role_id
-                            # guild.get_role(role_id)
-                            # guild.get_member(discord_id)
-                            # member.add_roles(discord.Role)
-                            # member.remove_roles(discord.Role)
-                    string_my_player_new_rank = f'{str(my_player_new_rank).center(12)}'
-                    formatted_my_player_new_rank = await self.new_rank_wrapper(string_my_player_new_rank, my_player_new_mmr)
-                    mmr_table_string += f'{formatted_my_player_new_rank}'
-                    string_my_player_place = ''
+    #                 # Check for rank changes
+    #                 with DBA.DBAccess() as db:
+    #                     db_ranks_table = db.query('SELECT rank_id, mmr_min, mmr_max FROM ranks WHERE rank_id > %s;', (1,))
+    #                 for i in range(len(db_ranks_table)):
+    #                     rank_id = db_ranks_table[i][0]
+    #                     min_mmr = db_ranks_table[i][1]
+    #                     max_mmr = db_ranks_table[i][2]
+    #                     # Rank up - assign roles - update DB
+    #                     try:
+    #                         if my_player_mmr < min_mmr and my_player_new_mmr >= min_mmr:
+    #                             guild = self.bot.get_guild(Lounge[0])
+    #                             current_role = guild.get_role(my_player_rank_id)
+    #                             new_role = guild.get_role(rank_id)
+    #                             member = await guild.fetch_member(player[0])
+    #                             await member.remove_roles(current_role)
+    #                             await member.add_roles(new_role)
+    #                             with DBA.DBAccess() as db:
+    #                                 db.execute('UPDATE player SET rank_id = %s WHERE player_id = %s;', (rank_id, player[0]))
+    #                             my_player_new_rank += f'+ {new_role}'
+    #                         # Rank down - assign roles - update DB
+    #                         elif my_player_mmr > max_mmr and my_player_new_mmr <= max_mmr:
+    #                             guild = self.bot.get_guild(Lounge[0])
+    #                             current_role = guild.get_role(my_player_rank_id)
+    #                             new_role = guild.get_role(rank_id)
+    #                             member = await guild.fetch_member(player[0])
+    #                             await member.remove_roles(current_role)
+    #                             await member.add_roles(new_role)
+    #                             with DBA.DBAccess() as db:
+    #                                 db.execute('UPDATE player SET rank_id = %s WHERE player_id = %s;', (rank_id, player[0]))
+    #                             my_player_new_rank += f'- {new_role}'
+    #                     except Exception as e:
+    #                         # print(e)
+    #                         pass
+    #                         # my_player_rank_id = role_id
+    #                         # guild.get_role(role_id)
+    #                         # guild.get_member(discord_id)
+    #                         # member.add_roles(discord.Role)
+    #                         # member.remove_roles(discord.Role)
+    #                 string_my_player_new_rank = f'{str(my_player_new_rank).center(12)}'
+    #                 formatted_my_player_new_rank = await self.new_rank_wrapper(string_my_player_new_rank, my_player_new_mmr)
+    #                 mmr_table_string += f'{formatted_my_player_new_rank}'
+    #                 string_my_player_place = ''
 
-            # Create imagemagick image
-            # print('_______')
-            # print(mmr_table_string)
-            # print('_______')
-            # https://imagemagick.org/script/color.php
-            pango_string = f'pango:<tt>{mmr_table_string}</tt>'
-            mmr_filename = f'/home/sq/squad_queue_v2/images/{hex(ctx.author.id)}mmr.jpg'
-            # correct = subprocess.run(['convert', '-background', 'gray21', '-fill', 'white', pango_string, mmr_filename], check=True, text=True)
-            correct = subprocess.run(['convert', '-background', 'None', '-fill', 'white', pango_string, 'mkbg.jpg', '-compose', 'DstOver', '-layers', 'flatten', mmr_filename], check=True, text=True)
-            # '+swap', '-compose', 'Over', '-composite', '-quality', '100',
-            # '-fill', '#00000040', '-draw', 'rectangle 0,0 570,368',
-            f=discord.File(mmr_filename, filename='mmr.jpg')
-            sf=discord.File(f'/home/sq/squad_queue_v2/images/{hex(ctx.author.id)}table.png', filename='table.jpg')
+    #         # Create imagemagick image
+    #         # print('_______')
+    #         # print(mmr_table_string)
+    #         # print('_______')
+    #         # https://imagemagick.org/script/color.php
+    #         pango_string = f'pango:<tt>{mmr_table_string}</tt>'
+    #         mmr_filename = f'/home/sq/squad_queue_v2/images/{hex(ctx.author.id)}mmr.jpg'
+    #         # correct = subprocess.run(['convert', '-background', 'gray21', '-fill', 'white', pango_string, mmr_filename], check=True, text=True)
+    #         correct = subprocess.run(['convert', '-background', 'None', '-fill', 'white', pango_string, 'mkbg.jpg', '-compose', 'DstOver', '-layers', 'flatten', mmr_filename], check=True, text=True)
+    #         # '+swap', '-compose', 'Over', '-composite', '-quality', '100',
+    #         # '-fill', '#00000040', '-draw', 'rectangle 0,0 570,368',
+    #         f=discord.File(mmr_filename, filename='mmr.jpg')
+    #         sf=discord.File(f'/home/sq/squad_queue_v2/images/{hex(ctx.author.id)}table.png', filename='table.jpg')
 
-            # Create embed
-            results_channel = self.bot.get_channel(db_results_channel)
-            embed2 = discord.Embed(title=f'Tier {tier_name.upper()} Results', color = discord.Color.blurple())
-            embed2.add_field(name='Table ID', value=f'{str(db_mogi_id)}', inline=True)
-            embed2.add_field(name='Tier', value=f'{tier_name.upper()}', inline=True)
-            embed2.add_field(name='Submitted by', value=f'<@{ctx.author.id}>', inline=True)
-            embed2.add_field(name='View on website', value=f'https://200-lounge.com/mogi/{db_mogi_id}', inline=False)
-            embed2.set_image(url='attachment://table.jpg')
-            table_message = await results_channel.send(content=None, embed=embed2, file=sf)
-            table_url = table_message.embeds[0].image.url
-            try:
-                with DBA.DBAccess() as db:
-                    db.query('UPDATE mogi SET table_url = %s WHERE mogi_id = %s;', (table_url, db_mogi_id))
-            except Exception as e:
-                await self.send_to_debug_channel(ctx, f'Unable to get table url: {e}')
-                pass
+    #         # Create embed
+    #         results_channel = self.bot.get_channel(db_results_channel)
+    #         embed2 = discord.Embed(title=f'Tier {tier_name.upper()} Results', color = discord.Color.blurple())
+    #         embed2.add_field(name='Table ID', value=f'{str(db_mogi_id)}', inline=True)
+    #         embed2.add_field(name='Tier', value=f'{tier_name.upper()}', inline=True)
+    #         embed2.add_field(name='Submitted by', value=f'<@{ctx.author.id}>', inline=True)
+    #         embed2.add_field(name='View on website', value=f'https://200-lounge.com/mogi/{db_mogi_id}', inline=False)
+    #         embed2.set_image(url='attachment://table.jpg')
+    #         table_message = await results_channel.send(content=None, embed=embed2, file=sf)
+    #         table_url = table_message.embeds[0].image.url
+    #         try:
+    #             with DBA.DBAccess() as db:
+    #                 db.query('UPDATE mogi SET table_url = %s WHERE mogi_id = %s;', (table_url, db_mogi_id))
+    #         except Exception as e:
+    #             await self.send_to_debug_channel(ctx, f'Unable to get table url: {e}')
+    #             pass
 
-            embed = discord.Embed(title=f'Tier {tier_name.upper()} MMR', color = discord.Color.blurple())
-            embed.add_field(name='Table ID', value=f'{str(db_mogi_id)}', inline=True)
-            embed.add_field(name='Tier', value=f'{tier_name.upper()}', inline=True)
-            embed.add_field(name='Submitted by', value=f'<@{ctx.author.id}>', inline=True)
-            embed.add_field(name='View on website', value=f'https://200-lounge.com/mogi/{db_mogi_id}', inline=False)
-            embed.set_image(url='attachment://mmr.jpg')
-            await results_channel.send(content=None, embed=embed, file=f)
-            #  discord ansi coloring (doesn't work on mobile)
-            # https://gist.github.com/kkrypt0nn/a02506f3712ff2d1c8ca7c9e0aed7c06
-            # https://rebane2001.com/discord-colored-text-generator/ 
-            await ctx.send('`Table Accepted.`', delete_after=300)
+    #         embed = discord.Embed(title=f'Tier {tier_name.upper()} MMR', color = discord.Color.blurple())
+    #         embed.add_field(name='Table ID', value=f'{str(db_mogi_id)}', inline=True)
+    #         embed.add_field(name='Tier', value=f'{tier_name.upper()}', inline=True)
+    #         embed.add_field(name='Submitted by', value=f'<@{ctx.author.id}>', inline=True)
+    #         embed.add_field(name='View on website', value=f'https://200-lounge.com/mogi/{db_mogi_id}', inline=False)
+    #         embed.set_image(url='attachment://mmr.jpg')
+    #         await results_channel.send(content=None, embed=embed, file=f)
+    #         #  discord ansi coloring (doesn't work on mobile)
+    #         # https://gist.github.com/kkrypt0nn/a02506f3712ff2d1c8ca7c9e0aed7c06
+    #         # https://rebane2001.com/discord-colored-text-generator/ 
+    #         await ctx.send('`Table Accepted.`', delete_after=300)
     
     async def check_if_banned_characters(self, message):
         for value in secretly.BANNED_CHARACTERS:
