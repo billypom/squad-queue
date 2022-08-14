@@ -1079,8 +1079,6 @@ class Mogi(commands.Cog):
 
         await channel.send('Is this table correct? :thinking: (Type `yes` or `no`)', delete_after=300)
 
-        def check(m):
-            return m.author.id = ctx.author.id and m.channel.id = ctx.channel.id
         
         try:
             lorenzi_response = await self.bot.wait_for('message', check=check, timeout=60)
@@ -1341,6 +1339,9 @@ class Mogi(commands.Cog):
             # https://rebane2001.com/discord-colored-text-generator/ 
             await self.queue_or_send(ctx, '`Table Accepted.`', delete_after=300)
     
+    def check(m):
+            return m.author.id = ctx.author.id and m.channel.id = ctx.channel.id
+            
     async def check_if_banned_characters(self, message):
         for value in secretly.BANNED_CHARACTERS:
             if value in message:
