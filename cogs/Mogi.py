@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands, tasks
 from discord.ui import Button, View
+import vlog_msg
 import json
 from dateutil.parser import parse
 from datetime import datetime, timedelta
@@ -911,6 +912,13 @@ class Mogi(commands.Cog):
         if bad:
             await ctx.send(f'Invalid input. There must be 12 players and 12 scores.')
 
+        # Check for 12 players
+        if len(score_list) == 24:
+            pass
+        else:
+            await ctx.send(f'Invalid input. There must be 12 players and 12 scores.')
+            return
+        
         # Replace playernames with playerids
         # Create list
         score_string = str(scores) #.translate(remove_chars)
@@ -923,12 +931,7 @@ class Mogi(commands.Cog):
                 player_list_check.append(score_list[i])
                 score_list[i] = temp[0][0]
 
-        # Check for 12 players
-        if len(score_list) == 24:
-            pass
-        else:
-            await ctx.send(f'Invalid input. There must be 12 players and 12 scores.')
-            return
+        
         
         # Check for duplicate players
         has_dupes = await check_for_dupes_in_list(player_list_check)
