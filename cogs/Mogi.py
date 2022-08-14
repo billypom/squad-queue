@@ -910,6 +910,7 @@ class Mogi(commands.Cog):
 
 
         print(type(scores))
+        print(scores)
 
         bad = await self.check_if_banned_characters(str(scores))
         if bad:
