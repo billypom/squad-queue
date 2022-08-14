@@ -1008,7 +1008,7 @@ class Mogi(commands.Cog):
                             team_score = team_score + int(score_and_pen[0]) - int(score_and_pen[1])
                 except Exception as e:
                     # check for all 12 players exist
-                    await send_to_debug_channel(ctx, e)
+                    await self.send_to_debug_channel(ctx, e)
                     await ctx.send(f'``Error 24:`` There was an error with the following player: <@{player[0]}>')
                     return
             # print(team_score)
