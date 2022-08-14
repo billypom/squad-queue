@@ -912,6 +912,10 @@ class Mogi(commands.Cog):
         if bad:
             await ctx.send(f'Invalid input. There must be 12 players and 12 scores.')
 
+        # Create list
+        score_string = str(scores) #.translate(remove_chars)
+        score_list = score_string.split()
+
         # Check for 12 players
         if len(score_list) == 24:
             pass
@@ -921,8 +925,6 @@ class Mogi(commands.Cog):
         
         # Replace playernames with playerids
         # Create list
-        score_string = str(scores) #.translate(remove_chars)
-        score_list = score_string.split()
         #print(f'score list: {score_list}')
         player_list_check = []
         for i in range(0, len(score_list), 2):
