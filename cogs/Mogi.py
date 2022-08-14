@@ -1073,8 +1073,8 @@ class Mogi(commands.Cog):
 
         await channel.send('Is this table correct? :thinking:', view=table_view, delete_after=300)
 
-        # def check(m):
-        #     return m.author.id = ctx.author.id and m.channel.id = ctx.channel.id
+        def check(m):
+            return m.author.id = ctx.author.id and m.channel.id = ctx.channel.id
         
         try:
             lorenzi_response = await self.bot.wait_for('message', check=check, timeout=60)
@@ -1087,7 +1087,7 @@ class Mogi(commands.Cog):
         
         # if table_view.value is None:
             # await ctx.send('No response from reporter. Timed out')
-        else table_view.value: # yes
+        else: # yes
             db_mogi_id = 0
             # Create mogi
             with DBA.DBAccess() as db:
@@ -1332,8 +1332,6 @@ class Mogi(commands.Cog):
             # https://gist.github.com/kkrypt0nn/a02506f3712ff2d1c8ca7c9e0aed7c06
             # https://rebane2001.com/discord-colored-text-generator/ 
             await ctx.send('`Table Accepted.`', delete_after=300)
-        else:
-            await ctx.send('`Table Denied.`', delete_after=300)
     
     async def check_if_banned_characters(self, message):
         for value in secretly.BANNED_CHARACTERS:
