@@ -1340,7 +1340,7 @@ class Mogi(commands.Cog):
             await self.queue_or_send(ctx, '`Table Accepted.`', delete_after=300)
     
     async def check(self, m):
-            return m.author.id = ctx.author.id and m.channel.id = ctx.channel.id
+        return m.author.id = ctx.author.id and m.channel.id = ctx.channel.id
 
     async def check_if_banned_characters(self, message):
         for value in secretly.BANNED_CHARACTERS:
