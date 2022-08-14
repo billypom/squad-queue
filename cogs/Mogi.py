@@ -1205,7 +1205,7 @@ class Mogi(commands.Cog):
                 #         my_player_mmr_change = team[len(team)-1]
                 # else:
                 #     my_player_mmr_change = team[len(team)-1]
-                
+
                 my_player_mmr_change = team[len(team)-1]
                 my_player_new_mmr = (my_player_mmr + my_player_mmr_change)
 
@@ -1242,13 +1242,13 @@ class Mogi(commands.Cog):
                         temp = db.query('SELECT mogi_id FROM mogi WHERE tier_id = %s ORDER BY create_date DESC LIMIT 1;', (SQ_TIER_ID,))
                         db_mogi_id = temp[0][0]
                         # Insert reference record
-                        db.execute('INSERT INTO player_mogi (player_id, mogi_id, place, score, prev_mmr, mmr_change, new_mmr, is_sub) VALUES (%s, %s, %s, %s, %s, %s, %s, %s);', (player[0], db_mogi_id, int(my_player_place), int(my_player_score), int(my_player_mmr), int(my_player_mmr_change), int(my_player_new_mmr), is_sub))\
+                        db.execute('INSERT INTO player_mogi (player_id, mogi_id, place, score, prev_mmr, mmr_change, new_mmr) VALUES (%s, %s, %s, %s, %s, %s, %s, %s);', (player[0], db_mogi_id, int(my_player_place), int(my_player_score), int(my_player_mmr), int(my_player_mmr_change), int(my_player_new_mmr)))
                         # Update player record
                         db.execute('UPDATE player SET mmr = %s WHERE player_id = %s;', (my_player_new_mmr, player[0]))
                         # Remove player from lineups
-                        db.execute('DELETE FROM lineups WHERE player_id = %s AND tier_id = %s;', (player[0], SQ_TIER_ID)) # YOU MUST SUBMIT TABLE IN THE TIER THE MATCH WAS PLAYED
-                        # Clear sub leaver table
-                        db.execute('DELETE FROM sub_leaver WHERE tier_id = %s;', (SQ_TIER_ID,))
+                        # db.execute('DELETE FROM lineups WHERE player_id = %s AND tier_id = %s;', (player[0], SQ_TIER_ID)) # YOU MUST SUBMIT TABLE IN THE TIER THE MATCH WAS PLAYED
+                        # # Clear sub leaver table
+                        # db.execute('DELETE FROM sub_leaver WHERE tier_id = %s;', (SQ_TIER_ID,))
                 except Exception as e:
                     # print(e)
                     await self.send_to_debug_channel(ctx, f'FATAL TABLE ERROR: {e}')
