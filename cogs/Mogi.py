@@ -910,8 +910,6 @@ class Mogi(commands.Cog):
 
         # Create list
         score_list = list(scores)
-        score_list.remove(score_list[0])
-        score_list.remove(score_list[0])
 
         bad = await self.check_if_banned_characters(score_list)
         if bad:
