@@ -911,7 +911,8 @@ class Mogi(commands.Cog):
 
         bad = await self.check_if_banned_characters(str(scores))
         if bad:
-            await ctx.send(f'Invalid input. There must be 12 players and 12 scores.')
+            await self.queue_or_send(f'Invalid input. There must be 12 players and 12 scores.')
+            return
 
         # Create list
         score_list = list(scores)
@@ -925,7 +926,7 @@ class Mogi(commands.Cog):
         if len(score_list) == 24:
             pass
         else:
-            await ctx.send(f'Invalid input. There must be 12 players and 12 scores.')
+            await self.queue_or_send(f'Invalid input. There must be 12 players and 12 scores.')
             return
         
         # Replace playernames with playerids
@@ -943,7 +944,7 @@ class Mogi(commands.Cog):
         # Check for duplicate players
         has_dupes = await self.check_for_dupes_in_list(player_list_check)
         if has_dupes:
-            await ctx.send('``Error 37:`` You cannot have duplicate players on a table')
+            await self.queue_or_send('``Error 37:`` You cannot have duplicate players on a table')
             return
 
         # Check the mogi_format
@@ -968,7 +969,7 @@ class Mogi(commands.Cog):
             OTHER_SPECIAL_INT = 99
             MULTIPLIER_SPECIAL = 3.5
         else:
-            await ctx.send(f'``Error 27:`` Invalid format: {mogi_format}. Please use 1, 2, 3, 4, or 6.')
+            await self.queue_or_send(f'``Error 27:`` Invalid format: {mogi_format}. Please use 1, 2, 3, 4, or 6.')
             return
 
         # Initialize a list so we can group players and scores together
@@ -1009,7 +1010,7 @@ class Mogi(commands.Cog):
                 except Exception as e:
                     # check for all 12 players exist
                     await self.send_to_debug_channel(ctx, e)
-                    await ctx.send(f'``Error 24:`` There was an error with the following player: <@{player[0]}>')
+                    await self.queue_or_send(f'``Error 24:`` There was an error with the following player: <@{player[0]}>')
                     return
             # print(team_score)
             if count == 0:
@@ -1022,7 +1023,7 @@ class Mogi(commands.Cog):
         if mogi_score == 984:
             pass
         else:
-            await ctx.send(f'``Error 28:`` `Scores = {mogi_score} `Scores must add up to 984.')
+            await self.queue_or_send(f'``Error 28:`` `Scores = {mogi_score} `Scores must add up to 984.')
             return
 
         # Sort the teams in order of score
@@ -1084,10 +1085,11 @@ class Mogi(commands.Cog):
         try:
             lorenzi_response = await self.bot.wait_for('message', check=check, timeout=60)
         except asyncio.TimeoutError:
-            await ctx.send('No response from reporter. Timed out')
+            await self.queue_or_send('No response from reporter. Timed out')
+            return
         
         if lorenzi_response.content.lower() not in ['yes', 'y']:
-            await ctx.send('Table denied. Try again.')
+            await self.queue_or_send('Table denied. Try again.')
             return
         
         # if table_view.value is None:
@@ -1336,7 +1338,7 @@ class Mogi(commands.Cog):
             #  discord ansi coloring (doesn't work on mobile)
             # https://gist.github.com/kkrypt0nn/a02506f3712ff2d1c8ca7c9e0aed7c06
             # https://rebane2001.com/discord-colored-text-generator/ 
-            await ctx.send('`Table Accepted.`', delete_after=300)
+            await self.queue_or_send('`Table Accepted.`', delete_after=300)
     
     async def check_if_banned_characters(self, message):
         for value in secretly.BANNED_CHARACTERS:
