@@ -1198,6 +1198,17 @@ class Mogi(commands.Cog):
                 #         db.execute('UPDATE player SET base_mmr = %s, rank_id = %s WHERE player_id = %s;', (my_player_mmr, init_rank, player[0]))
                 #     await channel.send(f'<@{player[0]}> has been placed at {placement_name} ({my_player_mmr} MMR)')
 
+                # if is_sub: # Subs only gain on winning team
+                #     if team[len(team)-1] < 0:
+                #         my_player_mmr_change = 0
+                #     else:
+                #         my_player_mmr_change = team[len(team)-1]
+                # else:
+                #     my_player_mmr_change = team[len(team)-1]
+                
+                my_player_mmr_change = team[len(team)-1]
+                my_player_new_mmr = (my_player_mmr + my_player_mmr_change)
+
                 # Start creating string for MMR table
                 mmr_table_string += f'{string_my_player_place.center(6)}|'
                 mmr_table_string +=f'{my_player_name.center(18)}|'
