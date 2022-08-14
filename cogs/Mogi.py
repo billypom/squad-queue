@@ -1072,6 +1072,8 @@ class Mogi(commands.Cog):
             shutil.copyfileobj(response.raw, out_file)
         del response
 
+        def check(m):
+            return m.author.id = ctx.author.id and m.channel.id = ctx.channel.id
         # Ask for table confirmation
         # table_view = Confirm(ctx.author.id)
         channel = self.bot.get_channel(ctx.channel.id)
@@ -1338,9 +1340,7 @@ class Mogi(commands.Cog):
             # https://gist.github.com/kkrypt0nn/a02506f3712ff2d1c8ca7c9e0aed7c06
             # https://rebane2001.com/discord-colored-text-generator/ 
             await self.queue_or_send(ctx, '`Table Accepted.`', delete_after=300)
-    
-    async def check(self, m):
-        return m.author.id = ctx.author.id and m.channel.id = ctx.channel.id
+
 
     async def check_if_banned_characters(self, message):
         for value in secretly.BANNED_CHARACTERS:
