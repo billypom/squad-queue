@@ -1077,7 +1077,7 @@ class Mogi(commands.Cog):
         channel = self.bot.get_channel(ctx.channel.id)
         await channel.send(file=discord.File(f'/home/sq/squad_queue_v2/images/{hex(ctx.author.id)}table.png'), delete_after=300)
 
-        await channel.send('Is this table correct? :thinking:', view=table_view, delete_after=300)
+        await channel.send('Is this table correct? :thinking: (Type `yes` or `no`)', delete_after=300)
 
         # def check(m):
             # return m.author.id = ctx.author.id and m.channel.id = ctx.channel.id
