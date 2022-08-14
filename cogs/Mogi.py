@@ -1165,12 +1165,11 @@ class Mogi(commands.Cog):
                 if idx > (mogi_format-1):
                     break
                 with DBA.DBAccess() as db:
-                    temp = db.query('SELECT p.player_name, p.mmr, p.peak_mmr, p.rank_id, l.is_sub FROM player p JOIN lineups l ON p.player_id = l.player_id WHERE p.player_id = %s;', (player[0],))
+                    temp = db.query('SELECT player_name, mmr, peak_mmr, rank_id FROM player WHERE player_id = %s;', (player[0],))
                     my_player_name = temp[0][0]
                     my_player_mmr = temp[0][1]
                     my_player_peak = temp[0][2]
                     my_player_rank_id = temp[0][3]
-                    is_sub = temp[0][4]
                     if my_player_peak is None:
                         # print('its none...')
                         my_player_peak = 0
@@ -1198,15 +1197,6 @@ class Mogi(commands.Cog):
                 #         init_rank = temp[0][0]
                 #         db.execute('UPDATE player SET base_mmr = %s, rank_id = %s WHERE player_id = %s;', (my_player_mmr, init_rank, player[0]))
                 #     await channel.send(f'<@{player[0]}> has been placed at {placement_name} ({my_player_mmr} MMR)')
-
-                if is_sub: # Subs only gain on winning team
-                    if team[len(team)-1] < 0:
-                        my_player_mmr_change = 0
-                    else:
-                        my_player_mmr_change = team[len(team)-1]
-                else:
-                    my_player_mmr_change = team[len(team)-1]
-                my_player_new_mmr = (my_player_mmr + my_player_mmr_change)
 
                 # Start creating string for MMR table
                 mmr_table_string += f'{string_my_player_place.center(6)}|'
