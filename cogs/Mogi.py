@@ -941,7 +941,7 @@ class Mogi(commands.Cog):
         
         
         # Check for duplicate players
-        has_dupes = await check_for_dupes_in_list(player_list_check)
+        has_dupes = await self.check_for_dupes_in_list(player_list_check)
         if has_dupes:
             await ctx.send('``Error 37:`` You cannot have duplicate players on a table')
             return
@@ -1343,6 +1343,11 @@ class Mogi(commands.Cog):
             if value in message:
                 return True
         return False
+    async def check_for_dupes_in_list(self, my_list):
+        if len(my_list) == len(set(my_list)):
+            return False
+        else:
+            return True
 
     async def send_to_debug_channel(self, ctx, error):
         channel = self.bot.get_channel(secretly.debug_channel)
