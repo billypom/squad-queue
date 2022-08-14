@@ -1364,21 +1364,21 @@ class Mogi(commands.Cog):
         # print(f'mmr: {mmr}')
         if input:
             if mmr < 1500:
-                return await iron_wrapper(input)
+                return await self.iron_wrapper(input)
             elif mmr >= 1500 and mmr < 3000:
-                return await bronze_wrapper(input)
+                return await self.bronze_wrapper(input)
             elif mmr >= 3000 and mmr < 4500:
-                return await silver_wrapper(input)
+                return await self.silver_wrapper(input)
             elif mmr >= 4500 and mmr < 6000:
-                return await gold_wrapper(input)
+                return await self.gold_wrapper(input)
             elif mmr >= 6000 and mmr < 7500:
-                return await platinum_wrapper(input)
+                return await self.platinum_wrapper(input)
             elif mmr >= 7500 and mmr < 9000:
-                return await diamond_wrapper(input)
+                return await self.diamond_wrapper(input)
             elif mmr >= 9000 and mmr < 11000:
-                return await master_wrapper(input)
+                return await self.master_wrapper(input)
             elif mmr >= 11000:
-                return await grandmaster_wrapper(input)
+                return await self.grandmaster_wrapper(input)
             else:
                 return input
         else:
