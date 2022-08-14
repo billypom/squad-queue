@@ -1067,14 +1067,28 @@ class Mogi(commands.Cog):
         del response
 
         # Ask for table confirmation
-        table_view = Confirm(ctx.author.id)
+        # table_view = Confirm(ctx.author.id)
         channel = self.bot.get_channel(ctx.channel.id)
         await channel.send(file=discord.File(f'/home/sq/squad_queue_v2/images/{hex(ctx.author.id)}table.png'), delete_after=300)
+
         await channel.send('Is this table correct? :thinking:', view=table_view, delete_after=300)
-        await table_view.wait()
-        if table_view.value is None:
+
+        def check(m):
+            return m.author.id = ctx.author.id and m.channel.id = ctx.channel.id
+        
+
+        try:
+            lorenzi_response = await self.bot.wait_for('message', check=check, timeout=60)
+        except asyncio.TimeoutError:
             await ctx.send('No response from reporter. Timed out')
-        elif table_view.value: # yes
+        
+        if lorenzi_response.content.low() not in ['yes', 'y']:
+            await ctx.send('Table denied. Try again.')
+            return
+        
+        # if table_view.value is None:
+            # await ctx.send('No response from reporter. Timed out')
+        else table_view.value: # yes
             db_mogi_id = 0
             # Create mogi
             with DBA.DBAccess() as db:
@@ -1404,35 +1418,7 @@ class Mogi(commands.Cog):
     async def peak_mmr_wrapper(self, input):
         # return (f'[0;2m[0;41m[0;37m{input}[0m[0;41m[0m[0m')
         return (f'<span foreground="Yellow1"><i>{input}</i></span>')
-
-
-class Confirm(View):
-    def __init__(self, uid):
-        super().__init__()
-        self.value = None
-        self.uid = uid
-
-    # When the confirm button is pressed, set the inner value to `True` and
-    # stop the View from listening to more input.
-    # We also send the user an ephemeral message that we're confirming their choice.
-    @discord.ui.button(label="Yes", style=discord.ButtonStyle.green)
-    async def confirm(self, button: discord.ui.Button, interaction: discord.Interaction):
-        # Only accept input from user who initiated the interaction
-        if self.uid != interaction.user.id:
-            return
-        await interaction.response.send_message("Confirming...", ephemeral=True)
-        self.value = True
-        self.stop()
-
-    # This one is similar to the confirmation button except sets the inner value to `False`
-    @discord.ui.button(label="No", style=discord.ButtonStyle.red)
-    async def cancel(self, button: discord.ui.Button, interaction: discord.Interaction):
-        # Only accept input from user who initiated the interaction
-        if self.uid != interaction.user.id:
-            return
-        await interaction.response.send_message("Denying...", ephemeral=True)
-        self.value = False
-        self.stop()            
+          
 
 def setup(bot):
     bot.add_cog(Mogi(bot))
