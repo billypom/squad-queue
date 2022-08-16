@@ -852,7 +852,7 @@ class Mogi(commands.Cog):
             
             self.scheduled_events.append(event)
             self.scheduled_events.sort(key=lambda data:data.time)
-            await guild.create_scheduled_event(name=f'SQ:{size}v{size}', start_time=actual_time, location=897862324831023104)
+            await guild.create_scheduled_event(name=f'SQ:{size}v{size}', start_time=actual_time, location="#sq-join")
             #await ctx.send(f"popuko actual time: {gabagoo} | popuko adjustment {TIME_ADJUSTMENT} | popu post adjust {actual_time} || Scheduled {Mogi.get_event_str(event)}")
             await ctx.send(f"Scheduled {Mogi.get_event_str(event)}")
         except (ValueError, OverflowError):
