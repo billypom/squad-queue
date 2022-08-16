@@ -20,6 +20,7 @@ with open('./config.json', 'r') as cjson:
 
 CHECKMARK_ADDITION = "-\U00002713"
 CHECKMARK_ADDITION_LEN = 2
+Lounge = [532700414978687016]
 time_print_formatting = "%B %d, %Y at %I:%M%p EDT"
 #There are two timezones: the timezone your staff schedules events in, and your server's timezone
 #Set this to the number of hours ahead (or behind) your staff's timezone is from your server's timezone
@@ -843,6 +844,7 @@ class Mogi(commands.Cog):
             gabagoo = parse(schedule_time)
             actual_time = actual_time - TIME_ADJUSTMENT
             mogi_channel = self.get_mogi_channel()
+            guild = self.bot.get_guild(Lounge[0])
             if mogi_channel == None:
                 await ctx.send("I can't see the mogi channel, so I can't schedule this event.")
                 return
@@ -850,7 +852,7 @@ class Mogi(commands.Cog):
             
             self.scheduled_events.append(event)
             self.scheduled_events.sort(key=lambda data:data.time)
-            await self.bot.create_scheduled_event(name=f'SQ:{size}v{size}', start_time=actual_time, location=mogi_channel)
+            await guild.create_scheduled_event(name=f'SQ:{size}v{size}', start_time=actual_time, location=mogi_channel)
             #await ctx.send(f"popuko actual time: {gabagoo} | popuko adjustment {TIME_ADJUSTMENT} | popu post adjust {actual_time} || Scheduled {Mogi.get_event_str(event)}")
             await ctx.send(f"Scheduled {Mogi.get_event_str(event)}")
         except (ValueError, OverflowError):
