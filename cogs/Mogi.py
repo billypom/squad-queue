@@ -828,32 +828,34 @@ class Mogi(commands.Cog):
         return True 
                    
                                       
-    # @commands.command()
-    # @commands.guild_only()
-    # async def schedule(self, ctx, size: int, *, schedule_time:str):
-    #     """Schedules a room in the future so that the staff doesn't have to be online to open the mogi and make the rooms"""
+    @commands.command()
+    @commands.guild_only()
+    async def schedule(self, ctx, size: int, *, schedule_time:str):
+        """Schedules a room in the future so that the staff doesn't have to be online to open the mogi and make the rooms"""
         
-    #     await Mogi.hasroles(self, ctx)
+        await Mogi.hasroles(self, ctx)
         
-    #     if not await Mogi.start_input_validation(ctx, size):
-    #         return False
+        if not await Mogi.start_input_validation(ctx, size):
+            return False
               
-    #     try:
-    #         actual_time = parse(schedule_time)
-    #         gabagoo = parse(schedule_time)
-    #         actual_time = actual_time - TIME_ADJUSTMENT
-    #         mogi_channel = self.get_mogi_channel()
-    #         if mogi_channel == None:
-    #             await ctx.send("I can't see the mogi channel, so I can't schedule this event.")
-    #             return
-    #         event = Scheduled_Event(size, actual_time, False, mogi_channel)
+        try:
+            actual_time = parse(schedule_time)
+            gabagoo = parse(schedule_time)
+            actual_time = actual_time - TIME_ADJUSTMENT
+            mogi_channel = self.get_mogi_channel()
+            if mogi_channel == None:
+                await ctx.send("I can't see the mogi channel, so I can't schedule this event.")
+                return
+            event = Scheduled_Event(size, actual_time, False, mogi_channel)
             
-    #         self.scheduled_events.append(event)
-    #         self.scheduled_events.sort(key=lambda data:data.time)
-    #         #await ctx.send(f"popuko actual time: {gabagoo} | popuko adjustment {TIME_ADJUSTMENT} | popu post adjust {actual_time} || Scheduled {Mogi.get_event_str(event)}")
-    #         await ctx.send(f"Scheduled {Mogi.get_event_str(event)}")
-    #     except (ValueError, OverflowError):
-    #         await ctx.send("I couldn't figure out the date and time for your event. Try making it a bit more clear for me.")
+            self.scheduled_events.append(event)
+            self.scheduled_events.sort(key=lambda data:data.time)
+            await create_scheduled_event(name=f'SQ:{size}v{size}',
+            description='Squad queue!', start_time=actual_time)
+            await ctx.send(f"popuko actual time: {gabagoo} | popuko adjustment {TIME_ADJUSTMENT} | popu post adjust {actual_time} || Scheduled {Mogi.get_event_str(event)}")
+            await ctx.send(f"Scheduled {Mogi.get_event_str(event)}")
+        except (ValueError, OverflowError):
+            await ctx.send("I couldn't figure out the date and time for your event. Try making it a bit more clear for me.")
     
 
 
@@ -889,7 +891,7 @@ class Mogi(commands.Cog):
         return corrected_time
 
     @app_commands.command(name="get_time_discord")
-    @app_commands.guilds(242403504839327744)
+    #@app_commands.guilds(445404006177570829)
     async def get_time_command(self, interaction:discord.Interaction,
                     schedule_time:str, timezone:str):
         """Get the Discord timestamp string for a time"""
@@ -906,7 +908,7 @@ class Mogi(commands.Cog):
             Choice(name="4v4", value=4),
             Choice(name="6v6", value=6)
             ])
-    @app_commands.guilds(242403504839327744)
+    #@app_commands.guilds(445404006177570829)
     async def schedule_event(self, interaction:discord.Interaction,
                        size:Choice[int], sq_id: int,
                              channel:discord.TextChannel,
