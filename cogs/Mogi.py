@@ -854,7 +854,7 @@ class Mogi(commands.Cog):
             self.scheduled_events.append(event)
             self.scheduled_events.sort(key=lambda data:data.time)
             try:
-                await guild.create_scheduled_event(name=f'SQ:{size}v{size}', start_time=queue_time, end_time=actual_time, location="#sq-join")
+                await guild.create_scheduled_event(name=f'SQ:{size}v{size} Gathering', start_time=queue_time, end_time=actual_time, location="#sq-join")
             except Exception:
                 await ctx.send('Cannot schedule event in the past')
                 return
@@ -915,6 +915,7 @@ class Mogi(commands.Cog):
     @commands.max_concurrency(number=1, wait=True)
     async def table(self, ctx, mogi_format: int, *scores):
         # print('Im table')
+        # TODO: change this in production
         SQ_TIER_ID = 897862324831023104
 
         # Create list
@@ -1003,7 +1004,7 @@ class Mogi(commands.Cog):
                 try:
                     with DBA.DBAccess() as db:
                         # This part makes sure that only players in the current channel's lineup can have a table made for them
-                        # removed lineups JOIN from this statement because sq weird...
+                        # WRONG. I removed lineups JOIN from this statement because sq xd.
                         temp = db.query('SELECT mmr FROM player WHERE player_id = %s;', (player[0],))
                         if temp[0][0] is None:
                             mmr = 0
