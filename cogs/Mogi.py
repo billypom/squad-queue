@@ -889,7 +889,7 @@ class Mogi(commands.Cog):
         return corrected_time
 
     @app_commands.command(name="get_time_discord")
-    #@app_commands.guilds(445404006177570829)
+    @app_commands.guilds(242403504839327744)
     async def get_time_command(self, interaction:discord.Interaction,
                     schedule_time:str, timezone:str):
         """Get the Discord timestamp string for a time"""
@@ -906,7 +906,7 @@ class Mogi(commands.Cog):
             Choice(name="4v4", value=4),
             Choice(name="6v6", value=6)
             ])
-    #@app_commands.guilds(445404006177570829)
+    @app_commands.guilds(242403504839327744)
     async def schedule_event(self, interaction:discord.Interaction,
                        size:Choice[int], sq_id: int,
                              channel:discord.TextChannel,
