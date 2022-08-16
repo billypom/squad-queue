@@ -843,6 +843,9 @@ class Mogi(commands.Cog):
             actual_time = parse(schedule_time)
             gabagoo = parse(schedule_time)
             actual_time = actual_time - TIME_ADJUSTMENT
+            print('aaaaaaaaaaaaa')
+            print(type(actual_time))
+            print(actual_time)
             mogi_channel = self.get_mogi_channel()
             guild = self.bot.get_guild(Lounge[0])
             if mogi_channel == None:
