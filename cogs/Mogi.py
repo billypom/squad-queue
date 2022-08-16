@@ -828,32 +828,229 @@ class Mogi(commands.Cog):
         return True 
                    
                                       
-    @commands.command()
-    @commands.guild_only()
-    async def schedule(self, ctx, size: int, *, schedule_time:str):
-        """Schedules a room in the future so that the staff doesn't have to be online to open the mogi and make the rooms"""
+    # @commands.command()
+    # @commands.guild_only()
+    # async def schedule(self, ctx, size: int, *, schedule_time:str):
+    #     """Schedules a room in the future so that the staff doesn't have to be online to open the mogi and make the rooms"""
         
-        await Mogi.hasroles(self, ctx)
+    #     await Mogi.hasroles(self, ctx)
         
-        if not await Mogi.start_input_validation(ctx, size):
-            return False
+    #     if not await Mogi.start_input_validation(ctx, size):
+    #         return False
               
+    #     try:
+    #         actual_time = parse(schedule_time)
+    #         gabagoo = parse(schedule_time)
+    #         actual_time = actual_time - TIME_ADJUSTMENT
+    #         mogi_channel = self.get_mogi_channel()
+    #         if mogi_channel == None:
+    #             await ctx.send("I can't see the mogi channel, so I can't schedule this event.")
+    #             return
+    #         event = Scheduled_Event(size, actual_time, False, mogi_channel)
+            
+    #         self.scheduled_events.append(event)
+    #         self.scheduled_events.sort(key=lambda data:data.time)
+    #         #await ctx.send(f"popuko actual time: {gabagoo} | popuko adjustment {TIME_ADJUSTMENT} | popu post adjust {actual_time} || Scheduled {Mogi.get_event_str(event)}")
+    #         await ctx.send(f"Scheduled {Mogi.get_event_str(event)}")
+    #     except (ValueError, OverflowError):
+    #         await ctx.send("I couldn't figure out the date and time for your event. Try making it a bit more clear for me.")
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    def getTime(self, schedule_time:str, timezone:str):
+        """Returns a DateTime object representing the UTC equivalent of the given time."""
+        if schedule_time.isnumeric():
+            schedule_time += ":00"
+        utc_offset = time.altzone if time.localtime().tm_isdst > 0 else time.timezone
+        time_adjustment = timedelta(seconds=utc_offset)
+        timezone_adjustment = timedelta(hours=0)
+        if timezone.upper() in self.timezones.keys():
+            timezone_adjustment = timedelta(hours=self.timezones[timezone.upper()])
         try:
             actual_time = parse(schedule_time)
-            gabagoo = parse(schedule_time)
-            actual_time = actual_time - TIME_ADJUSTMENT
-            mogi_channel = self.get_mogi_channel()
-            if mogi_channel == None:
-                await ctx.send("I can't see the mogi channel, so I can't schedule this event.")
+        except Exception as e:
+            return None
+        corrected_time = actual_time - time_adjustment - timezone_adjustment
+        return corrected_time
+
+    @app_commands.command(name="get_time_discord")
+    #@app_commands.guilds(445404006177570829)
+    async def get_time_command(self, interaction:discord.Interaction,
+                    schedule_time:str, timezone:str):
+        """Get the Discord timestamp string for a time"""
+        actual_time = self.getTime(schedule_time, timezone)
+        event_str = discord.utils.format_dt(actual_time, style="F")
+        await interaction.response.send_message(f"`{event_str}`", ephemeral=True)
+
+    @app_commands.command(name="schedule_event")
+    @app_commands.choices(
+        size=[
+            Choice(name="FFA", value=1),
+            Choice(name="2v2", value=2),
+            Choice(name="3v3", value=3),
+            Choice(name="4v4", value=4),
+            Choice(name="6v6", value=6)
+            ])
+    #@app_commands.guilds(445404006177570829)
+    async def schedule_event(self, interaction:discord.Interaction,
+                       size:Choice[int], sq_id: int,
+                             channel:discord.TextChannel,
+                       schedule_time:str, timezone:str):
+        """Schedules an SQ event in the given channel at the given time."""
+        if not await self.has_roles(interaction.user, interaction.guild_id, self.bot.config):
+            await interaction.response.send_message("You do not have permissions to use this command",ephemeral=True)
+            return
+        actual_time = self.getTime(schedule_time, timezone)
+        if actual_time is None:
+            await interaction.response.send_message(f"I couldn't understand your time, so I couldn't schedule the event.",
+            ephemeral=True)
+            return
+        if actual_time < datetime.now():
+            bad_time = discord.utils.format_dt(actual_time, style="F")
+            await interaction.response.send_message(f"That time is in the past! ({bad_time})"
+            "Make sure your timezone is correct (with daylight savings taken into account, "
+            "ex. EDT instead of EST if it's summer), and that you've entered the date if it's not today")
+            return
+        
+        event_start_time = actual_time.astimezone() - self.QUEUE_OPEN_TIME
+        event_end_time = event_start_time + self.JOINING_TIME
+        if event_end_time < discord.utils.utcnow():
+            bad_time = discord.utils.format_dt(event_end_time, style="F")
+            await interaction.response.send_message("The queue for this event would end in the past! "
+            f"({bad_time}) "
+            "Make sure your timezone is correct (with daylight savings taken into account, "
+            "ex. EDT instead of EST if it's summer), and that you've entered the date if it's not today")
+            return
+        if event_start_time < discord.utils.utcnow():
+            #have to add 1 minute here, because utcnow() will technically be the past when the API request is sent
+            event_start_time = discord.utils.utcnow() + timedelta(minutes=1)
+        discord_event = await interaction.guild.create_scheduled_event(name=f"SQ #{sq_id}: {size.name} gathering players",
+                                                       start_time = event_start_time,
+                                                       end_time = event_end_time,
+                                                       entity_type = discord.EntityType.external,
+                                                       location=channel.mention)
+        mogi = Mogi(sq_id, size.value, channel, is_automated=True, start_time=actual_time, discord_event=discord_event)
+        if interaction.guild not in self.scheduled_events.keys():
+            self.scheduled_events[interaction.guild] = []
+        self.scheduled_events[interaction.guild].append(mogi)
+        event_str = self.get_event_str(mogi)
+        await interaction.response.send_message(f"Scheduled the following event:\n{event_str}")
+
+    def get_event_str(self, mogi):
+        mogi_time = discord.utils.format_dt(mogi.start_time, style="F")
+        return(f"`#{mogi.sq_id}` **{mogi.size}v{mogi.size}:** {mogi_time}")
+
+    @app_commands.command(name="remove_event")
+    #@app_commands.guilds(445404006177570829)
+    async def remove_event(self, interaction:discord.Interaction, event_id:int, channel:discord.TextChannel):
+        """Removes an event from the schedule"""
+        if not await self.has_roles(interaction.user, interaction.guild_id, self.bot.config):
+            await interaction.response.send_message("You do not have permissions to use this command",ephemeral=True)
+            return
+        if interaction.guild not in self.scheduled_events.keys():
+            await interaction.response.send_message("This event number isn't in the schedule. Do `!view_schedule` to see the scheduled events.",
+                                                    ephemeral=True)
+            return
+        for event in self.scheduled_events[interaction.guild]:
+            if event.sq_id == event_id and event.mogi_channel == channel:
+                self.scheduled_events[interaction.guild].remove(event)
+                #await event.discord_event.cancel()
+                await event.discord_event.edit(status=discord.EventStatus.cancelled, end_time=event.discord_event.end_time, location=event.discord_event.location)
+                await interaction.response.send_message(f"Removed the following event:\n{self.get_event_str(event)}")
                 return
-            event = Scheduled_Event(size, actual_time, False, mogi_channel)
-            
-            self.scheduled_events.append(event)
-            self.scheduled_events.sort(key=lambda data:data.time)
-            #await ctx.send(f"popuko actual time: {gabagoo} | popuko adjustment {TIME_ADJUSTMENT} | popu post adjust {actual_time} || Scheduled {Mogi.get_event_str(event)}")
-            await ctx.send(f"Scheduled {Mogi.get_event_str(event)}")
-        except (ValueError, OverflowError):
-            await ctx.send("I couldn't figure out the date and time for your event. Try making it a bit more clear for me.")
+        await interaction.response.send_message("This event number isn't in the schedule. Do `!view_schedule` to see the scheduled events.")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     @commands.command(aliases=['pt'])
     async def parsetime(self, ctx, *, schedule_time:str):
