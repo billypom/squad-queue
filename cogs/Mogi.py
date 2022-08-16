@@ -853,7 +853,11 @@ class Mogi(commands.Cog):
             
             self.scheduled_events.append(event)
             self.scheduled_events.sort(key=lambda data:data.time)
-            await guild.create_scheduled_event(name=f'SQ:{size}v{size}', start_time=queue_time, end_time=actual_time, location="#sq-join")
+            try:
+                await guild.create_scheduled_event(name=f'SQ:{size}v{size}', start_time=queue_time, end_time=actual_time, location="#sq-join")
+            except Exception:
+                await ctx.send('Cannot schedule event in the past')
+                return
             #await ctx.send(f"popuko actual time: {gabagoo} | popuko adjustment {TIME_ADJUSTMENT} | popu post adjust {actual_time} || Scheduled {Mogi.get_event_str(event)}")
             await ctx.send(f"Scheduled {Mogi.get_event_str(event)}")
         except (ValueError, OverflowError):
