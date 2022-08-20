@@ -916,7 +916,7 @@ class Mogi(commands.Cog):
     async def table(self, ctx, mogi_format: int, *scores):
         # print('Im table')
         # TODO: change this in production
-        SQ_TIER_ID = 897862324831023104
+        SQ_TIER_ID = 965286774098260029
 
         # Create list
         score_list = list(scores)
@@ -1049,6 +1049,7 @@ class Mogi(commands.Cog):
         prev_team_score = 0
         prev_team_placement = 1
         team_placement = 0
+        count_teams = 1
         for team in sorted_list:
             # If team score = prev team score, use prev team placement, else increase placement and use placement
             # print('if team score == prev team score')
@@ -1056,7 +1057,8 @@ class Mogi(commands.Cog):
             if team[len(team)-2] == prev_team_score:
                 team_placement = prev_team_placement
             else:
-                team_placement+=1
+                team_placement = count_teams
+            count_teams += 1
             team.append(team_placement)
             if mogi_format != 1:
                 lorenzi_query += f'{team_placement} #AAC8F4 \n'
@@ -1113,6 +1115,7 @@ class Mogi(commands.Cog):
             temp = db.query('SELECT results_id, tier_name FROM tier WHERE tier_id = %s;', (SQ_TIER_ID,))
             db_results_channel = temp[0][0]
             tier_name = temp[0][1]
+        results_channel = client.get_channel(db_results_channel)
 
         # Pre MMR table calculate
         value_table = list()
@@ -1279,6 +1282,7 @@ class Mogi(commands.Cog):
                             member = await guild.fetch_member(player[0])
                             await member.remove_roles(current_role)
                             await member.add_roles(new_role)
+                            await results_channel.send(f'{my_player_name} has been promoted to {new_role}')
                             with DBA.DBAccess() as db:
                                 db.execute('UPDATE player SET rank_id = %s WHERE player_id = %s;', (rank_id, player[0]))
                             my_player_new_rank += f'+ {new_role}'
@@ -1290,6 +1294,7 @@ class Mogi(commands.Cog):
                             member = await guild.fetch_member(player[0])
                             await member.remove_roles(current_role)
                             await member.add_roles(new_role)
+                            await results_channel.send(f'{my_player_name} has been demoted to {new_role}')
                             with DBA.DBAccess() as db:
                                 db.execute('UPDATE player SET rank_id = %s WHERE player_id = %s;', (rank_id, player[0]))
                             my_player_new_rank += f'- {new_role}'
