@@ -923,7 +923,6 @@ class Mogi(commands.Cog):
 
         # Create list
         score_list = list(scores)
-        print(score_list)
 
         bad = await self.check_if_banned_characters(score_list)
         if bad:
@@ -949,7 +948,6 @@ class Mogi(commands.Cog):
         for i in range(0, len(score_list), 2):
             with DBA.DBAccess() as db:
                 temp = db.query('SELECT player_id FROM player WHERE player_name = %s;', (score_list[i],))
-                print(f'{i} | {score_list[i]} | {temp[0][0]}')
                 player_list_check.append(score_list[i])
                 score_list[i] = temp[0][0]
 
