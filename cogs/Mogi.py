@@ -1121,7 +1121,7 @@ class Mogi(commands.Cog):
             temp = db.query('SELECT results_id, tier_name FROM tier WHERE tier_id = %s;', (SQ_TIER_ID,))
             db_results_channel = temp[0][0]
             tier_name = temp[0][1]
-        results_channel = client.get_channel(db_results_channel)
+        results_channel = self.bot.get_channel(db_results_channel)
 
         # Pre MMR table calculate
         value_table = list()
