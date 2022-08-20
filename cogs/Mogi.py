@@ -753,7 +753,7 @@ class Mogi(commands.Cog):
                     scoreboard += ","
             
             roomMsg += "%s`\n" % scoreboard
-            roomMsg += ("\nDecide a host amongst yourselves; room open at :%02d, penalty at :%02d, start by :%02d. Good luck!\n\n"
+            roomMsg += ("\nDecide a host amongst yourselves; room open at :%02d, penalty at :%02d, start by :%02d. \nUse !table to submit to the results channel\nGood luck!\n\n"
                         % (openTime, penTime, startTime))
             roomMsg += mentions
             try:
