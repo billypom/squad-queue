@@ -922,7 +922,7 @@ class Mogi(commands.Cog):
         SQ_TIER_ID = 965286774098260029
 
         # Create list
-        score_list = list(scores)
+        score_list = str(scores).split()
 
         bad = await self.check_if_banned_characters(score_list)
         if bad:
