@@ -6,7 +6,7 @@ import logging
 logging.basicConfig(level=logging.INFO)
 
 intents = discord.Intents(message_content=True, messages=True, members=True, guilds=True)
-bot = commands.Bot(intents=intents, activity=discord.Game(str('hg')), command_prefix='!', case_insensitive=True)
+bot = commands.Bot(intents=intents, activity=discord.Game(str('Squad Queue')), command_prefix='!', case_insensitive=True)
 
 initial_extensions = ['cogs.Mogi', 'cogs.Sheet']
 
