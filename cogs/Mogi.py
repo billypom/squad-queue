@@ -20,7 +20,7 @@ with open('./config.json', 'r') as cjson:
 
 CHECKMARK_ADDITION = "-\U00002713"
 CHECKMARK_ADDITION_LEN = 2
-Lounge = [532700414978687016]
+Lounge = [461383953937596416]
 time_print_formatting = "%B %d, %Y at %I:%M%p EDT"
 #There are two timezones: the timezone your staff schedules events in, and your server's timezone
 #Set this to the number of hours ahead (or behind) your staff's timezone is from your server's timezone
