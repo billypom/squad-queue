@@ -855,7 +855,8 @@ class Mogi(commands.Cog):
             self.scheduled_events.sort(key=lambda data:data.time)
             try:
                 await guild.create_scheduled_event(name=f'SQ:{size}v{size} Gathering', start_time=queue_time, end_time=actual_time, location="#sq-join")
-            except Exception:
+            except Exception as e:
+                print(e)
                 await ctx.send('Cannot schedule event in the past')
                 return
             #await ctx.send(f"popuko actual time: {gabagoo} | popuko adjustment {TIME_ADJUSTMENT} | popu post adjust {actual_time} || Scheduled {Mogi.get_event_str(event)}")
