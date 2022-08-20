@@ -844,6 +844,8 @@ class Mogi(commands.Cog):
             gabagoo = parse(schedule_time)
             actual_time = actual_time - TIME_ADJUSTMENT
             queue_time = actual_time - QUEUE_OPEN_TIME
+            print(f'actual time: {type(actual_time)} | {actual_time}')
+            print(f'queue time: {type(queue_time)} | {queue_time}')
             mogi_channel = self.get_mogi_channel()
             guild = self.bot.get_guild(Lounge[0])
             if mogi_channel == None:
