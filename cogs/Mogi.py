@@ -947,6 +947,7 @@ class Mogi(commands.Cog):
         #print(f'score list: {score_list}')
         player_list_check = []
         for i in range(0, len(score_list), 2):
+            print(f'{i} | {score_list[i]} | {temp[0][0]}')
             with DBA.DBAccess() as db:
                 temp = db.query('SELECT player_id FROM player WHERE player_name = %s;', (score_list[i],))
                 player_list_check.append(score_list[i])
