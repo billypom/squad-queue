@@ -13,11 +13,11 @@ ________________________________________________
 
 `!list` | list 
 
-`!finish` | Finishes the room by adding a checkmark to the channel. Anyone in the room can call this command
-
 `!squad` | Info about your squad
 
-`!view_schedule` | Displays the schedule
+`!table`-`format`-`players & scores` | This table command can only be sent from a squad queue channel. It works the same way as the /table command from 200-Lounge bot. (i.e. !table 2 Brandon 12 Ty 180 Francis 77 etc...) 
+
+`!finish` | Finishes the room by adding a checkmark to the channel. Anyone in the room can call this command
 
 # Admin Commands
 
@@ -40,6 +40,8 @@ ________________________________________________
 `!sortTeams` | Backup command if !makerooms doesn't work; doesn't make channels, just sorts teams in MMR order
 
 `!schedule` [int] size [str] time | Schedule an event in the future, so staff doesn't have to be online to open mogi & make rooms.
+
+`!view_schedule` | Displays the schedule
 
 `!pt` [str] time | Returns a unix timestamp, wrapped with discord's formatting. Use this string in the #sq-info channel to display scheduled squad queue events in a user's local timezone 
 
