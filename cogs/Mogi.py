@@ -1066,9 +1066,9 @@ class Mogi(commands.Cog):
             team.append(team_placement)
             if mogi_format != 1:
                 if count_teams % 2 = 0:
-                lorenzi_query += f'{team_placement} #F289BA \n'
-            else:
-                lorenzi_query += f'{team_placement} #DE7081 \n'
+                    lorenzi_query += f'{team_placement} #F289BA \n'
+                else:
+                    lorenzi_query += f'{team_placement} #DE7081 \n'
             for idx, player in enumerate(team):
                 if idx > (mogi_format-1):
                     continue
