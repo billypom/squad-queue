@@ -743,7 +743,7 @@ class Mogi(commands.Cog):
                     overwrites[player] = discord.PermissionOverwrite(read_messages=True)
             roomMsg = msg
             mentions = ""
-            scoreboard = "Table: `!scoreboard %d " % (12/self.size)
+            scoreboard = "Table: `!table %d 0 " % (12/self.size)
             for j in range(int(12/self.size)):
                 index = int(i * 12/self.size + j)
                 mentions += " ".join([player.mention for player in sortedTeams[index].keys()])
@@ -753,7 +753,7 @@ class Mogi(commands.Cog):
                     scoreboard += ","
             
             roomMsg += "%s`\n" % scoreboard
-            roomMsg += ("\nDecide a host amongst yourselves; room open at :%02d, penalty at :%02d, start by :%02d. \nUse !table to submit to the results channel\nGood luck!\n\n"
+            roomMsg += ("\nDecide a host amongst yourselves; room open at :%02d, penalty at :%02d, start by :%02d. \n\nGood luck!\n\n"
                         % (openTime, penTime, startTime))
             roomMsg += mentions
             try:
@@ -1065,7 +1065,10 @@ class Mogi(commands.Cog):
             count_teams += 1
             team.append(team_placement)
             if mogi_format != 1:
-                lorenzi_query += f'{team_placement} #AAC8F4 \n'
+                if count_teams % 2 = 0:
+                lorenzi_query += f'{team_placement} #F289BA \n'
+            else:
+                lorenzi_query += f'{team_placement} #DE7081 \n'
             for idx, player in enumerate(team):
                 if idx > (mogi_format-1):
                     continue
