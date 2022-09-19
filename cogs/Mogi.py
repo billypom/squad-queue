@@ -915,8 +915,15 @@ class Mogi(commands.Cog):
 
     @commands.command()
     @commands.guild_only()
+    @commands.bot_has_guild_permissions(manage_channels=True)
     @commands.max_concurrency(number=1, wait=True)
     async def table(self, ctx, mogi_format: int, *scores):
+        current_channel = ctx.channel
+        if current_channel in self.channels:
+            pass
+        else:
+            await self.queue_or_send(ctx, f'You cannot use this command in this channel')
+            return
         # print('Im table')
         # TODO: change this in production
         SQ_TIER_ID = 965286774098260029
