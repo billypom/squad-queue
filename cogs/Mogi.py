@@ -928,7 +928,7 @@ class Mogi(commands.Cog):
         bad = await self.check_if_banned_characters(score_list)
         if bad:
             # await self.queue_or_send(ctx, f'Invalid input. There must be 12 players and 12 scores.')
-            await current_channel.send(ctx, f'Invalid input. There must be 12 players and 12 scores.')
+            await current_channel.send(f'Invalid input. There must be 12 players and 12 scores.')
             return
 
         # score_string = str(scores) #.translate(remove_chars)
@@ -940,7 +940,7 @@ class Mogi(commands.Cog):
         if len(score_list) == 24:
             pass
         else:
-            await current_channel.send(ctx, f'Invalid input. There must be 12 players and 12 scores.')
+            await current_channel.send(f'Invalid input. There must be 12 players and 12 scores.')
             return
         
         # Replace playernames with playerids
@@ -959,7 +959,7 @@ class Mogi(commands.Cog):
         # Check for duplicate players
         has_dupes = await self.check_for_dupes_in_list(player_list_check)
         if has_dupes:
-            await current_channel.send(ctx, '``Error 37:`` You cannot have duplicate players on a table')
+            await current_channel.send('``Error 37:`` You cannot have duplicate players on a table')
             return
 
         # Check the mogi_format
@@ -984,7 +984,7 @@ class Mogi(commands.Cog):
             OTHER_SPECIAL_INT = 99
             MULTIPLIER_SPECIAL = 3.5
         else:
-            await current_channel.send(ctx, f'``Error 27:`` Invalid format: {mogi_format}. Please use 1, 2, 3, 4, or 6.')
+            await current_channel.send(f'``Error 27:`` Invalid format: {mogi_format}. Please use 1, 2, 3, 4, or 6.')
             return
 
         # Initialize a list so we can group players and scores together
@@ -1026,7 +1026,7 @@ class Mogi(commands.Cog):
                 except Exception as e:
                     # check for all 12 players exist
                     await self.send_to_debug_channel(ctx, e)
-                    await current_channel.send(ctx, f'``Error 24:`` There was an error with the following player: <@{player[0]}>')
+                    await current_channel.send(f'``Error 24:`` There was an error with the following player: <@{player[0]}>')
                     return
             # print(team_score)
             if count == 0:
@@ -1039,7 +1039,7 @@ class Mogi(commands.Cog):
         if mogi_score == 984:
             pass
         else:
-            await current_channel.send(ctx, f'``Error 28:`` `Scores = {mogi_score} `Scores must add up to 984.')
+            await current_channel.send(f'``Error 28:`` `Scores = {mogi_score} `Scores must add up to 984.')
             return
 
         # Sort the teams in order of score
@@ -1104,11 +1104,11 @@ class Mogi(commands.Cog):
         try:
             lorenzi_response = await self.bot.wait_for('message', check=lambda message: message.author == ctx.author, timeout=60)
             if lorenzi_response.content.lower() not in ['yes', 'y']:
-                await current_channel.send(ctx, 'Table denied. Try again.')
+                await current_channel.send('Table denied. Try again.')
                 return
         except Exception as e:
             await self.send_to_debug_channel(ctx, e)
-            await current_channel.send(ctx, 'No response from reporter. Timed out')
+            await current_channel.send('No response from reporter. Timed out')
             return
         
         
@@ -1348,7 +1348,7 @@ class Mogi(commands.Cog):
             with DBA.DBAccess() as db:
                 db.query('UPDATE mogi SET table_url = %s WHERE mogi_id = %s;', (table_url, db_mogi_id))
         except Exception as e:
-            await self.send_to_debug_channel(ctx, f'Unable to get table url: {e}')
+            await self.send_to_debug_channel(f'Unable to get table url: {e}')
             pass
 
         embed = discord.Embed(title=f'Tier {tier_name.upper()} MMR', color = discord.Color.blurple())
@@ -1361,7 +1361,7 @@ class Mogi(commands.Cog):
         #  discord ansi coloring (doesn't work on mobile)
         # https://gist.github.com/kkrypt0nn/a02506f3712ff2d1c8ca7c9e0aed7c06
         # https://rebane2001.com/discord-colored-text-generator/ 
-        await current_channel.send(ctx, '`Table Accepted.`')
+        await current_channel.send('`Table Accepted.`')
 
 
     async def check_if_banned_characters(self, message):
