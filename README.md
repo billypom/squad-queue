@@ -1,8 +1,6 @@
 # QBot
 
 This is a fork of Cynda's [QueueBot](https://github.com/cyndaquilx/QueueBot), adjusted for 200cc Lounge. See his documentation for setup.
-
-Report bugs and errors to peng2n#2222 on Discord
 ________________________________________________
 
 # Player Commands
