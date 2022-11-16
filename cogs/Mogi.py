@@ -844,7 +844,6 @@ class Mogi(commands.Cog):
             gabagoo = parse(schedule_time)
             actual_time = actual_time - TIME_ADJUSTMENT
             queue_time = actual_time - QUEUE_OPEN_TIME
-            end_gather_time = actual_time + timedelta(hours=1, minutes=15)
             print(f'actual time: {type(actual_time)} | {actual_time}')
             print(f'queue time: {type(queue_time)} | {queue_time}')
             mogi_channel = self.get_mogi_channel()
@@ -857,7 +856,7 @@ class Mogi(commands.Cog):
             self.scheduled_events.append(event)
             self.scheduled_events.sort(key=lambda data:data.time)
             try:
-                await guild.create_scheduled_event(name=f'SQ:{str(size)}v{str(size)} Gathering', start_time=queue_time, end_time=end_gather_time, location="#sq-join")
+                await guild.create_scheduled_event(name=f'SQ:{str(size)}v{str(size)} Gathering', start_time=queue_time, end_time=actual_time, location="#sq-join")
             except Exception as e:
                 print(e)
                 await ctx.send('Cannot schedule event in the past')
