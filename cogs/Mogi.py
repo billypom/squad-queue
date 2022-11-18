@@ -1402,7 +1402,7 @@ class Mogi(commands.Cog):
     
     async def send_raw_to_debug_channel(self, anything, error):
         channel = self.bot.get_channel(secretly.debug_channel)
-        embed = discord.Embed(title='Raw SQ Error', description='@_@' color=discord.Color.yellow())
+        embed = discord.Embed(title='Raw SQ Error', description='@_@', color=discord.Color.yellow())
         embed.add_field(name='Anything:', value=anything, inline=False)
         embed.add_field(name='Error: ', value=error, inline=False)
         await channel.send(content=None, embed=embed)
