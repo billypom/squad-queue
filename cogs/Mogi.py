@@ -259,7 +259,13 @@ class Mogi(commands.Cog):
     
     @commands.command()
     async def qwe(self, ctx):
-        await self.queue_or_send(ctx, 'queue or send qwe')
+        try:
+            channel = await self.bot.get_channel(ctx.channel.id)
+            await channel.send('qwe')
+        except Exception as e:
+            print(e)
+            return
+        # await self.queue_or_send(ctx, 'queue or send qwe')
         return
 
     @commands.command(aliases=['c'])
