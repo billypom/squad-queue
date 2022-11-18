@@ -261,7 +261,7 @@ class Mogi(commands.Cog):
     async def qwe(self, ctx):
         try:
             channel = await self.bot.get_channel(ctx.channel.id)
-            await channel.send('qwe')
+            channel.send('qwe')
         except Exception as e:
             print(e)
             return
