@@ -15,6 +15,9 @@ import subprocess
 import requests
 import math
 
+CATEGORIES_MESSAGE_ID = 1043276016564576407
+SQ_HELPER_CHANNEL_ID = 1002353251712249916
+
 with open('./config.json', 'r') as cjson:
             config = json.load(cjson)
 
@@ -720,6 +723,14 @@ class Mogi(commands.Cog):
             cat = await mogi_channel.guild.create_category_channel(name="Rooms %d" % (i+1),
                                                                    position=config["channel_category_position"])
             self.categories.append(cat)
+        # Update the sq helper channel with the list of categories allowed to use /table command
+        try:
+            sq_helper_channel = self.bot.get_channel(SQ_HELPER_CHANNEL_ID)
+            message = await sq_helper_channel.fetch_message(CATEGORIES_MESSAGE_ID)
+            await message.edit(content=str(categories))
+        except Exception as e:
+            await self.send_raw_to_debug_channel('SQ cannot edit categories message', e)
+            pass
         for i in range(numRooms):
 
             #creating room roles and channels
@@ -1387,6 +1398,13 @@ class Mogi(commands.Cog):
         embed.add_field(name='Issuer: ', value=ctx.author.mention, inline=False)
         embed.add_field(name='Error: ', value=str(error), inline=False)
         embed.add_field(name='Discord ID: ', value=ctx.author.id, inline=False)
+        await channel.send(content=None, embed=embed)
+    
+    async def send_raw_to_debug_channel(self, anything, error):
+        channel = self.bot.get_channel(secretly.debug_channel)
+        embed = discord.Embed(title='Raw SQ Error', description='@_@' color=discord.Color.yellow())
+        embed.add_field(name='Anything:', value=anything, inline=False)
+        embed.add_field(name='Error: ', value=error, inline=False)
         await channel.send(content=None, embed=embed)
     
     async def new_rank_wrapper(self, input, mmr):
