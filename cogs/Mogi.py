@@ -884,7 +884,7 @@ class Mogi(commands.Cog):
         except (ValueError, OverflowError):
             await ctx.send("I couldn't figure out the date and time for your event. Try making it a bit more clear for me.")
 
-    # !schedule command               
+    # !reschedule command               
     @commands.command()
     @commands.guild_only()
     async def reschedule(self, ctx, size: int, *, schedule_time:str):
