@@ -15,8 +15,9 @@ import subprocess
 import requests
 import math
 
-CATEGORIES_MESSAGE_ID = 1043276016564576407
-SQ_HELPER_CHANNEL_ID = 1002353251712249916
+CATEGORIES_MESSAGE_ID = secretly.CATEGORIES_MESSAGE_ID
+SQ_HELPER_CHANNEL_ID = secretly.SQ_HELPER_CHANNEL_ID
+EVENTS_MESSAGE_ID = secretly.EVENTS_MESSAGE_ID
 
 with open('./config.json', 'r') as cjson:
             config = json.load(cjson)
@@ -878,6 +879,46 @@ class Mogi(commands.Cog):
                 print(e)
                 await ctx.send('Cannot schedule event in the past')
                 return
+            #await ctx.send(f"popuko actual time: {gabagoo} | popuko adjustment {TIME_ADJUSTMENT} | popu post adjust {actual_time} || Scheduled {Mogi.get_event_str(event)}")
+            await ctx.send(f"Scheduled {Mogi.get_event_str(event)}")
+        except (ValueError, OverflowError):
+            await ctx.send("I couldn't figure out the date and time for your event. Try making it a bit more clear for me.")
+
+    # !schedule command               
+    @commands.command()
+    @commands.guild_only()
+    async def reschedule(self, ctx, size: int, *, schedule_time:str):
+        # why does cynda use strings for comments...
+        # schedule without making an event - when i reset the bot i can re-schedule without deleting all the events
+        """Schedules a room in the future so that the staff doesn't have to be online to open the mogi and make the rooms"""
+        
+        await Mogi.hasroles(self, ctx)
+        
+        if not await Mogi.start_input_validation(ctx, size):
+            return False
+              
+        try:
+            actual_time = parse(schedule_time)
+            gabagoo = parse(schedule_time)
+            actual_time = actual_time - TIME_ADJUSTMENT
+            queue_time = actual_time - QUEUE_OPEN_TIME
+            print(f'actual time: {type(actual_time)} | {actual_time}')
+            print(f'queue time: {type(queue_time)} | {queue_time}')
+            mogi_channel = self.get_mogi_channel()
+            guild = self.bot.get_guild(Lounge[0])
+            if mogi_channel == None:
+                await ctx.send("I can't see the mogi channel, so I can't schedule this event.")
+                return
+            event = Scheduled_Event(size, actual_time, False, mogi_channel)
+            
+            self.scheduled_events.append(event)
+            self.scheduled_events.sort(key=lambda data:data.time)
+            # try:
+            #     await guild.create_scheduled_event(name=f'SQ:{str(size)}v{str(size)} Gathering', start_time=queue_time, end_time=actual_time, location="#sq-join")
+            # except Exception as e:
+            #     print(e)
+            #     await ctx.send('Cannot schedule event in the past')
+            #     return
             #await ctx.send(f"popuko actual time: {gabagoo} | popuko adjustment {TIME_ADJUSTMENT} | popu post adjust {actual_time} || Scheduled {Mogi.get_event_str(event)}")
             await ctx.send(f"Scheduled {Mogi.get_event_str(event)}")
         except (ValueError, OverflowError):
