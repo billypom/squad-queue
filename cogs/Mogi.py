@@ -26,7 +26,8 @@ CHECKMARK_ADDITION = "-\U00002713"
 CHECKMARK_ADDITION_LEN = 2
 # Lounge = [461383953937596416] # 200 Lounge
 Lounge = [1041162011490394122] # 200 Development
-time_print_formatting = "%B %d, %Y at %I:%M%p EDT"
+# time_print_formatting = "%B %d, %Y at %I:%M%p EDT" # -4
+time_print_formatting = "%B %d, %Y at %I:%M%p EST" # -5
 #There are two timezones: the timezone your staff schedules events in, and your server's timezone
 #Set this to the number of hours ahead (or behind) your staff's timezone is from your server's timezone
 #This is so that you don't have to adjust your machine clock to accomodate for your staff
