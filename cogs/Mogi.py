@@ -241,6 +241,8 @@ class Mogi(commands.Cog):
                 # and member.display_name respectively
                 # (lets you test with only 2 accounts and changing
                 #  nicknames)
+                # if player.display_name == member.display_name:
+                    # return i
                 if player.id == member.id:
                     return i
         return False
@@ -260,7 +262,15 @@ class Mogi(commands.Cog):
                 #  nicknames)
                 if player.id == member.id:
                     return i
+                # if player.display_name == member.display_name:
+                    # return i
         return False
+    # TESTING MODE
+    # TESTING MODE
+    # TESTING MODE
+    # TESTING MODE
+    # TESTING MODE
+    # TESTING MODE
 
     @commands.command()
     async def qwe(self, ctx):
@@ -297,6 +307,9 @@ class Mogi(commands.Cog):
         # checkList = await Mogi.check_list(self, ctx.author.display_name)
         checkWait = await Mogi.check_waiting(self, ctx.author)
         checkList = await Mogi.check_list(self, ctx.author)
+
+        # DEBUG ADD THIS BACK~!!!!!!!!!!-------------
+
         if checkWait is not False:
             if self.waiting[checkWait][ctx.author][0] == True:
                 await self.queue_or_send(ctx, "%s has already confirmed for this event; type `!d` to drop"
@@ -307,11 +320,15 @@ class Mogi(commands.Cog):
                                      % (ctx.author.display_name), delay=5)  
             return
 
+        # DEBUG ADD THIS BACK~!!!!!!!!!!-------------
+
         # logic for when no players are tagged
         if len(members) == 0:
             #runs if message author has been invited to squad
             #but hasn't confirmed
+            # DEBUG ADD THIS BACK~!!!!!!!!!!-------------
             if checkWait is not False:
+            # DEBUG ADD THIS BACK~!!!!!!!!!!-------------
                 self.waiting[checkWait][ctx.author][0] = True
                 confirmedPlayers = []
                 missingPlayers = []
@@ -321,10 +338,10 @@ class Mogi(commands.Cog):
                     else:
                         missingPlayers.append(player)
                 string = ("%s has confirmed for their squad [%d/%d]\n"
-                          % (ctx.author.display_name, len(confirmedPlayers), self.size))
+                            % (ctx.author.display_name, len(confirmedPlayers), self.size))
                 if len(missingPlayers) > 0:
-                          string += "Missing players: "
-                          string += ", ".join([player.display_name for player in missingPlayers])
+                            string += "Missing players: "
+                            string += ", ".join([player.display_name for player in missingPlayers])
                 
                 #if player is the last one to confirm for their squad,
                 #add them to the mogi list
@@ -348,7 +365,7 @@ class Mogi(commands.Cog):
                     else:
                         s = ""
                     string += ("`Squad successfully added to mogi list [%d team%s]`:\n%s"
-                                   % (len(self.list), s, teamMsg))
+                                    % (len(self.list), s, teamMsg))
                 await self.queue_or_send(ctx, string)
                 await self.ongoing_mogi_checks()
                 return
@@ -356,12 +373,35 @@ class Mogi(commands.Cog):
             await self.queue_or_send(ctx, "%s didn't tag the correct number of people for this format (%d)"
                             % (ctx.author.display_name, self.size-1), delay=5)
             return
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         # Input validation for tagged members; checks if each tagged member is already
         # in a squad, as well as checks if any of them are duplicates
         for member in members:
             checkWait = await Mogi.check_waiting(self, member)
             checkList = await Mogi.check_list(self, member)
+            # DEBUG ADD THIS BACK~!!!!!!!!!!-------------
+
             if checkWait is not False or checkList is not False:
                 msg = ("%s is already confirmed for a squad for this event `("
                                % (member.display_name))
@@ -372,6 +412,9 @@ class Mogi(commands.Cog):
                 msg += ")` They should type `!d` if this is in error."
                 await self.queue_or_send(ctx, msg)
                 return
+
+            # DEBUG ADD THIS BACK~!!!!!!!!!!-------------
+
             if member == ctx.author:
                 await self.queue_or_send(ctx, "%s, Duplicate players are not allowed for a squad, please try again"
                                          % (ctx.author.mention))
@@ -728,7 +771,7 @@ class Mogi(commands.Cog):
         try:
             sq_helper_channel = self.bot.get_channel(SQ_HELPER_CHANNEL_ID)
             message = await sq_helper_channel.fetch_message(CATEGORIES_MESSAGE_ID)
-            await message.edit(content=str(categories))
+            await message.edit(content=str(self.categories))
         except Exception as e:
             await self.send_raw_to_debug_channel('SQ cannot edit categories message', e)
             pass
