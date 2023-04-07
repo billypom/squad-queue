@@ -810,14 +810,14 @@ class Mogi(commands.Cog):
                     overwrites[player] = discord.PermissionOverwrite(read_messages=True)
             roomMsg = msg
             mentions = ""
-            scoreboard = "Table: `!table %d 0 " % (12/self.size)
+            scoreboard = "Table: `/table %d " % (self.size)
             for j in range(int(12/self.size)):
                 index = int(i * 12/self.size + j)
                 mentions += " ".join([player.mention for player in sortedTeams[index].keys()])
                 mentions += " "
                 scoreboard += ",".join([player.display_name for player in sortedTeams[index].keys()])
                 if j+1 < int(12/self.size):
-                    scoreboard += ","
+                    scoreboard += " 0 "
             
             roomMsg += "%s`\n" % scoreboard
             roomMsg += ("\nDecide a host amongst yourselves; room open at :%02d, penalty at :%02d, start by :%02d. \n\nGood luck!\n\n"
