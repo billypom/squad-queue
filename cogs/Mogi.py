@@ -1030,7 +1030,10 @@ class Mogi(commands.Cog):
         event_str = ''
         for d in data:
             event_str += f'`#{d[0]}.` **{d[1]}v{d[1]}:** <t:{str(d[2])}:F>\n'    
-        event_str += "Do `!remove_event` to remove that event from the schedule."
+        # event_str += "Do `!remove_event` to remove that event from the schedule."
+        if event_str == '':
+            await ctx.send('No SQ events scheduled.')
+            return
         await ctx.send(event_str)
 
     @commands.command()
