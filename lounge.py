@@ -3,7 +3,7 @@ from discord.ext import commands
 import json
 import logging
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(filename='200sq.log', filemode='a', level=logging.WARNING)
 
 intents = discord.Intents(message_content=True, messages=True, members=True, guilds=True)
 bot = commands.Bot(intents=intents, activity=discord.Game(str('Squad Queue')), command_prefix='!', case_insensitive=True)

@@ -4,9 +4,10 @@ from discord.ui import Button, View
 import vlog_msg
 import json
 from dateutil.parser import parse
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone, date
 import collections
 import time
+import pytz
 import DBA
 import secretly
 import urllib.parse
@@ -14,6 +15,9 @@ import shutil
 import subprocess
 import requests
 import math
+
+import logging
+logging.basicConfig(filename='200sq.log', filemode='a', level=logging.WARNING)
 
 CATEGORIES_MESSAGE_ID = secretly.CATEGORIES_MESSAGE_ID
 SQ_HELPER_CHANNEL_ID = secretly.SQ_HELPER_CHANNEL_ID
@@ -31,14 +35,13 @@ Lounge = [461383953937596416] # 200 Lounge
 # DEBUG
 # time_print_formatting = "%B %d, %Y at %I:%M%p EDT" # -4
 # DEBUG
-time_print_formatting = "%B %d, %Y at %I:%M%p EST" # -5
-# DEBUG
-#There are two timezones: the timezone your staff schedules events in, and your server's timezone
-#Set this to the number of hours ahead (or behind) your staff's timezone is from your server's timezone
-#This is so that you don't have to adjust your machine clock to accomodate for your staff
+# time_print_formatting = "%B %d, %Y at %I:%M%p EST" # -5
 
-#For example, if my staff is supposed to schedule events in EST and my machine is PST, this number would be 3 since EST is 3 hours ahead of my machine's PST
-# STAFF SCHEDULE IN EDT, MY MACHINE IN UTC, NUMBER IS -4
+time_print_formatting = "%B %d, %Y at %I:%M%p UTC" # timezones bad
+
+
+
+# 0 always UTC
 TIME_ADJUSTMENT = timedelta(hours=config["TIME_ADJUSTMENT"])
 
 #number of minutes before scheduled time that queue should open
@@ -112,24 +115,34 @@ class Mogi(commands.Cog):
         """Functions that tries to launch scheduled mogis - Note that it won't launch any sscheduled mogis
         if an there is already a mogi ongoing, instead it will send an error message and delete that event from the schedule"""
 
-        cur_time = datetime.now()
-
-        to_remove = [] #Keep a list of indexes to remove - can't remove while iterating
-        for ind, event in enumerate(self.scheduled_events):
-            if (event.time - QUEUE_OPEN_TIME) < cur_time:
-                #if self.started or self.gathering: #We can't start a new event while the current event is already going
+        unix_now = await self.convert_datetime_to_unix_timestamp(datetime.now(timezone.utc).astimezone())
+        to_remove = []
+        mogi_channel = self.get_mogi_channel()
+        with DBA.DBAccess() as db:
+            data = db.query('SELECT id, mogi_format, start_time, queue_time FROM sq_schedule;', ())
+        for event in data:
+            logging.warning(f'POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | {event[2]} < {unix_now}')
+            if event[2] < unix_now:
+                # Do not start mogi while another is gathering
                 if self.gathering:
-                    to_remove.append(ind)
-                    await event.mogi_channel.send(f"Because there is an ongoing event right now, the following event has been removed: {self.get_event_str(event)}\n")
+                    to_remove.append(event[0])
+                    removed_mogi_text = await self.get_event_string(event[0])
+                    await mogi_channel.send(f'Because there is an ongoing event right now, the following event has been removed: {removed_mogi_text}')
                 else:
                     if self.started:
                         await self.endMogi()
-                    to_remove.append(ind)
-                    await self.launch_mogi(event.mogi_channel, event.size, True, event.time)
-                    await self.unlockdown(event.mogi_channel)
+                    to_remove.append(event[0])
+                    start_time = await self.convert_unix_timestamp_to_datetime(event[2])
+                    logging.warning(f'POP_LOG | SQ scheduler_mogi_start | db event time > start_Time | {event[2]} -> {start_time}')
+                    # launch mogi needs a datetime object to do math with hours
+                    await self.launch_mogi(mogi_channel, event[1], True, start_time)
+                    await self.unlockdown(mogi_channel)
 
-        for ind in reversed(to_remove):
-            del self.scheduled_events[ind]
+        with DBA.DBAccess() as db:
+            for r in to_remove:
+                db.execute('DELETE FROM sq_schedule WHERE id = %s;', (r,))
+        to_remove = []
+
 
     async def ongoing_mogi_checks(self):
             #If it's not automated, not started, we've already started making the rooms, don't run this
@@ -138,11 +151,13 @@ class Mogi(commands.Cog):
 
             cur_time = datetime.now()
             if (self.start_time - QUEUE_OPEN_TIME + JOINING_TIME + EXTENSION_TIME) <= cur_time:
+                logging.warning(f'MAKING ROOMS')
                 await self.makeRoomsLogic(self.mogi_channel, (self.start_time.minute)%60, True)
                 return
 
             if self.start_time - QUEUE_OPEN_TIME + JOINING_TIME <= cur_time:
                 #check if there are an even amount of teams since we are past the queue time
+                logging.warning(f'CHECKING FOR LEFTOVER TEAMS')
                 numLeftoverTeams = len(self.list) % int((12/self.size))
                 if numLeftoverTeams == 0:
                     await self.makeRoomsLogic(self.mogi_channel, (self.start_time.minute)%60, True)
@@ -152,6 +167,7 @@ class Mogi(commands.Cog):
                         force_time = self.start_time - QUEUE_OPEN_TIME + JOINING_TIME + EXTENSION_TIME
                         minutes_left = int((force_time - cur_time).seconds/60)
                         x_teams = int(int(12/self.size) - numLeftoverTeams)
+                        logging.warning(f'NOT ENOUGH TEAMS - alert alert')
                         await self.mogi_channel.send(f"Need {x_teams} more team(s) to start immediately. Starting in {minutes_left} minute(s) regardless.")
 
     
@@ -165,12 +181,22 @@ class Mogi(commands.Cog):
         try:
             await self.scheduler_mogi_start()
         except Exception as e:
-            print(e)
+            logging.warning(f'POP_LOG | sqscheduler-scheduler_mogi_start | {e}')
 
         try:
             await self.ongoing_mogi_checks()
         except Exception as e:
-            print(e)
+            logging.warning(f'POP_LOG | sqscheduler-ongoing_mogi_checks | {e}')
+
+    @tasks.loop(hours=12)
+    async def schedule_generator(self):
+        """Generates a default schedule if one is not provided"""
+        unix_now = await self.convert_datetime_to_unix_timestamp(datetime.now(timezone.utc).astimezone())
+        mogi_channel = self.get_mogi_channel()
+        if datetime.today().weekday() == 0:
+            pass
+            # with DBA.DBAccess() as db:
+
 
     async def queue_or_send(self, ctx, msg, delay=0):
         if config["queue_messages"] is True:
@@ -271,12 +297,8 @@ class Mogi(commands.Cog):
                 # if player.display_name == member.display_name:
                     # return i
         return False
-    # TESTING MODE
-    # TESTING MODE
-    # TESTING MODE
-    # TESTING MODE
-    # TESTING MODE
-    # TESTING MODE
+
+
 
     @commands.command()
     async def qwe(self, ctx):
@@ -892,94 +914,107 @@ class Mogi(commands.Cog):
         if size not in valid_sizes:
             await(await ctx.send("The size you entered is invalid; proper values are: 2, 3, 4")).delete(delay=5)
             return False
-        
-        return True 
+        return True
+    
+    @staticmethod
+    async def weekday_input_validation(ctx, day:int):
+        valid_days = [0,1,2,3,4,5,6]
+        if day not in valid_days:
+            await(await ctx.send("The size you entered is invalid; proper values are: 2, 3, 4")).delete(delay=5)
+            return False
+        return True
                    
+
+
+
+
+
+
+
+
+
+    # !template command
+    @commands.command(aliases=['template'])
+    @commands.guild_only()
+    async def add_template_mogi(self, ctx, day_of_week: int, size: int, *, schedule_time:str ):
+        await Mogi.hasroles(self, ctx)
+
+        if not await Mogi.start_input_validation(ctx, size):
+            return False
+        
+        if not await Mogi.weekday_input_validation(ctx, day_of_week):
+            return False
+
+        mogi_channel = self.get_mogi_channel()
+        guild = self.bot.get_guild(Lounge[0])
+        if mogi_channel == None:
+                await ctx.send("I can't see the mogi channel, so I can't schedule this template event.")
+                return
+
+        try:
+            # Add to DB SQ Template
+            with DBA.DBAccess() as db:
+                db.execute('INSERT INTO sq_default_schedule (start_time, mogi_format, mogi_channel, day_of_week) VALUES (%s, %s, %s, %s);', (schedule_time, size, mogi_channel.id, day_of_week))
+
+            await ctx.send(f"Templated {size}v{size} on day {day_of_week} @ {schedule_time}")
+            logging.warning('_____________________________')
+        except (ValueError, OverflowError):
+            await ctx.send("I couldn't figure out the date and time for your event. Try making it a bit more clear for me.")
+
+
     # !schedule command               
     @commands.command()
     @commands.guild_only()
     async def schedule(self, ctx, size: int, *, schedule_time:str):
         """Schedules a room in the future so that the staff doesn't have to be online to open the mogi and make the rooms"""
-        
+
         await Mogi.hasroles(self, ctx)
-        
+
         if not await Mogi.start_input_validation(ctx, size):
             return False
-              
-        try:
-            actual_time = parse(schedule_time)
-            gabagoo = parse(schedule_time)
-            actual_time = actual_time - TIME_ADJUSTMENT
-            queue_time = actual_time - QUEUE_OPEN_TIME
-            print(f'actual time: {type(actual_time)} | {actual_time}')
-            print(f'queue time: {type(queue_time)} | {queue_time}')
-            mogi_channel = self.get_mogi_channel()
-            guild = self.bot.get_guild(Lounge[0])
-            if mogi_channel == None:
+
+        mogi_channel = self.get_mogi_channel()
+        guild = self.bot.get_guild(Lounge[0])
+        if mogi_channel == None:
                 await ctx.send("I can't see the mogi channel, so I can't schedule this event.")
                 return
-            event = Scheduled_Event(size, actual_time, False, mogi_channel)
-            
-            self.scheduled_events.append(event)
-            self.scheduled_events.sort(key=lambda data:data.time)
+
+        try:
+            input_time = parse(f'{schedule_time} UTC')
+            queue_time = input_time - QUEUE_OPEN_TIME
+
+            logging.warning(f'POP_LOG | SQ !schedule | schedule_time type: {type(schedule_time)} | {schedule_time} UTC')
+            logging.warning(f'POP_LOG | SQ !schedule | input_time type: {type(input_time)} | {input_time}')
+            logging.warning(f'POP_LOG | SQ !schedule | queue time type: {type(queue_time)} | {queue_time}')
+
+            input_unix_time = await self.convert_datetime_to_unix_timestamp(input_time)
+            queue_unix_time = await self.convert_datetime_to_unix_timestamp(queue_time)
+
+            logging.warning(f'POP_LOG | SQ !schedule | input unix time: {input_unix_time}')
+            logging.warning(f'POP_LOG | SQ !schedule | queue unix time: {queue_unix_time}')
+
+            # Add to DB SQ Schedule
+            with DBA.DBAccess() as db:
+                db.execute('INSERT INTO sq_schedule (start_time, queue_time, mogi_format, mogi_channel) VALUES (%s, %s, %s, %s);', (input_unix_time, queue_unix_time, size, mogi_channel.id))
+
+            # Create Discord Scheduled Event
             try:
-                await guild.create_scheduled_event(name=f'SQ:{str(size)}v{str(size)} Gathering', start_time=queue_time, end_time=actual_time, location="#sq-join")
+                await guild.create_scheduled_event(name=f'SQ:{str(size)}v{str(size)} Gathering', start_time=queue_time, end_time=input_time, location="#sq-join")
             except Exception as e:
-                print(e)
+                logging.error(e)
                 await ctx.send('Cannot schedule event in the past')
                 return
-            #await ctx.send(f"popuko actual time: {gabagoo} | popuko adjustment {TIME_ADJUSTMENT} | popu post adjust {actual_time} || Scheduled {Mogi.get_event_str(event)}")
-            await ctx.send(f"Scheduled {Mogi.get_event_str(event)}")
+
+            await ctx.send(f"Scheduled {size}v{size} on <t:{str(int(input_unix_time))}:F>")
+            logging.warning('_____________________________')
         except (ValueError, OverflowError):
             await ctx.send("I couldn't figure out the date and time for your event. Try making it a bit more clear for me.")
 
-    # !reschedule command               
-    @commands.command()
-    @commands.guild_only()
-    async def reschedule(self, ctx, size: int, *, schedule_time:str):
-        # why does cynda use strings for comments...
-        # schedule without making an event - when i reset the bot i can re-schedule without deleting all the events
-        """Schedules a room in the future so that the staff doesn't have to be online to open the mogi and make the rooms"""
-        
-        await Mogi.hasroles(self, ctx)
-        
-        if not await Mogi.start_input_validation(ctx, size):
-            return False
-              
-        try:
-            actual_time = parse(schedule_time)
-            gabagoo = parse(schedule_time)
-            actual_time = actual_time - TIME_ADJUSTMENT
-            queue_time = actual_time - QUEUE_OPEN_TIME
-            print(f'actual time: {type(actual_time)} | {actual_time}')
-            print(f'queue time: {type(queue_time)} | {queue_time}')
-            mogi_channel = self.get_mogi_channel()
-            guild = self.bot.get_guild(Lounge[0])
-            if mogi_channel == None:
-                await ctx.send("I can't see the mogi channel, so I can't schedule this event.")
-                return
-            event = Scheduled_Event(size, actual_time, False, mogi_channel)
-            
-            self.scheduled_events.append(event)
-            self.scheduled_events.sort(key=lambda data:data.time)
-            # try:
-            #     await guild.create_scheduled_event(name=f'SQ:{str(size)}v{str(size)} Gathering', start_time=queue_time, end_time=actual_time, location="#sq-join")
-            # except Exception as e:
-            #     print(e)
-            #     await ctx.send('Cannot schedule event in the past')
-            #     return
-            #await ctx.send(f"popuko actual time: {gabagoo} | popuko adjustment {TIME_ADJUSTMENT} | popu post adjust {actual_time} || Scheduled {Mogi.get_event_str(event)}")
-            await ctx.send(f"Scheduled {Mogi.get_event_str(event)}")
-        except (ValueError, OverflowError):
-            await ctx.send("I couldn't figure out the date and time for your event. Try making it a bit more clear for me.")
 
     @commands.command(aliases=['pt'])
     async def parsetime(self, ctx, *, schedule_time:str):
         try:
             actual_time = parse(schedule_time)
-            gabagoo = parse(schedule_time)
-            actual_time = actual_time - TIME_ADJUSTMENT
-            #await ctx.send(f"popuko actual time: {gabagoo} | popuko adjustment {TIME_ADJUSTMENT} | popu post adjust {actual_time} | ```<t:" + str(int(time.mktime(actual_time.timetuple()))) + ":F>``` -> <t:" + str(int(time.mktime(actual_time.timetuple()))) + ":F>")
             await ctx.send(f"```<t:" + str(int(time.mktime(actual_time.timetuple()))) + ":F>``` -> <t:" + str(int(time.mktime(actual_time.timetuple()))) + ":F>")
         except (ValueError, OverflowError):
             await ctx.send("I couldn't figure out the date and time for your event. Try making it a bit more clear for me.")
@@ -990,508 +1025,146 @@ class Mogi(commands.Cog):
         """Displays the schedule"""
         await Mogi.hasroles(self, ctx)
         
-        if len(self.scheduled_events) == 0:
-            await ctx.send("There are currently no schedule events. Do `!schedule` to schedule a future event.")
-        else:
-            event_str = ""
-            for ind, this_event in enumerate(self.scheduled_events, 1):
-                event_str += f"`{ind}.` {Mogi.get_event_str(this_event)}\n"
-            event_str += "\nDo `!remove_event` to remove that event from the schedule."
-            await ctx.send(event_str)
-            
+        with DBA.DBAccess() as db:
+            data = db.query('SELECT id, mogi_format, start_time FROM sq_schedule ORDER BY start_time ASC;', ())
+        event_str = ''
+        for d in data:
+            event_str += f'`#{d[0]}.` **{d[1]}v{d[1]}:** <t:{str(d[2])}:F>\n'    
+        event_str += "Do `!remove_event` to remove that event from the schedule."
+        await ctx.send(event_str)
+
+    @commands.command()
+    @commands.guild_only()
+    async def view_template(self, ctx):
+        """Displays the template"""
+        await Mogi.hasroles(self, ctx)
+        
+        with DBA.DBAccess() as db:
+            data = db.query('SELECT id, mogi_format, start_time, day_of_week FROM sq_default_schedule ORDER BY day_of_week ASC;', ())
+        event_str = ''
+        for d in data:
+            event_str += f'`{d[3]} | #{d[0]}.` **{d[1]}v{d[1]}:** @ {d[2]} UTC\n'
+        event_str += "Do `!remove_template` to remove that record from the template."
+        await ctx.send(event_str)
+
     @commands.command()
     @commands.guild_only()
     @commands.max_concurrency(number=1,wait=True)
     async def remove_event(self, ctx, event_num: int):
         """Removes an event from the schedule"""
         await Mogi.hasroles(self, ctx)
-        
-        if event_num < 1 or event_num > len(self.scheduled_events):
-            await ctx.send("This event number isn't in the schedule. Do `!view_schedule` to see the scheduled events.")
-        else:
-            removed_event = self.scheduled_events.pop(event_num-1)
-            await ctx.send(f"Removed `{event_num}.` {self.get_event_str(removed_event)}")
+        with DBA.DBAccess() as db:
+            data = db.query('SELECT mogi_format, start_time FROM sq_schedule WHERE id = %s;', (event_num,))
+            size = data[0][0]
+            start_time = data[0][1]
+            db.execute('DELETE FROM sq_schedule WHERE id = %s;', (event_num,))
+        await ctx.send(f'Removed event #{event_num} | {size}v{size} on <t:{str(start_time)}:F>')
+
+    @commands.command()
+    @commands.guild_only()
+    @commands.max_concurrency(number=1,wait=True)
+    async def remove_template(self, ctx, event_num: int):
+        """Removes a record from the template"""
+        await Mogi.hasroles(self, ctx)
+        with DBA.DBAccess() as db:
+            data = db.query('SELECT mogi_format, start_time, day_of_week FROM sq_default_schedule WHERE id = %s;', (event_num,))
+            size = data[0][0]
+            start_time = data[0][1]
+            day_of_week = data[0][2]
+            db.execute('DELETE FROM sq_schedule WHERE id = %s;', (event_num,))
+        await ctx.send(f'Removed event #{event_num} | {size}v{size} on day {day_of_week} @{start_time}')
     
+    @commands.command()
+    @commands.guild_only()
+    @commands.max_concurrency(number=1,wait=True)
+    async def transfer_template(self, ctx):
+        await Mogi.hasroles(self, ctx)
+
+        mogi_channel = self.get_mogi_channel()
+        guild = self.bot.get_guild(Lounge[0])
+        if mogi_channel == None:
+            await ctx.send("I can't see the mogi channel, so I can't schedule this event.")
+            return
+
+        with DBA.DBAccess() as db:
+            template_data = db.query('SELECT day_of_week, start_time, mogi_format FROM sq_default_schedule ORDER BY day_of_week ASC;', ())
         
-    @staticmethod
-    def get_event_str(this_event):
-        event_size, event_time = this_event.size, this_event.time
-        timezone_adjusted_time = event_time + TIME_ADJUSTMENT
-        event_time_str = timezone_adjusted_time.strftime(time_print_formatting)
-        return f"{event_size}v{event_size} on {event_time_str}"
-
-    # @commands.command()
-    # @commands.guild_only()
-    # @commands.max_concurrency(number=1, wait=True)
-    # async def table(self, ctx, mogi_format: int, *scores):
-    #     current_channel = ctx.channel
-    #     # print('Im table')
-    #     # TODO: change this in production
-    #     SQ_TIER_ID = 965286774098260029
-
-    #     # Create list
-    #     score_list = list(scores)
-    #     # List formatting?
-    #     if len(score_list) == 24:
-    #         pass
-    #     else:
-    #         await current_channel.send(f'Invalid input. There must be 12 players and 12 scores.')
-    #         return
-    #     # bad stuff
-    #     bad = await self.check_if_banned_characters(score_list)
-    #     if bad:
-    #         # await self.queue_or_send(ctx, f'Invalid input. There must be 12 players and 12 scores.')
-    #         await current_channel.send(f'Invalid input. There must be 12 players and 12 scores.')
-    #         return
-
-    #     # score_string = str(scores) #.translate(remove_chars)
-    #     # score_list = score_string.split()
-
-    #     # Check for 12 players
-    #     # print(score_list)
-    #     # print(len(score_list))
+        with DBA.DBAccess() as db:
+            schedule_data = db.query('SELECT start_time FROM sq_schedule;', ())
         
-        
-    #     # Replace playernames with playerids
-    #     # Create list
-    #     #print(f'score list: {score_list}')
-    #     player_list_check = []
-    #     for i in range(0, len(score_list), 2):
-    #         with DBA.DBAccess() as db:
-    #             temp = db.query('SELECT player_id FROM player WHERE player_name = %s;', (score_list[i],))
-    #             player_list_check.append(score_list[i])
-    #             score_list[i] = temp[0][0]
+        today = date.today()
+        if not today.weekday() == 0:
+            current_day = today + timedelta(days=-today.weekday(), weeks=1)
+        else:
+            current_day = today
+        for event in template_data:
+            day_of_week = event[0]
+            start_time = event[1]
+            size = event[2]
+            while (day_of_week != current_day.weekday()):
+                logging.warning(f'POP_LOG | SQ !transfer_template | cur day {current_day} / {current_day.weekday()}')
+                current_day = current_day + timedelta(days=1)
+                logging.warning(f'POP_LOG | SQ !transfer_template | cur day adjust {current_day} / {current_day.weekday()}')
+            input_time = parse(f'{current_day} {start_time} UTC')
+            queue_time = input_time - QUEUE_OPEN_TIME
 
+            logging.warning(f'POP_LOG | SQ !transfer_template | current_day start_time: {current_day} {start_time} UTC')
+            logging.warning(f'POP_LOG | SQ !transfer_template | input_time type: {type(input_time)} | {input_time}')
+            logging.warning(f'POP_LOG | SQ !transfer_template | queue time type: {type(queue_time)} | {queue_time}')
 
-        
-        
-    #     # Check for duplicate players
-    #     has_dupes = await self.check_for_dupes_in_list(player_list_check)
-    #     if has_dupes:
-    #         await current_channel.send('``Error 37:`` You cannot have duplicate players on a table')
-    #         return
+            input_unix_time = await self.convert_datetime_to_unix_timestamp(input_time)
+            queue_unix_time = await self.convert_datetime_to_unix_timestamp(queue_time)
 
-    #     # Check the mogi_format
-    #     if mogi_format == 1:
-    #         SPECIAL_TEAMS_INTEGER = 63
-    #         OTHER_SPECIAL_INT = 19
-    #         MULTIPLIER_SPECIAL = 2.1
-    #     elif mogi_format == 2:
-    #         SPECIAL_TEAMS_INTEGER = 142
-    #         OTHER_SPECIAL_INT = 39
-    #         MULTIPLIER_SPECIAL = 3.0000001
-    #     elif mogi_format == 3:
-    #         SPECIAL_TEAMS_INTEGER = 288
-    #         OTHER_SPECIAL_INT = 59
-    #         MULTIPLIER_SPECIAL = 3.1
-    #     elif mogi_format == 4:
-    #         SPECIAL_TEAMS_INTEGER = 402
-    #         OTHER_SPECIAL_INT = 79
-    #         MULTIPLIER_SPECIAL = 3.35
-    #     elif mogi_format == 6:
-    #         SPECIAL_TEAMS_INTEGER = 525
-    #         OTHER_SPECIAL_INT = 99
-    #         MULTIPLIER_SPECIAL = 3.5
-    #     else:
-    #         await current_channel.send(f'``Error 27:`` Invalid format: {mogi_format}. Please use 1, 2, 3, 4, or 6.')
-    #         return
-        
-    #     try:
-    #         with DBA.DBAccess() as db:
-    #             h = db.query('SELECT max(mmr) from player where player_id > %s;',(0,))
-    #             highest_mmr = h[0][0]
-    #     except Exception as e:
-    #         await ctx.respond(f'``Error 76:`` `sq!table` error. Make a <#{secretly.support_channel}> if you need assistance.')
+            logging.warning(f'POP_LOG | SQ !transfer_template | input unix time: {input_unix_time}')
+            logging.warning(f'POP_LOG | SQ !transfer_template | queue unix time: {queue_unix_time}')
 
-    #     # Initialize a list so we can group players and scores together
-    #     player_score_chunked_list = list()
-    #     for i in range(0, len(score_list), 2):
-    #         player_score_chunked_list.append(score_list[i:i+2])
-    #     # print(f'player score chunked list: {player_score_chunked_list}')
+            # Add to DB SQ Schedule
+            already_scheduled_flag = 0
+            for scheduled_event in schedule_data:
+                if scheduled_event[0] == input_unix_time:
+                    already_scheduled_flag = 1
+            
+            if already_scheduled_flag:
+                logging.warning(f'POP_LOG | SQ !transfer_template | already scheduled mogi @ {input_unix_time}')
+                await ctx.send(f"Already scheduled {size}v{size} on <t:{str(int(input_unix_time))}:F>")
+                continue
+            else:
+                with DBA.DBAccess() as db:
+                    db.execute('INSERT INTO sq_schedule (start_time, queue_time, mogi_format, mogi_channel) VALUES (%s, %s, %s, %s);', (input_unix_time, queue_unix_time, size, mogi_channel.id))
 
-    #     # Chunk the list into groups of teams, based on mogi_format and order of scores entry
-    #     chunked_list = list()
-    #     for i in range(0, len(player_score_chunked_list), mogi_format):
-    #         chunked_list.append(player_score_chunked_list[i:i+mogi_format])
-        
-    #     # Get MMR data for each team, calculate team score, and determine team placement
-    #     mogi_score = 0
-    #     # print(f'length of chunked list: {len(chunked_list)}')
-    #     # print(f'chunked list: {chunked_list}')
-    #     for team in chunked_list:
-    #         temp_mmr = 0
-    #         team_score = 0
-    #         count = 0
-    #         for player in team:
-    #             try:
-    #                 with DBA.DBAccess() as db:
-    #                     temp = db.query('SELECT mmr FROM player WHERE player_id = %s;', (player[0],))
-    #                     if temp[0][0] is None:
-    #                         mmr = 0
-    #                     else:
-    #                         mmr = temp[0][0]
-    #                         count+=1
-    #                     temp_mmr += mmr
-    #                     try:
-    #                         team_score += int(player[1])
-    #                     except Exception:
-    #                         # Split the string into sub strings with scores and operations
-    #                         # Do calculation + -
-    #                         current_group = ''
-    #                         sign = ''
-    #                         points = 0
-    #                         for idx, char in enumerate(str(player[1])):
-    #                             if char.isdigit():
-    #                                 current_group += char
-    #                             elif char == '-' or char == '+':
-    #                                 sign = char
-    #                                 points += int(f'{sign}{current_group}')
-    #                                 current_group = ''
-    #                             else:
-    #                                 await ctx.respond(f'``Error 26:``There was an error with the following player: <@{player[0]}>')
-    #                                 return
-    #                         # Last item in list needs to be added
-    #                         points += int(f'{sign}{current_group}')
-    #                         team_score = team_score + points
-    #             except Exception as e:
-    #                 # check for all 12 players exist
-    #                 await self.send_to_debug_channel(ctx, e)
-    #                 await current_channel.send(f'``Error 24:`` There was an error with the following player: <@{player[0]}>')
-    #                 return
-    #         # print(team_score)
-    #         if count == 0:
-    #             count = 1
-    #         team_mmr = temp_mmr/count
-    #         team.append(team_score)
-    #         team.append(team_mmr)
-    #         mogi_score += team_score
-    #     # Check for 984 score
-    #     if mogi_score == 984:
-    #         pass
-    #     else:
-    #         await current_channel.send(f'``Error 28:`` `Scores = {mogi_score} `Scores must add up to 984.')
-    #         return
+            # Create Discord Scheduled Event
+            try:
+                await guild.create_scheduled_event(name=f'SQ:{str(size)}v{str(size)} Gathering', start_time=queue_time, end_time=input_time, location="#sq-join")
+            except Exception as e:
+                logging.error(e)
+                await ctx.send('Cannot schedule event in the past')
+                return
 
-    #     # Sort the teams in order of score
-    #     # [[players players players], team_score, team_mmr]
-    #     sorted_list = sorted(chunked_list, key = lambda x: int(x[len(chunked_list[0])-2]))
-    #     sorted_list.reverse() 
-    #     # print(f'sorted list: {sorted_list}')
-
-    #     # Create hlorenzi string
-    #     lorenzi_query=''
-
-    #     # Initialize score and placement values
-    #     prev_team_score = 0
-    #     prev_team_placement = 1
-    #     team_placement = 0
-    #     count_teams = 1
-    #     for team in sorted_list:
-    #         # If team score = prev team score, use prev team placement, else increase placement and use placement
-    #         # print('if team score == prev team score')
-    #         # print(f'if {team[len(team)-2]} == {prev_team_score}')
-    #         if team[len(team)-2] == prev_team_score:
-    #             team_placement = prev_team_placement
-    #         else:
-    #             team_placement = count_teams
-    #         count_teams += 1
-    #         team.append(team_placement)
-    #         if mogi_format != 1:
-    #             if count_teams % 2 == 0:
-    #                 lorenzi_query += f'{team_placement} #FFD6A3  \n'
-    #             else:
-    #                 lorenzi_query += f'{team_placement} #F1A768 \n'
-    #         for idx, player in enumerate(team):
-    #             if idx > (mogi_format-1):
-    #                 continue
-    #             with DBA.DBAccess() as db:
-    #                 temp = db.query('SELECT player_name, country_code FROM player WHERE player_id = %s;', (player[0],))
-    #                 player_name = temp[0][0]
-    #                 country_code = temp[0][1]
-    #                 score = player[1]
-    #             lorenzi_query += f'{player_name} [{country_code}] {score}\n'
-
-    #         # Assign previous values before leaving
-    #         prev_team_placement = team_placement
-    #         prev_team_score = team[len(team)-3]
-
-    #     # Request a lorenzi table
-    #     query_string = urllib.parse.quote(lorenzi_query)
-    #     url = f'https://gb.hlorenzi.com/table.png?data={query_string}'
-    #     response = requests.get(url, stream=True)
-    #     with open(f'/home/sq/squad_queue_v2/images/{hex(ctx.author.id)}table.png', 'wb') as out_file:
-    #         shutil.copyfileobj(response.raw, out_file)
-    #     del response
-
-    #     # Ask for table confirmation
-    #     # table_view = Confirm(ctx.author.id)
-    #     channel = self.bot.get_channel(ctx.channel.id)
-    #     await channel.send(file=discord.File(f'/home/sq/squad_queue_v2/images/{hex(ctx.author.id)}table.png'), delete_after=300)
-
-    #     await channel.send('Is this table correct? :thinking: (Type `yes` or `no`)', delete_after=300)
+            await ctx.send(f"Scheduled {size}v{size} on <t:{str(int(input_unix_time))}:F>")
+            logging.warning('_____________________________')
 
         
-    #     try:
-    #         lorenzi_response = await self.bot.wait_for('message', check=lambda message: message.author == ctx.author, timeout=60)
-    #         if lorenzi_response.content.lower() not in ['yes', 'y']:
-    #             await current_channel.send('Table denied. Try again.')
-    #             return
-    #     except Exception as e:
-    #         await self.send_to_debug_channel(ctx, e)
-    #         await current_channel.send('No response from reporter. Timed out')
-    #         return
-        
-        
-    #         # if table_view.value is None:
-    #         # await ctx.send('No response from reporter. Timed out')
-    #     db_mogi_id = 0
-    #     # Create mogi
-    #     with DBA.DBAccess() as db:
-    #         db.execute('INSERT INTO mogi (mogi_format, tier_id) values (%s, %s);', (mogi_format, SQ_TIER_ID))
+    # @staticmethod
+    # def get_event_str(this_event):
+    #     event_size, event_time = this_event.size, this_event.time
+    #     logging.warning(f'event_size: {this_event.size} | event_time: {this_event.time}')
+    #     event_time_str = this_event.time.strftime(time_print_formatting)
+    #     return f"{event_size}v{event_size} on {event_time_str}"
+    
+    async def get_event_string(self, event_id):
+        try:
+            with DBA.DBAccess() as db:
+                data = db.query('SELECT id, mogi_format, start_time FROM sq_schedule WHERE id = %s;', (event_id,))
+            return f"`#{data[0][0]}` **{data[0][1]}v{data[0][1]}** <t:{data[0][2]}:F>"
+        except Exception as e:
+            await self.send_raw_to_debug_channel('get event string error', e)
+            return f'Event `{event_id}` not found :o'
 
-    #     # Get the results channel and tier name for later use
-    #     with DBA.DBAccess() as db:
-    #         temp = db.query('SELECT results_id, tier_name FROM tier WHERE tier_id = %s;', (SQ_TIER_ID,))
-    #         db_results_channel = temp[0][0]
-    #         tier_name = temp[0][1]
-    #     results_channel = self.bot.get_channel(db_results_channel)
+    async def convert_unix_timestamp_to_datetime(self, unix_timestamp):
+        return datetime.utcfromtimestamp(unix_timestamp)
 
-    #     # Pre MMR table calculate
-    #     value_table = list()
-    #     for idx, team_x in enumerate(sorted_list):
-    #         working_list = list()
-    #         for idy, team_y in enumerate(sorted_list):
-    #             pre_mmr = 0.0
-    #             if idx == idy: # skip value vs. self
-    #                 pass
-    #             else:
-    #                 team_x_mmr = team_x[len(team_x)-2]
-    #                 team_x_placement = team_x[len(team_x)-1]
-    #                 team_y_mmr = team_y[len(team_y)-2]
-    #                 team_y_placement = team_y[len(team_y)-1]
-    #                 if team_x_placement == team_y_placement:
-    #                     pre_mmr = (SPECIAL_TEAMS_INTEGER*((((team_x_mmr - team_y_mmr)/highest_mmr)**2)**(1/3))**2)
-    #                     if team_x_mmr >= team_y_mmr:
-    #                         pass
-    #                     else: #team_x_mmr < team_y_mmr:
-    #                         pre_mmr = pre_mmr * -1
-    #                 else:
-    #                     if team_x_placement > team_y_placement:
-    #                         pre_mmr = (1 + OTHER_SPECIAL_INT*(1 + (team_x_mmr-team_y_mmr)/highest_mmr)**MULTIPLIER_SPECIAL)
-    #                     else: #team_x_placement < team_y_placement
-    #                         pre_mmr = -(1 + OTHER_SPECIAL_INT*(1 + (team_y_mmr-team_x_mmr)/highest_mmr)**MULTIPLIER_SPECIAL)
-    #             working_list.append(pre_mmr)
-    #         value_table.append(working_list)
-
-    #     # # DEBUG
-    #     # print(f'\nprinting value table:\n')
-    #     # for _list in value_table:
-    #     #     print(_list)
-
-    #     # Actually calculate the MMR
-    #     for idx, team in enumerate(sorted_list):
-    #         temp_value = 0.0
-    #         for pre_mmr_list in value_table:
-    #             for idx2, value in enumerate(pre_mmr_list):
-    #                 if idx == idx2:
-    #                     temp_value += value
-    #                 else:
-    #                     pass
-    #         team.append(math.ceil(temp_value))
-
-    #     # Create mmr table string
-    #     if mogi_format == 1:
-    #         string_mogi_format = 'FFA'
-    #     else:
-    #         string_mogi_format = f'{str(mogi_format)}v{str(mogi_format)}'
-
-    #     mmr_table_string = f'<big><big>SQ     {string_mogi_format}</big></big>\n'
-    #     mmr_table_string += f'PLACE |       NAME       |  MMR  |  +/-  | NEW MMR |  RANKUPS\n'
-
-    #     for team in sorted_list:
-    #         my_player_place = team[len(team)-2]
-    #         string_my_player_place = str(my_player_place)
-    #         for idx, player in enumerate(team):
-    #             mmr_table_string += '\n'
-    #             if idx > (mogi_format-1):
-    #                 break
-    #             with DBA.DBAccess() as db:
-    #                 temp = db.query('SELECT player_name, mmr, peak_mmr, rank_id FROM player WHERE player_id = %s;', (player[0],))
-    #                 my_player_name = temp[0][0]
-    #                 my_player_mmr = temp[0][1]
-    #                 my_player_peak = temp[0][2]
-    #                 my_player_rank_id = temp[0][3]
-    #                 if my_player_peak is None:
-    #                     # print('its none...')
-    #                     my_player_peak = 0
-    #             my_player_score = int(player[1])
-    #             my_player_new_rank = ''
-
-    #             # PLACEMENTS WILL NEVER BE IN SQ
-    #             # # Place the placement players
-    #             # placement_name = ''
-    #             # if my_player_mmr is None:
-    #             #     if my_player_score >=111:
-    #             #         my_player_mmr = 5250
-    #             #         placement_name = 'Gold'
-    #             #     elif my_player_score >= 81:
-    #             #         my_player_mmr = 3750
-    #             #         placement_name = 'Silver'
-    #             #     elif my_player_score >= 41:
-    #             #         my_player_mmr = 2250
-    #             #         placement_name = 'Bronze'
-    #             #     else:
-    #             #         my_player_mmr = 1000
-    #             #         placement_name = 'Iron'
-    #             #     with DBA.DBAccess() as db:
-    #             #         temp = db.query('SELECT rank_id FROM ranks WHERE placement_mmr = %s;', (my_player_mmr,))
-    #             #         init_rank = temp[0][0]
-    #             #         db.execute('UPDATE player SET base_mmr = %s, rank_id = %s WHERE player_id = %s;', (my_player_mmr, init_rank, player[0]))
-    #             #     await channel.send(f'<@{player[0]}> has been placed at {placement_name} ({my_player_mmr} MMR)')
-
-    #             # if is_sub: # Subs only gain on winning team
-    #             #     if team[len(team)-1] < 0:
-    #             #         my_player_mmr_change = 0
-    #             #     else:
-    #             #         my_player_mmr_change = team[len(team)-1]
-    #             # else:
-    #             #     my_player_mmr_change = team[len(team)-1]
-
-    #             my_player_mmr_change = team[len(team)-1]
-    #             my_player_new_mmr = (my_player_mmr + my_player_mmr_change)
-
-    #             # Start creating string for MMR table
-    #             mmr_table_string += f'{string_my_player_place.center(6)}|'
-    #             mmr_table_string +=f'{my_player_name.center(18)}|'
-    #             mmr_table_string += f'{str(my_player_mmr).center(7)}|'
-
-    #             # Check sign of mmr delta
-    #             if my_player_mmr_change >= 0:
-    #                 temp_string = f'+{str(my_player_mmr_change)}'
-    #                 string_my_player_mmr_change = f'{temp_string.center(7)}'
-    #                 formatted_my_player_mmr_change = await self.pos_mmr_wrapper(string_my_player_mmr_change)
-    #             else:
-    #                 string_my_player_mmr_change = f'{str(my_player_mmr_change).center(7)}'
-    #                 formatted_my_player_mmr_change = await self.neg_mmr_wrapper(string_my_player_mmr_change)
-    #             mmr_table_string += f'{formatted_my_player_mmr_change}|'
-
-    #             # Check for new peak
-    #             string_my_player_new_mmr = str(my_player_new_mmr).center(9)
-    #             # print(f'current peak: {my_player_peak} | new mmr value: {my_player_new_mmr}')
-    #             if my_player_peak < (my_player_new_mmr):
-    #                 formatted_my_player_new_mmr = await self.peak_mmr_wrapper(string_my_player_new_mmr)
-    #                 with DBA.DBAccess() as db:
-    #                     db.execute('UPDATE player SET peak_mmr = %s WHERE player_id = %s;', (my_player_new_mmr, player[0]))
-    #             else:
-    #                 formatted_my_player_new_mmr = string_my_player_new_mmr
-    #             mmr_table_string += f'{formatted_my_player_new_mmr}|'
-
-    #             # Send updates to DB
-    #             try:
-    #                 with DBA.DBAccess() as db:
-    #                     # Get ID of the last inserted table
-    #                     temp = db.query('SELECT mogi_id FROM mogi WHERE tier_id = %s ORDER BY create_date DESC LIMIT 1;', (SQ_TIER_ID,))
-    #                     db_mogi_id = temp[0][0]
-    #                     # Insert reference record
-    #                     db.execute('INSERT INTO player_mogi (player_id, mogi_id, place, score, prev_mmr, mmr_change, new_mmr) VALUES (%s, %s, %s, %s, %s, %s, %s);', (player[0], db_mogi_id, int(my_player_place), int(my_player_score), int(my_player_mmr), int(my_player_mmr_change), int(my_player_new_mmr)))
-    #                     # Update player record
-    #                     db.execute('UPDATE player SET mmr = %s WHERE player_id = %s;', (my_player_new_mmr, player[0]))
-    #                     # Remove player from lineups
-    #                     # db.execute('DELETE FROM lineups WHERE player_id = %s AND tier_id = %s;', (player[0], SQ_TIER_ID)) # YOU MUST SUBMIT TABLE IN THE TIER THE MATCH WAS PLAYED
-    #                     # # Clear sub leaver table
-    #                     # db.execute('DELETE FROM sub_leaver WHERE tier_id = %s;', (SQ_TIER_ID,))
-    #             except Exception as e:
-    #                 # print(e)
-    #                 await self.send_to_debug_channel(ctx, f'FATAL TABLE ERROR: {e}')
-    #                 pass
-
-    #             # Check for rank changes
-    #             with DBA.DBAccess() as db:
-    #                 db_ranks_table = db.query('SELECT rank_id, mmr_min, mmr_max FROM ranks WHERE rank_id > %s;', (1,))
-    #             for i in range(len(db_ranks_table)):
-    #                 rank_id = db_ranks_table[i][0]
-    #                 min_mmr = db_ranks_table[i][1]
-    #                 max_mmr = db_ranks_table[i][2]
-    #                 # Rank up - assign roles - update DB
-    #                 try:
-    #                     if my_player_mmr < min_mmr and my_player_new_mmr >= min_mmr:
-    #                         guild = self.bot.get_guild(Lounge[0])
-    #                         current_role = guild.get_role(my_player_rank_id)
-    #                         new_role = guild.get_role(rank_id)
-    #                         member = await guild.fetch_member(player[0])
-    #                         await member.remove_roles(current_role)
-    #                         await member.add_roles(new_role)
-    #                         await results_channel.send(f'{my_player_name} has been promoted to {new_role}')
-    #                         with DBA.DBAccess() as db:
-    #                             db.execute('UPDATE player SET rank_id = %s WHERE player_id = %s;', (rank_id, player[0]))
-    #                         my_player_new_rank += f'+ {new_role}'
-    #                     # Rank down - assign roles - update DB
-    #                     elif my_player_mmr > max_mmr and my_player_new_mmr <= max_mmr:
-    #                         guild = self.bot.get_guild(Lounge[0])
-    #                         current_role = guild.get_role(my_player_rank_id)
-    #                         new_role = guild.get_role(rank_id)
-    #                         member = await guild.fetch_member(player[0])
-    #                         await member.remove_roles(current_role)
-    #                         await member.add_roles(new_role)
-    #                         await results_channel.send(f'{my_player_name} has been demoted to {new_role}')
-    #                         with DBA.DBAccess() as db:
-    #                             db.execute('UPDATE player SET rank_id = %s WHERE player_id = %s;', (rank_id, player[0]))
-    #                         my_player_new_rank += f'- {new_role}'
-    #                 except Exception as e:
-    #                     # print(e)
-    #                     pass
-    #                     # my_player_rank_id = role_id
-    #                     # guild.get_role(role_id)
-    #                     # guild.get_member(discord_id)
-    #                     # member.add_roles(discord.Role)
-    #                     # member.remove_roles(discord.Role)
-    #             string_my_player_new_rank = f'{str(my_player_new_rank).center(12)}'
-    #             formatted_my_player_new_rank = await self.new_rank_wrapper(string_my_player_new_rank, my_player_new_mmr)
-    #             mmr_table_string += f'{formatted_my_player_new_rank}'
-    #             string_my_player_place = ''
-
-    #     # Create imagemagick image
-    #     # print('_______')
-    #     # print(mmr_table_string)
-    #     # print('_______')
-    #     # https://imagemagick.org/script/color.php
-    #     pango_string = f'pango:<tt>{mmr_table_string}</tt>'
-    #     mmr_filename = f'/home/sq/squad_queue_v2/images/{hex(ctx.author.id)}mmr.jpg'
-    #     # correct = subprocess.run(['convert', '-background', 'gray21', '-fill', 'white', pango_string, mmr_filename], check=True, text=True)
-    #     correct = subprocess.run(['convert', '-background', 'None', '-fill', 'white', pango_string, 'mkbg.jpg', '-compose', 'DstOver', '-layers', 'flatten', mmr_filename], check=True, text=True)
-    #     # '+swap', '-compose', 'Over', '-composite', '-quality', '100',
-    #     # '-fill', '#00000040', '-draw', 'rectangle 0,0 570,368',
-    #     f=discord.File(mmr_filename, filename='mmr.jpg')
-    #     sf=discord.File(f'/home/sq/squad_queue_v2/images/{hex(ctx.author.id)}table.png', filename='table.jpg')
-
-    #     # Create embed
-    #     results_channel = self.bot.get_channel(db_results_channel)
-    #     embed2 = discord.Embed(title=f'Tier {tier_name.upper()} Results', color = discord.Color.blurple())
-    #     embed2.add_field(name='Table ID', value=f'{str(db_mogi_id)}', inline=True)
-    #     embed2.add_field(name='Tier', value=f'{tier_name.upper()}', inline=True)
-    #     embed2.add_field(name='Submitted by', value=f'<@{ctx.author.id}>', inline=True)
-    #     embed2.add_field(name='View on website', value=f'https://200-lounge.com/mogi/{db_mogi_id}', inline=False)
-    #     embed2.set_image(url='attachment://table.jpg')
-    #     table_message = await results_channel.send(content=None, embed=embed2, file=sf)
-    #     table_url = table_message.embeds[0].image.url
-    #     try:
-    #         with DBA.DBAccess() as db:
-    #             db.query('UPDATE mogi SET table_url = %s WHERE mogi_id = %s;', (table_url, db_mogi_id))
-    #     except Exception as e:
-    #         await self.send_to_debug_channel(f'Unable to get table url: {e}')
-    #         pass
-
-    #     embed = discord.Embed(title=f'Tier {tier_name.upper()} MMR', color = discord.Color.blurple())
-    #     embed.add_field(name='Table ID', value=f'{str(db_mogi_id)}', inline=True)
-    #     embed.add_field(name='Tier', value=f'{tier_name.upper()}', inline=True)
-    #     embed.add_field(name='Submitted by', value=f'<@{ctx.author.id}>', inline=True)
-    #     embed.add_field(name='View on website', value=f'https://200-lounge.com/mogi/{db_mogi_id}', inline=False)
-    #     embed.set_image(url='attachment://mmr.jpg')
-    #     await results_channel.send(content=None, embed=embed, file=f)
-    #     #  discord ansi coloring (doesn't work on mobile)
-    #     # https://gist.github.com/kkrypt0nn/a02506f3712ff2d1c8ca7c9e0aed7c06
-    #     # https://rebane2001.com/discord-colored-text-generator/ 
-    #     await current_channel.send('`Table Accepted.`')
+    async def convert_datetime_to_unix_timestamp(self, datetime_object):
+        return int((datetime_object - datetime(1970,1,1, tzinfo=pytz.utc)).total_seconds())
 
 
     async def check_if_banned_characters(self, message):
@@ -1589,7 +1262,7 @@ class Mogi(commands.Cog):
     async def peak_mmr_wrapper(self, input):
         # return (f'[0;2m[0;41m[0;37m{input}[0m[0;41m[0m[0m')
         return (f'<span foreground="Yellow1"><i>{input}</i></span>')
-          
+
 
 def setup(bot):
     bot.add_cog(Mogi(bot))

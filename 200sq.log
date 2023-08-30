@@ -1,0 +1,711 @@
+WARNING:discord.client:PyNaCl is not installed, voice will NOT be supported
+WARNING:root:POP_LOG | SQ !schedule | schedule_time type: <class 'str'> | 8/29/23 11pm
+WARNING:root:POP_LOG | SQ !schedule | input_time type: <class 'datetime.datetime'> | 2023-08-29 23:00:00
+WARNING:root:POP_LOG | SQ !schedule | queue time type: <class 'datetime.datetime'> | 2023-08-29 21:45:00
+WARNING:root:---------------
+WARNING:root:POP_LOG | SQ !schedule | input_time time: 1693364400.0
+WARNING:root:POP_LOG | SQ !schedule | queue unix time: 1693359900.0
+WARNING:root:---------------
+WARNING:root:POP_LOG | SQ !schedule | scheduled_time: 2023-08-29 23:00:00-04:00
+WARNING:root:event_size: 2 | event_time: <coroutine object Mogi.convert_datetime_to_unix_timestamp at 0x7f16d49b7e60>
+WARNING:discord.client:PyNaCl is not installed, voice will NOT be supported
+WARNING:root:POP_LOG | SQ !schedule | schedule_time type: <class 'str'> | 8/29/23 11pm
+WARNING:root:POP_LOG | SQ !schedule | input_time type: <class 'datetime.datetime'> | 2023-08-29 23:00:00
+WARNING:root:POP_LOG | SQ !schedule | queue time type: <class 'datetime.datetime'> | 2023-08-29 21:45:00
+WARNING:root:---------------
+WARNING:root:POP_LOG | SQ !schedule | input_time time: 1693364400.0
+WARNING:root:POP_LOG | SQ !schedule | queue unix time: 1693359900.0
+WARNING:root:---------------
+WARNING:root:POP_LOG | SQ !schedule | scheduled_time: 2023-08-29 23:00:00-04:00
+WARNING:root:event_size: 2 | event_time: 1693364400.0
+WARNING:discord.client:PyNaCl is not installed, voice will NOT be supported
+WARNING:root:POP_LOG | SQ !schedule | schedule_time type: <class 'str'> | 8/29/23 11pm
+WARNING:root:POP_LOG | SQ !schedule | input_time type: <class 'datetime.datetime'> | 2023-08-29 23:00:00
+WARNING:root:POP_LOG | SQ !schedule | queue time type: <class 'datetime.datetime'> | 2023-08-29 21:45:00
+WARNING:root:---------------
+WARNING:root:POP_LOG | SQ !schedule | input_time time: 1693364400.0
+WARNING:root:POP_LOG | SQ !schedule | queue unix time: 1693359900.0
+WARNING:root:---------------
+WARNING:root:POP_LOG | SQ !schedule | scheduled_time: 2023-08-30 03:00:00+00:00
+WARNING:root:event_size: 2 | event_time: 1693382400.0
+WARNING:discord.client:PyNaCl is not installed, voice will NOT be supported
+WARNING:root:POP_LOG | SQ !schedule | schedule_time type: <class 'str'> | 8/29/23 11pm
+WARNING:root:POP_LOG | SQ !schedule | input_time type: <class 'datetime.datetime'> | 2023-08-29 23:00:00
+WARNING:root:POP_LOG | SQ !schedule | queue time type: <class 'datetime.datetime'> | 2023-08-29 21:45:00
+WARNING:root:---------------
+WARNING:root:POP_LOG | SQ !schedule | input_time time: 1693364400.0
+WARNING:root:POP_LOG | SQ !schedule | queue unix time: 1693359900.0
+WARNING:root:---------------
+WARNING:root:POP_LOG | SQ !schedule | scheduled_time: 2023-08-30 03:00:00
+WARNING:root:event_size: 2 | event_time: 1693378800.0
+WARNING:discord.client:PyNaCl is not installed, voice will NOT be supported
+WARNING:root:POP_LOG | SQ !schedule | schedule_time type: <class 'str'> | 8/29/23 11pm
+WARNING:root:POP_LOG | SQ !schedule | input_time type: <class 'datetime.datetime'> | 2023-08-29 23:00:00
+WARNING:root:POP_LOG | SQ !schedule | queue time type: <class 'datetime.datetime'> | 2023-08-29 21:45:00
+WARNING:root:---------------
+WARNING:root:POP_LOG | SQ !schedule | input unix time: 1693364400.0
+WARNING:root:POP_LOG | SQ !schedule | queue unix time: 1693359900.0
+WARNING:root:---------------
+WARNING:root:event_size: 2 | event_time: 2023-08-29 23:00:00
+WARNING:discord.client:PyNaCl is not installed, voice will NOT be supported
+WARNING:root:POP_LOG | SQ !schedule | schedule_time type: <class 'str'> | 8/29/23 11pm
+WARNING:root:POP_LOG | SQ !schedule | input_time type: <class 'datetime.datetime'> | 2023-08-29 23:00:00
+WARNING:root:POP_LOG | SQ !schedule | queue time type: <class 'datetime.datetime'> | 2023-08-29 21:45:00
+WARNING:root:---------------
+WARNING:root:POP_LOG | SQ !schedule | input unix time: 1693364400.0
+WARNING:root:POP_LOG | SQ !schedule | queue unix time: 1693359900.0
+WARNING:root:---------------
+WARNING:root:event_size: 2 | event_time: 2023-08-29 23:00:00
+WARNING:root:POP_LOG | SQ !schedule | schedule_time type: <class 'str'> | 8/29/23 11pm UTC
+WARNING:root:POP_LOG | SQ !schedule | input_time type: <class 'datetime.datetime'> | 2023-08-29 23:00:00+00:00
+WARNING:root:POP_LOG | SQ !schedule | queue time type: <class 'datetime.datetime'> | 2023-08-29 21:45:00+00:00
+WARNING:root:---------------
+WARNING:root:POP_LOG | SQ !schedule | input unix time: 1693368000.0
+WARNING:root:POP_LOG | SQ !schedule | queue unix time: 1693363500.0
+WARNING:root:---------------
+WARNING:root:event_size: 2 | event_time: 2023-08-29 23:00:00+00:00
+WARNING:discord.client:PyNaCl is not installed, voice will NOT be supported
+WARNING:root:POP_LOG | SQ !schedule | schedule_time type: <class 'str'> | 8/29/23 11pm
+WARNING:root:POP_LOG | SQ !schedule | input_time type: <class 'datetime.datetime'> | 2023-08-30 03:00:00+00:00
+WARNING:root:POP_LOG | SQ !schedule | queue time type: <class 'datetime.datetime'> | 2023-08-30 01:45:00+00:00
+WARNING:root:---------------
+WARNING:root:POP_LOG | SQ !schedule | input unix time: 1693382400.0
+WARNING:root:POP_LOG | SQ !schedule | queue unix time: 1693377900.0
+WARNING:root:---------------
+WARNING:discord.client:PyNaCl is not installed, voice will NOT be supported
+WARNING:root:POP_LOG | SQ !schedule | schedule_time type: <class 'str'> | 8/29/23 11pm ET
+WARNING:root:POP_LOG | SQ !schedule | input_time type: <class 'datetime.datetime'> | 2023-08-29 23:00:00
+WARNING:root:POP_LOG | SQ !schedule | queue time type: <class 'datetime.datetime'> | 2023-08-29 21:45:00
+WARNING:root:---------------
+WARNING:root:POP_LOG | SQ !schedule | input unix time: 1693364400.0
+WARNING:root:POP_LOG | SQ !schedule | queue unix time: 1693359900.0
+WARNING:root:---------------
+WARNING:root:POP_LOG | SQ !schedule | schedule_time type: <class 'str'> | 8/29/23 11pm
+WARNING:root:POP_LOG | SQ !schedule | input_time type: <class 'datetime.datetime'> | 2023-08-29 23:00:00
+WARNING:root:POP_LOG | SQ !schedule | queue time type: <class 'datetime.datetime'> | 2023-08-29 21:45:00
+WARNING:root:---------------
+WARNING:root:POP_LOG | SQ !schedule | input unix time: 1693364400.0
+WARNING:root:POP_LOG | SQ !schedule | queue unix time: 1693359900.0
+WARNING:root:---------------
+WARNING:root:POP_LOG | SQ !schedule | schedule_time type: <class 'str'> | 8/29/23 11pm EST
+WARNING:root:POP_LOG | SQ !schedule | input_time type: <class 'datetime.datetime'> | 2023-08-29 23:00:00-04:00
+WARNING:root:POP_LOG | SQ !schedule | queue time type: <class 'datetime.datetime'> | 2023-08-29 21:45:00-04:00
+WARNING:root:---------------
+WARNING:root:POP_LOG | SQ !schedule | input unix time: 1693364400.0
+WARNING:root:POP_LOG | SQ !schedule | queue unix time: 1693359900.0
+WARNING:root:---------------
+WARNING:discord.client:PyNaCl is not installed, voice will NOT be supported
+WARNING:root:POP_LOG | SQ !schedule | schedule_time type: <class 'str'> | 8/29/23 11pm
+WARNING:root:POP_LOG | SQ !schedule | input_time type: <class 'datetime.datetime'> | 2023-08-29 23:00:00
+WARNING:root:POP_LOG | SQ !schedule | queue time type: <class 'datetime.datetime'> | 2023-08-29 21:45:00
+WARNING:root:---------------
+WARNING:root:POP_LOG | SQ !schedule | input unix time: 1693364400.0
+WARNING:root:POP_LOG | SQ !schedule | queue unix time: 1693359900.0
+WARNING:root:---------------
+WARNING:root:_____________________________
+WARNING:discord.client:PyNaCl is not installed, voice will NOT be supported
+WARNING:discord.client:PyNaCl is not installed, voice will NOT be supported
+WARNING:discord.client:PyNaCl is not installed, voice will NOT be supported
+WARNING:root:POP_LOG | SQ !schedule | schedule_time type: <class 'str'> | 8/29/23 11pm
+WARNING:root:POP_LOG | SQ !schedule | input_time type: <class 'datetime.datetime'> | 2023-08-29 23:00:00
+WARNING:root:POP_LOG | SQ !schedule | queue time type: <class 'datetime.datetime'> | 2023-08-29 21:45:00
+WARNING:root:---------------
+WARNING:discord.client:PyNaCl is not installed, voice will NOT be supported
+WARNING:root:POP_LOG | SQ !schedule | schedule_time type: <class 'str'> | 8/29/23 11pm
+WARNING:root:POP_LOG | SQ !schedule | input_time type: <class 'datetime.datetime'> | 2023-08-29 23:00:00
+WARNING:root:POP_LOG | SQ !schedule | queue time type: <class 'datetime.datetime'> | 2023-08-29 21:45:00
+WARNING:root:---------------
+WARNING:root:POP_LOG | SQ !schedule | input unix time: 1693364400.0
+WARNING:root:POP_LOG | SQ !schedule | queue unix time: 1693359900.0
+WARNING:root:---------------
+WARNING:root:_____________________________
+WARNING:discord.client:PyNaCl is not installed, voice will NOT be supported
+WARNING:root:POP_LOG | SQ !schedule | schedule_time type: <class 'str'> | 8/29/23 11pm
+WARNING:root:POP_LOG | SQ !schedule | input_time type: <class 'datetime.datetime'> | 2023-08-29 23:00:00+00:00
+WARNING:root:POP_LOG | SQ !schedule | queue time type: <class 'datetime.datetime'> | 2023-08-29 21:45:00+00:00
+WARNING:root:---------------
+WARNING:root:POP_LOG | SQ !schedule | input unix time: 1693368000.0
+WARNING:root:POP_LOG | SQ !schedule | queue unix time: 1693363500.0
+WARNING:root:---------------
+WARNING:root:_____________________________
+WARNING:discord.client:PyNaCl is not installed, voice will NOT be supported
+WARNING:root:POP_LOG | SQ !schedule | schedule_time type: <class 'str'> | 8/29/23 11pm UTC
+WARNING:root:POP_LOG | SQ !schedule | input_time type: <class 'datetime.datetime'> | 2023-08-29 23:00:00+00:00
+WARNING:root:POP_LOG | SQ !schedule | queue time type: <class 'datetime.datetime'> | 2023-08-29 21:45:00+00:00
+WARNING:root:---------------
+WARNING:root:POP_LOG | SQ !schedule | input unix time: 1693368000.0
+WARNING:root:POP_LOG | SQ !schedule | queue unix time: 1693363500.0
+WARNING:root:---------------
+WARNING:discord.client:PyNaCl is not installed, voice will NOT be supported
+WARNING:root:POP_LOG | SQ !schedule | schedule_time type: <class 'str'> | 8/29/23 11pm UTC
+WARNING:root:POP_LOG | SQ !schedule | input_time type: <class 'datetime.datetime'> | 2023-08-29 23:00:00+00:00
+WARNING:root:POP_LOG | SQ !schedule | queue time type: <class 'datetime.datetime'> | 2023-08-29 21:45:00+00:00
+WARNING:root:---------------
+WARNING:root:POP_LOG | SQ !schedule | input unix time: 1693368000.0
+WARNING:root:POP_LOG | SQ !schedule | queue unix time: 1693363500.0
+WARNING:root:---------------
+WARNING:root:2023-08-30 00:00:00 
+WARNING:root:_____________________________
+WARNING:discord.client:PyNaCl is not installed, voice will NOT be supported
+WARNING:root:POP_LOG | SQ !schedule | schedule_time type: <class 'str'> | 8/29/23 11pm UTC
+WARNING:root:POP_LOG | SQ !schedule | input_time type: <class 'datetime.datetime'> | 2023-08-29 23:00:00+00:00
+WARNING:root:POP_LOG | SQ !schedule | queue time type: <class 'datetime.datetime'> | 2023-08-29 21:45:00+00:00
+WARNING:root:---------------
+WARNING:root:POP_LOG | SQ !schedule | input unix time: 1693350000
+WARNING:root:POP_LOG | SQ !schedule | queue unix time: 1693345500
+WARNING:root:---------------
+WARNING:root:2023-08-29 19:00:00 
+WARNING:root:_____________________________
+WARNING:discord.client:PyNaCl is not installed, voice will NOT be supported
+WARNING:root:POP_LOG | SQ !schedule | schedule_time type: <class 'str'> | 8/29/23 11pm
+WARNING:root:POP_LOG | SQ !schedule | input_time type: <class 'datetime.datetime'> | 2023-08-29 23:00:00
+WARNING:root:POP_LOG | SQ !schedule | queue time type: <class 'datetime.datetime'> | 2023-08-29 21:45:00
+WARNING:root:---------------
+WARNING:discord.client:PyNaCl is not installed, voice will NOT be supported
+WARNING:root:POP_LOG | SQ !schedule | schedule_time type: <class 'str'> | 8/30/23 11pm UTC
+WARNING:root:POP_LOG | SQ !schedule | input_time type: <class 'datetime.datetime'> | 2023-08-30 23:00:00+00:00
+WARNING:root:POP_LOG | SQ !schedule | queue time type: <class 'datetime.datetime'> | 2023-08-30 21:45:00+00:00
+WARNING:root:POP_LOG | SQ !schedule | input unix time: 1693436400
+WARNING:root:POP_LOG | SQ !schedule | queue unix time: 1693431900
+WARNING:root:POP_LOG | SQ !schedule | input time = input unix time to datetime to unix time?
+WARNING:root:POP_LOG | SQ !schedule | 2023-08-30 23:00:00+00:00 = 2023-08-30 23:00:00
+WARNING:root:_____________________________
+WARNING:discord.client:PyNaCl is not installed, voice will NOT be supported
+WARNING:discord.client:PyNaCl is not installed, voice will NOT be supported
+WARNING:discord.client:PyNaCl is not installed, voice will NOT be supported
+WARNING:discord.client:PyNaCl is not installed, voice will NOT be supported
+WARNING:discord.client:PyNaCl is not installed, voice will NOT be supported
+WARNING:discord.client:PyNaCl is not installed, voice will NOT be supported
+WARNING:discord.client:PyNaCl is not installed, voice will NOT be supported
+WARNING:discord.client:PyNaCl is not installed, voice will NOT be supported
+WARNING:discord.client:PyNaCl is not installed, voice will NOT be supported
+WARNING:discord.client:PyNaCl is not installed, voice will NOT be supported
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693404078
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693404098
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693404118
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693404138
+WARNING:discord.client:PyNaCl is not installed, voice will NOT be supported
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693404474
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693404494
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693404514
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693404534
+WARNING:root:POP_LOG | SQ !schedule | schedule_time type: <class 'str'> | 8/30/23 2pm UTC
+WARNING:root:POP_LOG | SQ !schedule | input_time type: <class 'datetime.datetime'> | 2023-08-30 14:00:00+00:00
+WARNING:root:POP_LOG | SQ !schedule | queue time type: <class 'datetime.datetime'> | 2023-08-30 12:45:00+00:00
+WARNING:root:POP_LOG | SQ !schedule | input unix time: 1693404000
+WARNING:root:POP_LOG | SQ !schedule | queue unix time: 1693399500
+ERROR:root:400 Bad Request (error code: 50035): Invalid Form Body
+In scheduled_start_time: Cannot schedule event in the past.
+In scheduled_end_time: Cannot schedule event in the past.
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693404554
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693404000 < 1693404554
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time > start_Time | 1693404000 -> 2023-08-30 14:00:00
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693404574
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693404000 < 1693404574
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time > start_Time | 1693404000 -> 2023-08-30 14:00:00
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693404594
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693404000 < 1693404594
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time > start_Time | 1693404000 -> 2023-08-30 14:00:00
+WARNING:discord.client:PyNaCl is not installed, voice will NOT be supported
+WARNING:discord.client:PyNaCl is not installed, voice will NOT be supported
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693404633
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693404000 < 1693404633
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time > start_Time | 1693404000 -> 2023-08-30 14:00:00
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693404653
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693404000 < 1693404653
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693404673
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693404000 < 1693404673
+WARNING:discord.client:PyNaCl is not installed, voice will NOT be supported
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693404681
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693404000 < 1693404681
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time > start_Time | 1693404000 -> 2023-08-30 14:00:00
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693404701
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693404000 < 1693404701
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693404721
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693404741
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693404761
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693404781
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693404801
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693404821
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693404841
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693404861
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693404881
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693404901
+WARNING:root:POP_LOG | SQ !schedule | schedule_time type: <class 'str'> | 8/30/23 2pm UTC
+WARNING:root:POP_LOG | SQ !schedule | input_time type: <class 'datetime.datetime'> | 2023-08-30 14:00:00+00:00
+WARNING:root:POP_LOG | SQ !schedule | queue time type: <class 'datetime.datetime'> | 2023-08-30 12:45:00+00:00
+WARNING:root:POP_LOG | SQ !schedule | input unix time: 1693404000
+WARNING:root:POP_LOG | SQ !schedule | queue unix time: 1693399500
+ERROR:root:400 Bad Request (error code: 50035): Invalid Form Body
+In scheduled_start_time: Cannot schedule event in the past.
+In scheduled_end_time: Cannot schedule event in the past.
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693404921
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693404000 < 1693404921
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time > start_Time | 1693404000 -> 2023-08-30 14:00:00
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693404941
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693404961
+WARNING:root:POP_LOG | SQ !schedule | schedule_time type: <class 'str'> | 8/30/23 2pm UTC
+WARNING:root:POP_LOG | SQ !schedule | input_time type: <class 'datetime.datetime'> | 2023-08-30 14:00:00+00:00
+WARNING:root:POP_LOG | SQ !schedule | queue time type: <class 'datetime.datetime'> | 2023-08-30 12:45:00+00:00
+WARNING:root:POP_LOG | SQ !schedule | input unix time: 1693404000
+WARNING:root:POP_LOG | SQ !schedule | queue unix time: 1693399500
+ERROR:root:400 Bad Request (error code: 50035): Invalid Form Body
+In scheduled_start_time: Cannot schedule event in the past.
+In scheduled_end_time: Cannot schedule event in the past.
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693404981
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693404000 < 1693404981
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693405001
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693405021
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693405041
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693405061
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693405081
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693405101
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693405121
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693405141
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693405161
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693405181
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693405201
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693405221
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693405241
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693405261
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693405281
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693405301
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693405321
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693405341
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693405361
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693405381
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693405401
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693405421
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693405441
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693405461
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693405481
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693405501
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693405521
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693405541
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693405561
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693405581
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693405601
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693405621
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693405641
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693405661
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693405681
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693405701
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693405721
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693405741
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693405761
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693405781
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693405801
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693405821
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693405841
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693405861
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693405881
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693405901
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693405921
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693405941
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693405961
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693405981
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693406001
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693406021
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693406041
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693406061
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693406081
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693406101
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693406121
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693406141
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | eb event time < unix_now | 1693436400 < 1693406161
+WARNING:discord.client:PyNaCl is not installed, voice will NOT be supported
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693408136
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693408156
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693408176
+WARNING:discord.client:PyNaCl is not installed, voice will NOT be supported
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693408194
+WARNING:root:_____________________________
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693408214
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693408234
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693408254
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693408274
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693408294
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693408314
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693408334
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693408354
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693408374
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693408394
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693408414
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693408434
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693408454
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693408474
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693408494
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693408514
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693408534
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693408554
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693408574
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693408594
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693408614
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693408634
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693408654
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693408674
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693408694
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693408714
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693408734
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693408754
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693408774
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693408794
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693408814
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693408834
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693408854
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693408874
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693408894
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693408914
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693408934
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693408954
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693408974
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693408994
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693409014
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693409034
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693409054
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693409074
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693409094
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693409114
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693409134
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693409154
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693409174
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693409194
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693409214
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693409234
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693409254
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693409274
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693409294
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693409314
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693409334
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693409354
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693409374
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693409394
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693409414
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693409434
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693409454
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693409474
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693409494
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693409514
+WARNING:discord.client:PyNaCl is not installed, voice will NOT be supported
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693409530
+WARNING:root:_____________________________
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693409550
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693409570
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693409590
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693409610
+WARNING:discord.client:PyNaCl is not installed, voice will NOT be supported
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693409615
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693409635
+WARNING:discord.client:PyNaCl is not installed, voice will NOT be supported
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693409645
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693409665
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693409685
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693409705
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693409725
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693409745
+WARNING:discord.client:PyNaCl is not installed, voice will NOT be supported
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693409752
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693409772
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693409792
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693409812
+WARNING:discord.client:PyNaCl is not installed, voice will NOT be supported
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693409832
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693409852
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693409872
+WARNING:discord.client:PyNaCl is not installed, voice will NOT be supported
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693409884
+WARNING:root:POP_LOG | SQ !transfer_template | current_day start_time: 2023-09-04 11pm UTC
+WARNING:root:POP_LOG | SQ !transfer_template | input_time type: <class 'datetime.datetime'> | 2023-09-04 23:00:00+00:00
+WARNING:root:POP_LOG | SQ !transfer_template | queue time type: <class 'datetime.datetime'> | 2023-09-04 21:45:00+00:00
+WARNING:root:POP_LOG | SQ !transfer_template | input unix time: 1693868400
+WARNING:root:POP_LOG | SQ !transfer_template | queue unix time: 1693863900
+WARNING:root:_____________________________
+WARNING:root:POP_LOG | SQ !transfer_template | current_day start_time: 2023-09-04 10pm UTC
+WARNING:root:POP_LOG | SQ !transfer_template | input_time type: <class 'datetime.datetime'> | 2023-09-04 22:00:00+00:00
+WARNING:root:POP_LOG | SQ !transfer_template | queue time type: <class 'datetime.datetime'> | 2023-09-04 20:45:00+00:00
+WARNING:root:POP_LOG | SQ !transfer_template | input unix time: 1693864800
+WARNING:root:POP_LOG | SQ !transfer_template | queue unix time: 1693860300
+WARNING:root:_____________________________
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693409904
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693409904
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693864800 < 1693409904
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693409924
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693409924
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693864800 < 1693409924
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693409944
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693409944
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693864800 < 1693409944
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693409964
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693409964
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693864800 < 1693409964
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693409984
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693409984
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693864800 < 1693409984
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693410004
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693410004
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693864800 < 1693410004
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693410024
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693410024
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693864800 < 1693410024
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693410044
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693410044
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693864800 < 1693410044
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693410064
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693410064
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693864800 < 1693410064
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693410084
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693410084
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693864800 < 1693410084
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693410104
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693410104
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693864800 < 1693410104
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693410124
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693410124
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693864800 < 1693410124
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693410144
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693410144
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693864800 < 1693410144
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693410164
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693410164
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693864800 < 1693410164
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693410184
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693410184
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693864800 < 1693410184
+WARNING:discord.client:PyNaCl is not installed, voice will NOT be supported
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693410199
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693410199
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693864800 < 1693410199
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693410219
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693864800 < 1693410219
+WARNING:discord.client:PyNaCl is not installed, voice will NOT be supported
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693436400 < 1693410237
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693864800 < 1693410237
+WARNING:root:POP_LOG | SQ !transfer_template | current_day start_time: 2023-09-04 11pm UTC
+WARNING:root:POP_LOG | SQ !transfer_template | input_time type: <class 'datetime.datetime'> | 2023-09-04 23:00:00+00:00
+WARNING:root:POP_LOG | SQ !transfer_template | queue time type: <class 'datetime.datetime'> | 2023-09-04 21:45:00+00:00
+WARNING:root:POP_LOG | SQ !transfer_template | input unix time: 1693868400
+WARNING:root:POP_LOG | SQ !transfer_template | queue unix time: 1693863900
+WARNING:root:_____________________________
+WARNING:root:POP_LOG | SQ !transfer_template | cur day 2023-09-04 / 0
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693410277
+WARNING:discord.client:PyNaCl is not installed, voice will NOT be supported
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693410298
+WARNING:discord.client:PyNaCl is not installed, voice will NOT be supported
+WARNING:root:POP_LOG | SQ !transfer_template | current_day start_time: 2023-09-04 11pm UTC
+WARNING:root:POP_LOG | SQ !transfer_template | input_time type: <class 'datetime.datetime'> | 2023-09-04 23:00:00+00:00
+WARNING:root:POP_LOG | SQ !transfer_template | queue time type: <class 'datetime.datetime'> | 2023-09-04 21:45:00+00:00
+WARNING:root:POP_LOG | SQ !transfer_template | input unix time: 1693868400
+WARNING:root:POP_LOG | SQ !transfer_template | queue unix time: 1693863900
+WARNING:root:_____________________________
+WARNING:root:POP_LOG | SQ !transfer_template | cur day 2023-09-04 / 0
+WARNING:root:POP_LOG | SQ !transfer_template | cur day adjust 2023-09-05 / 1
+WARNING:root:POP_LOG | SQ !transfer_template | current_day start_time: 2023-09-05 10pm UTC
+WARNING:root:POP_LOG | SQ !transfer_template | input_time type: <class 'datetime.datetime'> | 2023-09-05 22:00:00+00:00
+WARNING:root:POP_LOG | SQ !transfer_template | queue time type: <class 'datetime.datetime'> | 2023-09-05 20:45:00+00:00
+WARNING:root:POP_LOG | SQ !transfer_template | input unix time: 1693951200
+WARNING:root:POP_LOG | SQ !transfer_template | queue unix time: 1693946700
+WARNING:root:_____________________________
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693410355
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693951200 < 1693410355
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693410375
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693951200 < 1693410375
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693410395
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693951200 < 1693410395
+WARNING:discord.client:PyNaCl is not installed, voice will NOT be supported
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693410408
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693951200 < 1693410408
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693410428
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693951200 < 1693410428
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693410448
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693951200 < 1693410448
+WARNING:root:POP_LOG | SQ !transfer_template | current_day start_time: 2023-09-04 11pm UTC
+WARNING:root:POP_LOG | SQ !transfer_template | input_time type: <class 'datetime.datetime'> | 2023-09-04 23:00:00+00:00
+WARNING:root:POP_LOG | SQ !transfer_template | queue time type: <class 'datetime.datetime'> | 2023-09-04 21:45:00+00:00
+WARNING:root:POP_LOG | SQ !transfer_template | input unix time: 1693868400
+WARNING:root:POP_LOG | SQ !transfer_template | queue unix time: 1693863900
+WARNING:root:_____________________________
+WARNING:root:POP_LOG | SQ !transfer_template | cur day 2023-09-04 / 0
+WARNING:root:POP_LOG | SQ !transfer_template | cur day adjust 2023-09-05 / 1
+WARNING:root:POP_LOG | SQ !transfer_template | current_day start_time: 2023-09-05 10pm UTC
+WARNING:root:POP_LOG | SQ !transfer_template | input_time type: <class 'datetime.datetime'> | 2023-09-05 22:00:00+00:00
+WARNING:root:POP_LOG | SQ !transfer_template | queue time type: <class 'datetime.datetime'> | 2023-09-05 20:45:00+00:00
+WARNING:root:POP_LOG | SQ !transfer_template | input unix time: 1693951200
+WARNING:root:POP_LOG | SQ !transfer_template | queue unix time: 1693946700
+WARNING:root:_____________________________
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693410468
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693951200 < 1693410468
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693410468
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693951200 < 1693410468
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693410488
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693951200 < 1693410488
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693410488
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693951200 < 1693410488
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693410508
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693951200 < 1693410508
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693410508
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693951200 < 1693410508
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693410528
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693951200 < 1693410528
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693410528
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693951200 < 1693410528
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693410548
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693951200 < 1693410548
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693410548
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693951200 < 1693410548
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693410568
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693951200 < 1693410568
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693410568
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693951200 < 1693410568
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693410588
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693951200 < 1693410588
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693410588
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693951200 < 1693410588
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693410608
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693951200 < 1693410608
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693410608
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693951200 < 1693410608
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693410628
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693951200 < 1693410628
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693410628
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693951200 < 1693410628
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693410648
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693951200 < 1693410648
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693410648
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693951200 < 1693410648
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693410668
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693951200 < 1693410668
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693410668
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693951200 < 1693410668
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693410688
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693951200 < 1693410688
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693410688
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693951200 < 1693410688
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693410708
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693951200 < 1693410708
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693410708
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693951200 < 1693410708
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693410728
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693951200 < 1693410728
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693410728
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693951200 < 1693410728
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693410748
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693951200 < 1693410748
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693410748
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693951200 < 1693410748
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693410768
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693951200 < 1693410768
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693410768
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693951200 < 1693410768
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693410788
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693951200 < 1693410788
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693410788
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693951200 < 1693410788
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693410808
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693951200 < 1693410808
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693410808
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693951200 < 1693410808
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693410828
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693951200 < 1693410828
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693410828
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693951200 < 1693410828
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693410848
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693951200 < 1693410848
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693410848
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693951200 < 1693410848
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693410868
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693951200 < 1693410868
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693410868
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693951200 < 1693410868
+WARNING:discord.client:PyNaCl is not installed, voice will NOT be supported
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693410885
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693951200 < 1693410885
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693410885
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693951200 < 1693410885
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693410905
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693410925
+WARNING:discord.client:PyNaCl is not installed, voice will NOT be supported
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693410929
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693410949
+WARNING:discord.client:PyNaCl is not installed, voice will NOT be supported
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693410955
+WARNING:root:POP_LOG | SQ !transfer_template | current_day start_time: 2023-09-04 11pm UTC
+WARNING:root:POP_LOG | SQ !transfer_template | input_time type: <class 'datetime.datetime'> | 2023-09-04 23:00:00+00:00
+WARNING:root:POP_LOG | SQ !transfer_template | queue time type: <class 'datetime.datetime'> | 2023-09-04 21:45:00+00:00
+WARNING:root:POP_LOG | SQ !transfer_template | input unix time: 1693868400
+WARNING:root:POP_LOG | SQ !transfer_template | queue unix time: 1693863900
+WARNING:root:POP_LOG | SQ !transfer_template | already scheduled mogi @ 1693868400
+WARNING:root:_____________________________
+WARNING:root:POP_LOG | SQ !transfer_template | cur day 2023-09-04 / 0
+WARNING:root:POP_LOG | SQ !transfer_template | cur day adjust 2023-09-05 / 1
+WARNING:root:POP_LOG | SQ !transfer_template | current_day start_time: 2023-09-05 10pm UTC
+WARNING:root:POP_LOG | SQ !transfer_template | input_time type: <class 'datetime.datetime'> | 2023-09-05 22:00:00+00:00
+WARNING:root:POP_LOG | SQ !transfer_template | queue time type: <class 'datetime.datetime'> | 2023-09-05 20:45:00+00:00
+WARNING:root:POP_LOG | SQ !transfer_template | input unix time: 1693951200
+WARNING:root:POP_LOG | SQ !transfer_template | queue unix time: 1693946700
+WARNING:root:_____________________________
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693410975
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693951200 < 1693410975
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693410995
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693951200 < 1693410995
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693411015
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693951200 < 1693411015
+WARNING:discord.client:PyNaCl is not installed, voice will NOT be supported
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693411037
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693951200 < 1693411037
+WARNING:root:POP_LOG | SQ !transfer_template | current_day start_time: 2023-09-04 11pm UTC
+WARNING:root:POP_LOG | SQ !transfer_template | input_time type: <class 'datetime.datetime'> | 2023-09-04 23:00:00+00:00
+WARNING:root:POP_LOG | SQ !transfer_template | queue time type: <class 'datetime.datetime'> | 2023-09-04 21:45:00+00:00
+WARNING:root:POP_LOG | SQ !transfer_template | input unix time: 1693868400
+WARNING:root:POP_LOG | SQ !transfer_template | queue unix time: 1693863900
+WARNING:root:POP_LOG | SQ !transfer_template | already scheduled mogi @ 1693868400
+WARNING:root:POP_LOG | SQ !transfer_template | cur day 2023-09-04 / 0
+WARNING:root:POP_LOG | SQ !transfer_template | cur day adjust 2023-09-05 / 1
+WARNING:root:POP_LOG | SQ !transfer_template | current_day start_time: 2023-09-05 10pm UTC
+WARNING:root:POP_LOG | SQ !transfer_template | input_time type: <class 'datetime.datetime'> | 2023-09-05 22:00:00+00:00
+WARNING:root:POP_LOG | SQ !transfer_template | queue time type: <class 'datetime.datetime'> | 2023-09-05 20:45:00+00:00
+WARNING:root:POP_LOG | SQ !transfer_template | input unix time: 1693951200
+WARNING:root:POP_LOG | SQ !transfer_template | queue unix time: 1693946700
+WARNING:root:POP_LOG | SQ !transfer_template | already scheduled mogi @ 1693951200
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693411057
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693951200 < 1693411057
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693411077
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693951200 < 1693411077
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693411097
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693951200 < 1693411097
+WARNING:discord.client:PyNaCl is not installed, voice will NOT be supported
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693411116
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693951200 < 1693411116
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693411136
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693951200 < 1693411136
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693411156
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693951200 < 1693411156
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693411176
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693951200 < 1693411176
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693411196
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693951200 < 1693411196
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693411216
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693951200 < 1693411216
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693411236
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693951200 < 1693411236
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693411256
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693951200 < 1693411256
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693411276
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693951200 < 1693411276
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693411296
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693951200 < 1693411296
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693411316
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693951200 < 1693411316
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693411336
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693951200 < 1693411336
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693411356
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693951200 < 1693411356
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693411376
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693951200 < 1693411376
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693411396
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693951200 < 1693411396
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693411416
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693951200 < 1693411416
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693411436
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693951200 < 1693411436
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693411456
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693951200 < 1693411456
