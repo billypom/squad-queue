@@ -1,0 +1,3 @@
+WARNING:discord.client:PyNaCl is not installed, voice will NOT be supported
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693868400 < 1693412823
+WARNING:root:POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | 1693951200 < 1693412823

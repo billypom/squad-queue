@@ -22,6 +22,7 @@ logging.basicConfig(filename='200sq.log', filemode='a', level=logging.WARNING)
 CATEGORIES_MESSAGE_ID = secretly.CATEGORIES_MESSAGE_ID
 SQ_HELPER_CHANNEL_ID = secretly.SQ_HELPER_CHANNEL_ID
 EVENTS_MESSAGE_ID = secretly.EVENTS_MESSAGE_ID
+SQ_INFO_CHANNEL_ID = secretly.SQ_INFO_CHANNEL_ID
 
 with open('./config.json', 'r') as cjson:
             config = json.load(cjson)
@@ -1018,7 +1019,25 @@ class Mogi(commands.Cog):
             await ctx.send(f"```<t:" + str(int(time.mktime(actual_time.timetuple()))) + ":F>``` -> <t:" + str(int(time.mktime(actual_time.timetuple()))) + ":F>")
         except (ValueError, OverflowError):
             await ctx.send("I couldn't figure out the date and time for your event. Try making it a bit more clear for me.")
-        
+
+    @commands.command()
+    @commands.guild_only()
+    async def post_schedule(self, ctx):
+        """Posts the schedule"""
+        await Mogi.hasroles(self, ctx)
+        sq_info_channel = self.bot.get_channel(SQ_INFO_CHANNEL_ID)
+        with DBA.DBAccess() as db:
+            data = db.query('SELECT id, mogi_format, start_time FROM sq_schedule ORDER BY start_time ASC;', ())
+        event_str = '@everyone\n'
+        for d in data:
+            event_str += f'`#{d[0]}.` **{d[1]}v{d[1]}:** <t:{str(d[2])}:F>\n'    
+        # event_str += "Do `!remove_event` to remove that event from the schedule."
+        if event_str == '':
+            await ctx.send('No SQ events scheduled.')
+            return
+        await sq_info_channel.send(event_str)
+        # await ctx.send(event_str)
+
     @commands.command()
     @commands.guild_only()
     async def view_schedule(self, ctx):
