@@ -1093,7 +1093,7 @@ class Mogi(commands.Cog):
             size = data[0][0]
             start_time = data[0][1]
             day_of_week = data[0][2]
-            db.execute('DELETE FROM sq_schedule WHERE id = %s;', (event_num,))
+            db.execute('DELETE FROM sq_default_schedule WHERE id = %s;', (event_num,))
         await ctx.send(f'Removed event #{event_num} | {size}v{size} on day {day_of_week} @{start_time}')
     
     @commands.command()
