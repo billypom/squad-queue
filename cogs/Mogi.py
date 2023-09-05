@@ -609,6 +609,13 @@ class Mogi(commands.Cog):
         self.is_automated = False
         await ctx.send("Mogi is now open; players can join and drop from the event")
 
+    @commands.command()
+    @commands.guild_only()
+    async def log_file(self, ctx):
+        await Mogi.hasroles(self, ctx)
+        await ctx.send(file=discord.File('200sq.log'))
+        return
+
     async def deleteChannels(self):
         for i in range(len(self.channels)-1, -1, -1):
             try:
