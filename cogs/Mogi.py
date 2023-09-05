@@ -122,8 +122,8 @@ class Mogi(commands.Cog):
         with DBA.DBAccess() as db:
             data = db.query('SELECT id, mogi_format, start_time, queue_time FROM sq_schedule;', ())
         for event in data:
-            logging.warning(f'POP_LOG | SQ scheduler_mogi_start | db event time < unix_now | {event[2]} < {unix_now}')
-            if event[2] < unix_now:
+            if event[3] < unix_now:
+                logging.warning(f'POP_LOG | SQ starting! | db event time < unix_now | {event[3]} < {unix_now}')
                 # Do not start mogi while another is gathering
                 if self.gathering:
                     to_remove.append(event[0])
@@ -134,7 +134,7 @@ class Mogi(commands.Cog):
                         await self.endMogi()
                     to_remove.append(event[0])
                     start_time = await self.convert_unix_timestamp_to_datetime(event[2])
-                    logging.warning(f'POP_LOG | SQ scheduler_mogi_start | db event time > start_Time | {event[2]} -> {start_time}')
+                    logging.warning(f'POP_LOG | SQ scheduler_mogi_start | db event time > start_time | {event[2]} -> {start_time}')
                     # launch mogi needs a datetime object to do math with hours
                     await self.launch_mogi(mogi_channel, event[1], True, start_time)
                     await self.unlockdown(mogi_channel)
@@ -168,7 +168,7 @@ class Mogi(commands.Cog):
                         force_time = self.start_time - QUEUE_OPEN_TIME + JOINING_TIME + EXTENSION_TIME
                         minutes_left = int((force_time - cur_time).seconds/60)
                         x_teams = int(int(12/self.size) - numLeftoverTeams)
-                        logging.warning(f'NOT ENOUGH TEAMS - alert alert')
+                        logging.warning(f'NOT ENOUGH TEAMS - alert alert DJ crazy times. if you want parties to be making? have some noise...')
                         await self.mogi_channel.send(f"Need {x_teams} more team(s) to start immediately. Starting in {minutes_left} minute(s) regardless.")
 
     
