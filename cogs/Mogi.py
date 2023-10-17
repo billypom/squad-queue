@@ -1087,12 +1087,15 @@ class Mogi(commands.Cog):
     async def remove_event(self, ctx, event_num: int):
         """Removes an event from the schedule"""
         await Mogi.hasroles(self, ctx)
-        with DBA.DBAccess() as db:
-            data = db.query('SELECT mogi_format, start_time FROM sq_schedule WHERE id = %s;', (event_num,))
-            size = data[0][0]
-            start_time = data[0][1]
-            db.execute('DELETE FROM sq_schedule WHERE id = %s;', (event_num,))
-        await ctx.send(f'Removed event #{event_num} | {size}v{size} on <t:{str(start_time)}:F>')
+        try:
+            with DBA.DBAccess() as db:
+                data = db.query('SELECT mogi_format, start_time FROM sq_schedule WHERE id = %s;', (event_num,))
+                size = data[0][0]
+                start_time = data[0][1]
+                db.execute('DELETE FROM sq_schedule WHERE id = %s;', (event_num,))
+            await ctx.send(f'Removed event #{event_num} | {size}v{size} on <t:{str(start_time)}:F>')
+        except Exception as e:
+            await ctx.send(f'Event # does not exist')
 
     @commands.command()
     @commands.guild_only()
