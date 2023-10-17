@@ -30,9 +30,9 @@ with open('./config.json', 'r') as cjson:
 CHECKMARK_ADDITION = "-\U00002713"
 CHECKMARK_ADDITION_LEN = 2
 # DEBUG
-Lounge = [461383953937596416] # 200 Lounge
+# Lounge = [461383953937596416] # 200 Lounge
 # DEBUG
-# Lounge = [1041162011490394122] # 200 Development
+Lounge = [1041162011490394122] # 200 Development
 # DEBUG
 # time_print_formatting = "%B %d, %Y at %I:%M%p EDT" # -4
 # DEBUG
@@ -1127,20 +1127,25 @@ class Mogi(commands.Cog):
             schedule_data = db.query('SELECT start_time FROM sq_schedule;', ())
         
         today = date.today()
-        if not today.weekday() == 0:
-            current_day = today + timedelta(days=-today.weekday(), weeks=1)
-        else:
-            current_day = today
+        current_day = today  # Start with the current day
+
         for event in template_data:
             day_of_week = event[0]
             start_time = event[1]
             size = event[2]
-            while (day_of_week != current_day.weekday()):
-                logging.warning(f'POP_LOG | SQ !transfer_template | cur day {current_day} / {current_day.weekday()}')
-                current_day = current_day + timedelta(days=1)
-                logging.warning(f'POP_LOG | SQ !transfer_template | cur day adjust {current_day} / {current_day.weekday()}')
-            input_time = parse(f'{current_day} {start_time} UTC')
-            queue_time = input_time - QUEUE_OPEN_TIME
+
+            # Calculate the target day based on the current day of the week
+            days_until_target = (day_of_week - current_day.weekday()) % 7
+
+            if days_until_target == 0:
+                target_day = current_day  # The event is for today or in the past
+            else:
+                target_day = current_day + timedelta(days=days_until_target)
+
+            # Skip events that are scheduled past Sunday (index 6)
+            if target_day.weekday() <= 6:
+                input_time = parse(f'{target_day} {start_time} UTC')
+                queue_time = input_time - QUEUE_OPEN_TIME
 
             logging.warning(f'POP_LOG | SQ !transfer_template | current_day start_time: {current_day} {start_time} UTC')
             logging.warning(f'POP_LOG | SQ !transfer_template | input_time type: {type(input_time)} | {input_time}')
@@ -1171,7 +1176,7 @@ class Mogi(commands.Cog):
                 await guild.create_scheduled_event(name=f'SQ:{str(size)}v{str(size)} Gathering', start_time=queue_time, end_time=input_time, location="#sq-join")
             except Exception as e:
                 logging.error(e)
-                await ctx.send('Cannot schedule event in the past')
+                await ctx.send('Cannot schedule an event in the past')
                 return
 
             await ctx.send(f"Scheduled {size}v{size} on <t:{str(int(input_unix_time))}:F>")
