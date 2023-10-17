@@ -123,7 +123,7 @@ class Mogi(commands.Cog):
             data = db.query('SELECT id, mogi_format, start_time, queue_time FROM sq_schedule;', ())
         for event in data:
             if event[3] < unix_now:
-                logging.warning(f'POP_LOG | SQ starting! | db event time < unix_now | {event[3]} < {unix_now}')
+                logging.warning(f'POP_LOG | SQ gathering! | db event time < unix_now | {event[3]} < {unix_now}')
                 # Do not start mogi while another is gathering
                 if self.gathering:
                     to_remove.append(event[0])
@@ -323,86 +323,91 @@ class Mogi(commands.Cog):
             await Mogi.is_gathering(self, ctx)
         except:
             return
+        logging.warning(f'{ctx.author} ({ctx.author.id}) tagged {members}')
+        try:
 
-        if (len(members) > 0 and len(members) < self.size - 1):
-            await self.queue_or_send(ctx, "%s didn't tag the correct number of people for this format (%d)"
-                            % (ctx.author.display_name, self.size-1), delay=5)
-            return
-
-        sheet = self.bot.get_cog('Sheet')
-
-        # checking if message author is already in the mogi
-        # checkWait = await Mogi.check_waiting(self, ctx.author.display_name)
-        # checkList = await Mogi.check_list(self, ctx.author.display_name)
-        checkWait = await Mogi.check_waiting(self, ctx.author)
-        checkList = await Mogi.check_list(self, ctx.author)
-
-        # DEBUG ADD THIS BACK~!!!!!!!!!!-------------
-
-        if checkWait is not False:
-            if self.waiting[checkWait][ctx.author][0] == True:
-                await self.queue_or_send(ctx, "%s has already confirmed for this event; type `!d` to drop"
-                                         % (ctx.author.display_name), delay=5)  
+            if (len(members) > 0 and len(members) < self.size - 1):
+                await self.queue_or_send(ctx, "%s didn't tag the correct number of people for this format (%d)"
+                                % (ctx.author.display_name, self.size-1), delay=5)
                 return
-        if checkList is not False:
-            await self.queue_or_send(ctx, "%s has already confirmed for this event; type `!d` to drop"
-                                     % (ctx.author.display_name), delay=5)  
-            return
-
-        # DEBUG ADD THIS BACK~!!!!!!!!!!-------------
-
-        # logic for when no players are tagged
-        if len(members) == 0:
-            #runs if message author has been invited to squad
-            #but hasn't confirmed
-            # DEBUG ADD THIS BACK~!!!!!!!!!!-------------
-            if checkWait is not False:
-            # DEBUG ADD THIS BACK~!!!!!!!!!!-------------
-                self.waiting[checkWait][ctx.author][0] = True
-                confirmedPlayers = []
-                missingPlayers = []
-                for player in self.waiting[checkWait].keys():
-                    if self.waiting[checkWait][player][0] == True:
-                        confirmedPlayers.append(player)
-                    else:
-                        missingPlayers.append(player)
-                string = ("%s has confirmed for their squad [%d/%d]\n"
-                            % (ctx.author.display_name, len(confirmedPlayers), self.size))
-                if len(missingPlayers) > 0:
-                            string += "Missing players: "
-                            string += ", ".join([player.display_name for player in missingPlayers])
-                
-                #if player is the last one to confirm for their squad,
-                #add them to the mogi list
-                if len(missingPlayers) == 0:
-                    squad = self.waiting[checkWait]
-                    squad2 = {}
-                    teamMsg = ""
-                    totalMMR = 0
-                    playerCount = 1
-                    for player in squad.keys():
-                        playerMMR = int(squad[player][1])
-                        squad2[player] = playerMMR
-                        totalMMR += playerMMR
-                        teamMsg += "`%d.` %s (%d MMR)\n" % (playerCount, player.display_name, int(playerMMR))
-                        playerCount += 1
-                    self.avgMMRs.append(int(totalMMR/self.size))
-                    self.waiting.pop(checkWait)
-                    self.list.append(squad2)
-                    if len(self.list) > 1:
-                        s = "s"
-                    else:
-                        s = ""
-                    string += ("`Squad successfully added to mogi list [%d team%s]`:\n%s"
-                                    % (len(self.list), s, teamMsg))
-                await self.queue_or_send(ctx, string)
-                await self.ongoing_mogi_checks()
-                return
-
-            await self.queue_or_send(ctx, "%s didn't tag the correct number of people for this format (%d)"
-                            % (ctx.author.display_name, self.size-1), delay=5)
-            return
             
+
+            sheet = self.bot.get_cog('Sheet')
+
+            # checking if message author is already in the mogi
+            # checkWait = await Mogi.check_waiting(self, ctx.author.display_name)
+            # checkList = await Mogi.check_list(self, ctx.author.display_name)
+            checkWait = await Mogi.check_waiting(self, ctx.author)
+            checkList = await Mogi.check_list(self, ctx.author)
+
+            # DEBUG ADD THIS BACK~!!!!!!!!!!-------------
+
+            if checkWait is not False:
+                if self.waiting[checkWait][ctx.author][0] == True:
+                    await self.queue_or_send(ctx, "%s has already confirmed for this event; type `!d` to drop"
+                                            % (ctx.author.display_name), delay=5)  
+                    return
+            if checkList is not False:
+                await self.queue_or_send(ctx, "%s has already confirmed for this event; type `!d` to drop"
+                                        % (ctx.author.display_name), delay=5)  
+                return
+
+            # DEBUG ADD THIS BACK~!!!!!!!!!!-------------
+
+            # logic for when no players are tagged
+            if len(members) == 0:
+                logging.warning(f'{ctx.author} ({ctx.author.id}) said CAN')
+                #runs if message author has been invited to squad
+                #but hasn't confirmed
+                # DEBUG ADD THIS BACK~!!!!!!!!!!-------------
+                if checkWait is not False:
+                # DEBUG ADD THIS BACK~!!!!!!!!!!-------------
+                    self.waiting[checkWait][ctx.author][0] = True
+                    confirmedPlayers = []
+                    missingPlayers = []
+                    for player in self.waiting[checkWait].keys():
+                        if self.waiting[checkWait][player][0] == True:
+                            confirmedPlayers.append(player)
+                        else:
+                            missingPlayers.append(player)
+                    string = ("%s has confirmed for their squad [%d/%d]\n"
+                                % (ctx.author.display_name, len(confirmedPlayers), self.size))
+                    if len(missingPlayers) > 0:
+                                string += "Missing players: "
+                                string += ", ".join([player.display_name for player in missingPlayers])
+                    
+                    #if player is the last one to confirm for their squad,
+                    #add them to the mogi list
+                    if len(missingPlayers) == 0:
+                        squad = self.waiting[checkWait]
+                        squad2 = {}
+                        teamMsg = ""
+                        totalMMR = 0
+                        playerCount = 1
+                        for player in squad.keys():
+                            playerMMR = int(squad[player][1])
+                            squad2[player] = playerMMR
+                            totalMMR += playerMMR
+                            teamMsg += "`%d.` %s (%d MMR)\n" % (playerCount, player.display_name, int(playerMMR))
+                            playerCount += 1
+                        self.avgMMRs.append(int(totalMMR/self.size))
+                        self.waiting.pop(checkWait)
+                        self.list.append(squad2)
+                        if len(self.list) > 1:
+                            s = "s"
+                        else:
+                            s = ""
+                        string += ("`Squad successfully added to mogi list [%d team%s]`:\n%s"
+                                        % (len(self.list), s, teamMsg))
+                    await self.queue_or_send(ctx, string)
+                    await self.ongoing_mogi_checks()
+                    return
+
+                await self.queue_or_send(ctx, "%s didn't tag the correct number of people for this format (%d)"
+                                % (ctx.author.display_name, self.size-1), delay=5)
+                return
+            except Exception as e:
+                logging.warning(f'Canning up failed for {ctx.author} ({ctx.author.id}): {e}')
 
 
 
