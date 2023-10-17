@@ -11,6 +11,9 @@ import discord
 from discord.ext import commands
 import DBA
 
+import logging
+logging.basicConfig(filename='200sq.log', filemode='a', level=logging.WARNING)
+
 # import gspread
 # gc = gspread.service_account(filename='credentials.json')
 
@@ -26,9 +29,14 @@ class Sheet(commands.Cog):
     async def mmr(self, members):
         check_values = []
         for member in members:
-            with DBA.DBAccess() as db:
-                temp = db.query('SELECT mmr FROM player WHERE player_name = %s;', (member,))
-                check_values.append(temp[0][0])
+            try:
+                with DBA.DBAccess() as db:
+                    temp = db.query('SELECT mmr FROM player WHERE player_name = %s;', (member,))
+                    check_values.append(temp[0][0])
+            except Exception as e:
+                logging.warning(f'{member} not found in Leaderboard')
+                return [False, member] # Return false & the member that caused the issue
+                
         # mmrs.update('B3:B%d' % int(2+len(members)), [[member] for member in members])
         # check_values = mmrs.get('C3:C%d' % int(2+len(members)))
         return_mmrs = []

@@ -30,9 +30,9 @@ with open('./config.json', 'r') as cjson:
 CHECKMARK_ADDITION = "-\U00002713"
 CHECKMARK_ADDITION_LEN = 2
 # DEBUG
-Lounge = [461383953937596416] # 200 Lounge
+# Lounge = [461383953937596416] # 200 Lounge
 # DEBUG
-# Lounge = [1041162011490394122] # 200 Development
+Lounge = [1041162011490394122] # 200 Development
 # DEBUG
 # time_print_formatting = "%B %d, %Y at %I:%M%p EDT" # -4
 # DEBUG
@@ -412,23 +412,6 @@ class Mogi(commands.Cog):
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         # Input validation for tagged members; checks if each tagged member is already
         # in a squad, as well as checks if any of them are duplicates
         for member in members:
@@ -463,17 +446,26 @@ class Mogi(commands.Cog):
         players = {ctx.author: [True]}
         lookupMembers = [ctx.author.display_name]
         lookupMembers += [member.display_name for member in members]
+        logging.warning(f'Squad of these members created: {lookupMembers}')
         # playerMMR = await sheet.mmr(ctx.author)
         playerMMRs = []
         # for i in range(len(lookupMembers)):
         #     with DBA.DBAccess() as db:
         #         temp = db.query('SELECT mmr FROM player WHERE player_name = %s;', (lookupMembers[i],))
         #     playerMMRs.append(temp[0][0])
-        playerMMRs = await sheet.mmr(lookupMembers)
-        if playerMMRs[0] is False:
-            await self.queue_or_send(ctx, "Error: MMR for player %s cannot be found! Please contact a staff member for help"
-                                     % ctx.author.display_name, delay=10)
+
+        try:
+            playerMMRs = await sheet.mmr(lookupMembers)
+        except Exception as e:
+            await self.queue_or_send(ctx, f'MMR not found for one of the following: {lookupMembers}', delay=10)
+            logging.warning(f'{ctx.author} ({ctx.author.id}) failed to can up because: {e}')
             return
+        
+        if not playerMMRs[0]:
+            await self.queue_or_send(ctx, (f'{playerMMRs[1]} not found in Leaderboard'))
+            return
+
+
         players[ctx.author].append(playerMMRs[0])
         for i in range(self.size-1):
             players[members[i]] = [False]
@@ -1119,16 +1111,13 @@ class Mogi(commands.Cog):
 
         mogi_channel = self.get_mogi_channel()
         guild = self.bot.get_guild(Lounge[0])
-        if mogi_channel == None:
+        if mogi_channel is None:
             await ctx.send("I can't see the mogi channel, so I can't schedule this event.")
             return
 
         with DBA.DBAccess() as db:
             template_data = db.query('SELECT day_of_week, start_time, mogi_format FROM sq_default_schedule ORDER BY day_of_week ASC;', ())
-        
-        with DBA.DBAccess() as db:
-            schedule_data = db.query('SELECT start_time FROM sq_schedule;', ())
-        
+
         today = date.today()
         current_day = today  # Start with the current day
 
@@ -1137,53 +1126,51 @@ class Mogi(commands.Cog):
             start_time = event[1]
             size = event[2]
 
-            # Calculate the target day based on the current day of the week
-            days_until_target = (day_of_week - current_day.weekday()) % 7
+            # Calculate the days until the target day based on the current day and day_of_week
+            days_until_target = (day_of_week - current_day.weekday() + 7) % 7
 
-            if days_until_target == 0:
-                target_day = current_day  # The event is for today or in the past
-            else:
-                target_day = current_day + timedelta(days=days_until_target)
+            if days_until_target >= 0 and days_until_target <= 6:
+                if days_until_target > 0:
+                    target_day = current_day + timedelta(days=days_until_target)
+                else:
+                    target_day = current_day
 
-            # Skip events that are scheduled past Sunday (index 6)
-            if target_day.weekday() <= 6:
+                if target_day > today + timedelta(days=6):
+                    continue  # Skip events for next week
+
                 input_time = parse(f'{target_day} {start_time} UTC')
                 queue_time = input_time - QUEUE_OPEN_TIME
 
-            logging.warning(f'POP_LOG | SQ !transfer_template | current_day start_time: {current_day} {start_time} UTC')
-            logging.warning(f'POP_LOG | SQ !transfer_template | input_time type: {type(input_time)} | {input_time}')
-            logging.warning(f'POP_LOG | SQ !transfer_template | queue time type: {type(queue_time)} | {queue_time}')
+                input_unix_time = await self.convert_datetime_to_unix_timestamp(input_time)
+                queue_unix_time = await self.convert_datetime_to_unix_timestamp(queue_time)
 
-            input_unix_time = await self.convert_datetime_to_unix_timestamp(input_time)
-            queue_unix_time = await self.convert_datetime_to_unix_timestamp(queue_time)
-
-            logging.warning(f'POP_LOG | SQ !transfer_template | input unix time: {input_unix_time}')
-            logging.warning(f'POP_LOG | SQ !transfer_template | queue unix time: {queue_unix_time}')
-
-            # Add to DB SQ Schedule
-            already_scheduled_flag = 0
-            for scheduled_event in schedule_data:
-                if scheduled_event[0] == input_unix_time:
-                    already_scheduled_flag = 1
-            
-            if already_scheduled_flag:
-                logging.warning(f'POP_LOG | SQ !transfer_template | already scheduled mogi @ {input_unix_time}')
-                await ctx.send(f"Already scheduled {size}v{size} on <t:{str(int(input_unix_time))}:F>")
-                continue
-            else:
+                # Check if the event is already scheduled
                 with DBA.DBAccess() as db:
-                    db.execute('INSERT INTO sq_schedule (start_time, queue_time, mogi_format, mogi_channel) VALUES (%s, %s, %s, %s);', (input_unix_time, queue_unix_time, size, mogi_channel.id))
+                    schedule_data = db.query('SELECT start_time FROM sq_schedule WHERE start_time = %s;', (input_unix_time,))
+                if schedule_data:
+                    await ctx.send(f"Already scheduled {size}v{size} on <t:{str(int(input_unix_time))}:F>")
+                    continue
 
-            # Create Discord Scheduled Event
-            try:
-                await guild.create_scheduled_event(name=f'SQ:{str(size)}v{str(size)} Gathering', start_time=queue_time, end_time=input_time, location="#sq-join")
-            except Exception as e:
-                logging.error(e)
-                await ctx.send('Cannot schedule an event in the past')
-                return
+                # Add to DB SQ Schedule
+                with DBA.DBAccess() as db:
+                    db.execute('INSERT INTO sq_schedule (start_time, queue_time, mogi_format, mogi_channel) VALUES (%s, %s, %s, %s);',
+                            (input_unix_time, queue_unix_time, size, mogi_channel.id))
 
-            await ctx.send(f"Scheduled {size}v{size} on <t:{str(int(input_unix_time))}:F>")
-            logging.warning('_____________________________')
+                # Create Discord Scheduled Event
+                try:
+                    await guild.create_scheduled_event(name=f'SQ:{str(size)}v{str(size)} Gathering', start_time=queue_time, end_time=input_time, location="#sq-join")
+                    await ctx.send(f"Scheduled {size}v{size} on <t:{str(int(input_unix_time))}:F>")
+                except Exception as e:
+                    logging.error(e)
+                    await ctx.send('Cannot schedule an event in the past')
+
+        # Move to the next day
+        current_day += timedelta(days=1)
+
+
+
+
+
 
         
     # @staticmethod
