@@ -30,9 +30,9 @@ with open('./config.json', 'r') as cjson:
 CHECKMARK_ADDITION = "-\U00002713"
 CHECKMARK_ADDITION_LEN = 2
 # DEBUG
-# Lounge = [461383953937596416] # 200 Lounge
+Lounge = [461383953937596416] # 200 Lounge
 # DEBUG
-Lounge = [1041162011490394122] # 200 Development
+# Lounge = [1041162011490394122] # 200 Development
 # DEBUG
 # time_print_formatting = "%B %d, %Y at %I:%M%p EDT" # -4
 # DEBUG
