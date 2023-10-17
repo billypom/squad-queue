@@ -406,8 +406,8 @@ class Mogi(commands.Cog):
                 await self.queue_or_send(ctx, "%s didn't tag the correct number of people for this format (%d)"
                                 % (ctx.author.display_name, self.size-1), delay=5)
                 return
-            except Exception as e:
-                logging.warning(f'Canning up failed for {ctx.author} ({ctx.author.id}): {e}')
+        except Exception as e:
+            logging.warning(f'Canning up failed for {ctx.author} ({ctx.author.id}): {e}')
 
 
 
