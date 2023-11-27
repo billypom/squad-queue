@@ -24,6 +24,7 @@ SQ_HELPER_CHANNEL_ID = secretly.SQ_HELPER_CHANNEL_ID
 EVENTS_MESSAGE_ID = secretly.EVENTS_MESSAGE_ID
 SQ_INFO_CHANNEL_ID = secretly.SQ_INFO_CHANNEL_ID
 Lounge = secretly.LOUNGE # 200 Lounge
+# test
 
 with open('./config.json', 'r') as cjson:
             config = json.load(cjson)
