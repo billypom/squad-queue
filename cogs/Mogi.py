@@ -1,7 +1,6 @@
 import discord
 from discord.ext import commands, tasks
 from discord.ui import Button, View
-import vlog_msg
 import json
 from dateutil.parser import parse
 from datetime import datetime, timedelta, timezone, date
