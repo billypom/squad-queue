@@ -14,6 +14,7 @@ import shutil
 import subprocess
 import requests
 import math
+import re
 
 import logging
 logging.basicConfig(filename='200sq.log', filemode='a', level=logging.WARNING)
@@ -952,6 +953,23 @@ class Mogi(commands.Cog):
         if mogi_channel == None:
                 await ctx.send("I can't see the mogi channel, so I can't schedule this template event.")
                 return
+
+        # Use regex to parse the time input
+        match = time_pattern.match(schedule_time)
+        if match:
+            hour = int(match.group(1))
+            meridian = match.group(2)
+            if meridian:
+                # Convert AM/PM to military time
+                if meridian.lower() == 'pm' and hour != 12:
+                    hour += 12
+                elif meridian.lower() == 'am' and hour == 12:
+                    hour = 0
+            schedule_time = f"{hour:02}:00"  # Convert to military time format
+        else:
+            await ctx.send("I couldn't understand the time format. Please use either AM/PM or military time (e.g., '2pm' or '14').")
+            return
+        
 
         try:
             # Add to DB SQ Template
