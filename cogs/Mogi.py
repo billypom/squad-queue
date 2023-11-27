@@ -23,16 +23,13 @@ CATEGORIES_MESSAGE_ID = secretly.CATEGORIES_MESSAGE_ID
 SQ_HELPER_CHANNEL_ID = secretly.SQ_HELPER_CHANNEL_ID
 EVENTS_MESSAGE_ID = secretly.EVENTS_MESSAGE_ID
 SQ_INFO_CHANNEL_ID = secretly.SQ_INFO_CHANNEL_ID
+Lounge = secretly.LOUNGE # 200 Lounge
 
 with open('./config.json', 'r') as cjson:
             config = json.load(cjson)
 
 CHECKMARK_ADDITION = "-\U00002713"
 CHECKMARK_ADDITION_LEN = 2
-# DEBUG
-# Lounge = [461383953937596416] # 200 Lounge
-# DEBUG
-Lounge = [1041162011490394122] # 200 Development
 # DEBUG
 # time_print_formatting = "%B %d, %Y at %I:%M%p EDT" # -4
 # DEBUG
