@@ -1,6 +1,5 @@
 import discord
 from discord.ext import commands, tasks
-from discord.ui import Button, View
 import json
 from dateutil.parser import parse
 from datetime import datetime, timedelta, timezone, date
@@ -9,13 +8,6 @@ import time
 import pytz
 import DBA
 import secretly
-import urllib.parse
-import shutil
-import subprocess
-import requests
-import math
-import re
-
 import logging
 logging.basicConfig(filename='200sq.log', filemode='a', level=logging.WARNING)
 
@@ -136,11 +128,11 @@ class Mogi(commands.Cog):
                     # launch mogi needs a datetime object to do math with hours
                     await self.launch_mogi(mogi_channel, event[1], True, start_time)
                     await self.unlockdown(mogi_channel)
-
-        with DBA.DBAccess() as db:
-            for r in to_remove:
-                db.execute('DELETE FROM sq_schedule WHERE id = %s;', (r,))
-        to_remove = []
+        if to_remove:
+            with DBA.DBAccess() as db:
+                for r in to_remove:
+                    db.execute('DELETE FROM sq_schedule WHERE id = %s;', (r,))
+            to_remove = []
 
 
     async def ongoing_mogi_checks(self):
@@ -949,13 +941,12 @@ class Mogi(commands.Cog):
             return False
 
         mogi_channel = self.get_mogi_channel()
-        guild = self.bot.get_guild(Lounge[0])
-        if mogi_channel == None:
+        if mogi_channel is None:
                 await ctx.send("I can't see the mogi channel, so I can't schedule this template event.")
                 return
 
         # Use regex to parse the time input
-        match = time_pattern.match(schedule_time)
+        match = schedule_time.match(schedule_time)
         if match:
             hour = int(match.group(1))
             meridian = match.group(2)
