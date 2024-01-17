@@ -9,6 +9,7 @@ import pytz
 import DBA
 import secretly
 import logging
+import re
 logging.basicConfig(filename='200sq.log', filemode='a', level=logging.WARNING)
 
 CATEGORIES_MESSAGE_ID = secretly.CATEGORIES_MESSAGE_ID
@@ -933,21 +934,29 @@ class Mogi(commands.Cog):
     @commands.guild_only()
     async def add_template_mogi(self, ctx, day_of_week: int, size: int, *, schedule_time:str ):
         await Mogi.hasroles(self, ctx)
+        logging.info(f'add_template_mogi | day: {day_of_week}, size: {size}, date/time:{schedule_time}')
 
         if not await Mogi.start_input_validation(ctx, size):
             return False
         
+        logging.info('add_template_mogi | validated size')
+        
         if not await Mogi.weekday_input_validation(ctx, day_of_week):
             return False
+        
+        logging.info('add_template_mogi | validated weekday')
 
         mogi_channel = self.get_mogi_channel()
         if mogi_channel is None:
                 await ctx.send("I can't see the mogi channel, so I can't schedule this template event.")
                 return
+        logging.info('add_template_mogi | retrieved mogi channel')
 
         # Use regex to parse the time input
-        match = schedule_time.match(schedule_time)
+        time_pattern = r'(\d{1,2})([APap][Mm])?'
+        match = re.match(time_pattern, schedule_time)
         if match:
+            logging.info('add_template_mogi | matched time with regex')
             hour = int(match.group(1))
             meridian = match.group(2)
             if meridian:
@@ -960,6 +969,8 @@ class Mogi(commands.Cog):
         else:
             await ctx.send("I couldn't understand the time format. Please use either AM/PM or military time (e.g., '2pm' or '14').")
             return
+
+        logging.info(f'add_template_mogi | parsed date/time to: {schedule_time}')
         
 
         try:
@@ -968,9 +979,12 @@ class Mogi(commands.Cog):
                 db.execute('INSERT INTO sq_default_schedule (start_time, mogi_format, mogi_channel, day_of_week) VALUES (%s, %s, %s, %s);', (schedule_time, size, mogi_channel.id, day_of_week))
 
             await ctx.send(f"Templated {size}v{size} on day {day_of_week} @ {schedule_time}")
-            logging.warning('_____________________________')
-        except (ValueError, OverflowError):
+            logging.info('_____________________________')
+        # except (ValueError, OverflowError):
+        except Exception as e:
             await ctx.send("I couldn't figure out the date and time for your event. Try making it a bit more clear for me.")
+            logging.info(f'add_template_mogi | EXCEPTION ENCOUNTERED: {e}')
+            
 
 
     # !schedule command               
