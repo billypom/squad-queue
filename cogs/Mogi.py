@@ -1312,6 +1312,26 @@ class Mogi(commands.Cog):
         # return (f'[0;2m[0;41m[0;37m{input}[0m[0;41m[0m[0m')
         return (f'<span foreground="Yellow1"><i>{input}</i></span>')
 
+    @commands.command(name='edit_sq_message')
+    @commands.has_permissions(manage_messages=True)  # Requires permission to manage messages
+    async def edit_sq_message(self, ctx, *, my_message: str):
+        """
+        Edits the SQ helper message with the specified content.
+        :param ctx: The context under which the command is called.
+        :param my_message: The new message content to set.
+        """
+        try:
+            sq_helper_channel = self.bot.get_channel(SQ_HELPER_CHANNEL_ID)  # Fetches the SQ helper channel
+            if not sq_helper_channel:
+                await ctx.send("Error: SQ helper channel not found.")
+                return
+
+            message = await sq_helper_channel.fetch_message(CATEGORIES_MESSAGE_ID)  # Fetches the message to edit
+            await message.edit(content=str(my_message))  # Edits the message with the new content
+            await ctx.send("Message successfully edited.")
+        except Exception as e:
+            await ctx.send(f"An error occurred while editing the message: {e}")
+
 
 def setup(bot):
     bot.add_cog(Mogi(bot))
